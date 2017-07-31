@@ -307,7 +307,7 @@ function chsel(vendor){
   	 itemNo=parseInt(itemObj[itemObj.length-1].value) + 1; //取最大行itemno加1
   } 
    var newTdObj1=myNewRow.insertCell(0);
-   newTdObj1.innerHTML="<input type='checkbox' name='chkArr'  id='chkArr' />";
+   newTdObj1.innerHTML="<input type='checkbox' name='chkArr'  id='chkArr' align='middle'/>";
    var newTdObj2=myNewRow.insertCell(1);
    newTdObj2.innerHTML="<input type='text' name='itemno' id='itemno' style='width:30px' value='"+itemNo+"' readonly='true'/>"; 
    var newTdObj3=myNewRow.insertCell(2);

@@ -282,7 +282,7 @@ nowto=request("dateto")
   </tr>
   <%
   set rs_shipment =server.createobject("ADODB.RecordSet")	
-  rs_shipment.open sql,conn,1,3
+  rs_shipment.open sql,conn,1,1
   if not rs_shipment.eof then
   do while rs_shipment.eof=false
   %>
