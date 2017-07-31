@@ -491,11 +491,20 @@ function chsel(vendor){
 		  		<input name="contract" value="<%=contract%>" style="width:150px" maxlength="20">
 		  		&nbsp;<font color="#ff0000">*</font>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;品类
+					<%
+					sql="select * from materialtype"
+					set rs_mattype=conn.execute(sql)
+					%>		  		
 					<select name="materialtype">			
-						  <option value="猪">猪</option>		
-						  <option value="牛">牛</option>		
-						  <option value="鸡">鸡</option>		
-						  <option value="火鸡">火鸡</option>										
+						<%
+							do while rs_mattype.eof=false
+						%>
+							<option value=<%=rs_mattype("materialtype")%>><%=rs_mattype("materialtype")%></option>
+						<%
+							rs_mattype.movenext
+							loop
+							rs_mattype.close
+						%>									
 					</select>		 
 		  		&nbsp;&nbsp;&nbsp;&nbsp;代理公司
 					<%
@@ -537,25 +546,64 @@ function chsel(vendor){
       <tr>	  
 	    	<td align="right" height="30">港口：</td>
         <td class="category">
+					<%
+					sql="select * from port"
+					set rs_port=conn.execute(sql)
+					%>	        
 					<select name="destination">			
-						  <option value="上海">上海</option>		
+						<%
+							do while rs_port.eof=false
+						%>
+							<option value=<%=rs_port("port")%>><%=rs_port("port")%></option>
+						<%
+							rs_port.movenext
+							loop
+							rs_port.close
+						%>						
+<!--						  <option value="上海">上海</option>		
 						  <option value="大连">大连</option>		
 						  <option value="天津">天津</option>		
-						  <option value="待定">待定</option>										
+						  <option value="待定">待定</option>				-->						
 					</select>		
 					&nbsp;&nbsp;&nbsp;&nbsp;靠泊码头
-					<select name="terminal">			
-						  <option value="天津外代">天津外代</option>		
+					<%
+					sql="select * from terminal"
+					set rs_terminal=conn.execute(sql)
+					%>						
+					<select name="terminal">		
+						<%
+							do while rs_terminal.eof=false
+						%>
+							<option value=<%=rs_terminal("terminal")%>><%=rs_terminal("terminal")%></option>
+						<%
+							rs_terminal.movenext
+							loop
+							rs_terminal.close
+						%>	
+<!--						  <option value="天津外代">天津外代</option>		
 						  <option value="外五">外五</option>		
 						  <option value="洋一">洋一</option>		
-						  <option value="洋三">洋三</option>										
+						  <option value="洋三">洋三</option>				-->						
 					</select>			
 					&nbsp;&nbsp;&nbsp;&nbsp;船公司
+					<%
+					sql="select * from carrier"
+					set rs_carrier=conn.execute(sql)
+					%>							
 					<select name="carrier">			
-						  <option value="ANL">ANL</option>		
+						<%
+							do while rs_carrier.eof=false
+						%>
+							<option value=<%=rs_carrier("carrier")%>><%=rs_carrier("carrier")%></option>
+						<%
+							rs_carrier.movenext
+							loop
+							rs_carrier.close
+						%>						
+<!--						  <option value="ANL">ANL</option>		
 						  <option value="MSC">MSC</option>		
 						  <option value="CMA CGM">CMA CGM</option>		
-						  <option value="COSCO">COSCO</option>										
+						  <option value="COSCO">COSCO</option>			-->							
 					</select>				
 					&nbsp;&nbsp;&nbsp;&nbsp;船名航次
 					<input name="shipname" style="width:150px" maxlength="20">							
@@ -750,7 +798,7 @@ function chsel(vendor){
 							<option value="不需索赔">不需索赔</option>
 					</select>     
 					<label for="claimprocessor" style="vertical-align:top">索赔负责人</label>
-					<select name="custom" style="vertical-align:top">
+					<select name="claimprocessor" style="vertical-align:top">
 	    			<% for i = 0 to customCount-1 %>
 	 						<option value=<%=custom(i)%>><%=custom(i)%></option>
 	 					<% next %>  			

@@ -60,10 +60,14 @@ set rs=conn.execute(sql)
   		<input type="hidden" name="keyword" value="<%=request("keyword")%>">
   		<input type="hidden" name="company" value="<%=request("company")%>">
       <tr>
-        <td width="25%" height="30" align="right">公司名称：</td>
+        <td width="25%" height="30" align="right">公司简称：</td>
         <td width="75%" class="category"><%=rs("company")%>
         	</td>
       </tr>    
+      <tr>
+        <td align="right" height="30">公司全称：</td>
+        <td class="category"><input type="text" name="fullname" style="width:250px" value="<%=rs("fullname")%>"></td>
+      </tr>       
       <tr>
         <td align="right" height="30">公司地址：</td>
         <td class="category"><input type="text" name="address" style="width:300px" value="<%=rs("address")%>"></td>
@@ -81,13 +85,25 @@ set rs=conn.execute(sql)
         <td class="category"><input type="text" name="email" style="width:250px" value="<%=rs("email")%>"></td>
       </tr>    
       <tr>
-        <td align="right" height="30">银行账号：</td>
-        <td class="category"><input type="text" name="bank_account" style="width:250px" value="<%=rs("bank_account")%>"></td>
-      </tr> 
+        <td align="right" height="30">银行账户名称1：</td>
+        <td class="category">
+          <input type="text" name="bankaccountname" style="width:200px" value="<%=rs("bankaccountname")%>">
+          &nbsp;&nbsp;&nbsp;&nbsp;银行账号1
+          <input type="text" name="bankaccount" style="width:200px" value="<%=rs("bankaccount")%>">
+          &nbsp;&nbsp;&nbsp;&nbsp;开户行名称1
+          <input type="text" name="bankname" style="width:200px" value="<%=rs("bankname")%>">
+        </td>
+      </tr>   
       <tr>
-        <td align="right" height="30">开户行：</td>
-        <td class="category"><input type="text" name="bank_name" style="width:250px" value="<%=rs("bank_name")%>"></td>
-      </tr>       
+        <td align="right" height="30">银行账户名称2：</td>
+        <td class="category">
+          <input type="text" name="bankaccountname2" style="width:200px" value="<%=rs("bankaccountname2")%>">
+          &nbsp;&nbsp;&nbsp;&nbsp;银行账号2
+          <input type="text" name="bankaccount2" style="width:200px" value="<%=rs("bankaccount2")%>">
+          &nbsp;&nbsp;&nbsp;&nbsp;开户行名称2
+          <input type="text" name="bankname2" style="width:200px" value="<%=rs("bankname2")%>">
+        </td>
+      </tr>                 
       <tr>
         <td align="right" height="30">备注：</td>
         <td class="category"><textarea name="memo" cols="70" rows="4"><%=rs("memo")%></textarea></td>
@@ -118,7 +134,7 @@ set rs=conn.execute(sql)
 			if fla7="0" and session("redboy_id")<>"1" then
 			else
 			%>			
-			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该公司吗？')) {window.open('delete_agent.asp?company=<%=request("company")%>')}" class="button"></td>
+			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该公司吗？')) {window.open('delete_owncompany.asp?company=<%=request("company")%>')}" class="button"></td>
 			<%end if%>	
       </tr>	    
 </table>
@@ -135,24 +151,37 @@ set rs=conn.execute(sql)
 <%
 else
 nowname=request("company")
+nowfullname=request("fullname")
 nowaddress=request("address")
 nowtel=request("tel")
 nowfax=request("fax")
 nowemail=request("email")
-nowaccount=request("bank_account")
-nowbankname=request("bank_name")
+'账户1
+nowaccount=request("bankaccount")
+nowbankname=request("bankname")
+nowbankaccountname=request("bankaccountname")
+'账户2
+nowaccount2=request("bankaccount2")
+nowbankname2=request("bankname2")
+nowbankaccountname2=request("bankaccountname2")
+
 nowmemo=request("memo")
 nowkeyword=request("keyword")
 
 set rs=server.createobject("ADODB.RecordSet")
 sql="select * from owncompany where company='"&request("company")&"'"
 rs.open sql,conn,1,3
+rs("fullname")=nowfullname
 rs("address")=nowaddress
 rs("tel")=nowtel
 rs("fax")=nowfax
 rs("email")=nowemail
-rs("bank_account")=nowaccount
-rs("bank_name")=nowbankname
+rs("bankaccount")=nowaccount
+rs("bankname")=nowbankname
+rs("bankaccountname")=nowbankaccountname
+rs("bankaccount2")=nowaccount2
+rs("bankname2")=nowbankname2
+rs("bankaccountname2")=nowbankaccountname2
 rs("memo")=nowmemo
 rs("changedate")=now
 rs("changer")=session("redboy_username")
@@ -162,7 +191,7 @@ rs.close
 %>
 <script language="javascript">
 alert("公司资料修改成功！")
-window.location.href="query_agent.asp?form=<%=request("form")%>&keyword=<%=nowkeyword%>"
+window.location.href="query_owncompany.asp?form=<%=request("form")%>&keyword=<%=nowkeyword%>"
 </script> 
 <%
 end if

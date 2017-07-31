@@ -60,10 +60,13 @@ set rs=conn.execute(sql)
   		<input type="hidden" name="keyword" value="<%=request("keyword")%>">
   		<input type="hidden" name="customername" value="<%=request("customername")%>">
       <tr>
-        <td width="25%" height="30" align="right">客户名称：</td>
-        <td width="75%" class="category"><%=rs("customername")%>
-        	</td>
+        <td width="25%" height="30" align="right">客户简称：</td>
+        <td width="75%" class="category"><%=rs("customername")%></td>
       </tr>    
+      <tr>
+        <td height="30" align="right">客户全称：</td>
+        <td class="category"><input type="text" name="fullname" style="width:200px" value="<%=rs("fullname")%>"></td>
+      </tr>        
       <tr>
         <td align="right" height="30">公司地址：</td>
         <td class="category"><input type="text" name="address" style="width:300px" value="<%=rs("address")%>"></td>
@@ -127,6 +130,7 @@ set rs=conn.execute(sql)
 <%
 else
 nowname=request("customername")
+nowfullname=request("fullname")
 nowaddress=request("address")
 nowtel=request("tel")
 nowfax=request("fax")
@@ -137,6 +141,7 @@ nowkeyword=request("keyword")
 set rs=server.createobject("ADODB.RecordSet")
 sql="select * from customer where customername='"&request("customername")&"'"
 rs.open sql,conn,1,3
+rs("fullname")=nowfullname
 rs("address")=nowaddress
 rs("tel")=nowtel
 rs("fax")=nowfax

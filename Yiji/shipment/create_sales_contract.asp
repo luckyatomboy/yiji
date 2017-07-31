@@ -13,7 +13,7 @@ end if
 
 <html>
 <head>
-<title><%=dianming%> - 订货合同</title>
+<title><%=dianming%> - 创建订货合同</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
@@ -42,7 +42,7 @@ nowcustomer=request("customer")
 nowstatus=request("status")
 nowrefshipment=request("refshipment")
 nowrefitem=request("refitem")
-nowcountry=request("country")
+nowcountry=request("guobie")
 if request("material")<>"" then
 	nowmaterial=request("material")
 	nowspec=request("spec")
@@ -214,7 +214,7 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
       <tr>	  
 	    	<td align="right" height="30">参考船期表：</td>
         <td class="category">
-					<input name="refshipment" readonly style="cursor:hand;width:100px" value="单击选择船期表项目" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&field=refshipment&field2=refitem&field3=plant&field4=contract&field5=material&field6=guobie&field7=spec&field8=price&field9=currency&field10=case&field11=quantity&field12=weight&field13=producedate','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> 
+					<input name="refshipment" readonly style="cursor:hand;width:100px" value="单击选择船期表项目" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&guobie=guobie&spec=spec&package=package&quantity=quantity&weight=weight&coldstorage=coldstorage&boarddate=boarddate&deliveryport=deliveryport','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> 
 					&nbsp;&nbsp;&nbsp;项目号	
 					<input name="refitem" readonly style="width:50px"
 				</td>
@@ -242,11 +242,11 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
       <tr>	  
 	    <td align="right" height="30">件数：</td>
         <td class="category">
-		  		<input name="quantity" style="width:80px" maxlength="5"  <% if nowquantity<>"" then%>value="<%=nowquantity%>"<%end if%> onKeyPress="javascript:CheckNum();"  onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
+		  		<input name="quantity" style="width:60px" maxlength="5"  <% if nowquantity<>"" then%>value="<%=nowquantity%>"<%end if%> onKeyPress="javascript:CheckNum();"  onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
 		  		&nbsp;&nbsp;&nbsp;重量
-		  		<input name="weight" style="width:150px" maxlength="20" <% if nowweight<>"" then%>value="<%=nowweight%>"<%end if%>>吨
+		  		<input name="weight" style="width:50px" maxlength="20" <% if nowweight<>"" then%>value="<%=nowweight%>"<%end if%>>吨
 		  		&nbsp;&nbsp;&nbsp;单价
-		  		<input name="price" style="width:100px" value=0 onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">元/吨		  		
+		  		<input name="price" style="width:50px" value=0 onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">元/吨		  		
 		</td>
       </tr>	  
       <tr>	  

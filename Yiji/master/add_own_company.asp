@@ -62,10 +62,14 @@ return false;
 <td>
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
       <tr>
-        <td width="25%" height="30" align="right">公司名称：</td>
-        <td width="75%" class="category"><input type="text" name="company" style="width:200px"> 
+        <td width="25%" height="30" align="right">公司简称：</td>
+        <td width="75%" class="category"><input type="text" name="company" style="width:100px"> 
         	&nbsp;<font color="#ff0000">*</font></td>
       </tr>    
+      <tr>
+        <td align="right" height="30">公司全称：</td>
+        <td class="category"><input type="text" name="fullname" style="width:250px"></td>
+      </tr>       
       <tr>
         <td align="right" height="30">公司地址：</td>
         <td class="category"><input type="text" name="address" style="width:300px"></td>
@@ -81,14 +85,26 @@ return false;
 	    <tr>
         <td align="right" height="30">Email：</td>
         <td class="category"><input type="text" name="email" style="width:250px"></td>
-      </tr> 	     
+      </tr> 	
       <tr>
-        <td align="right" height="30">银行账号：</td>
-        <td class="category"><input type="text" name="bank_account" style="width:250px"></td>
-      </tr>   
+        <td align="right" height="30">银行账户名称1：</td>
+        <td class="category">
+          <input type="text" name="bankaccountname" style="width:200px">
+          &nbsp;&nbsp;&nbsp;&nbsp;银行账号1
+          <input type="text" name="bankaccount" style="width:200px">
+          &nbsp;&nbsp;&nbsp;&nbsp;开户行名称1
+          <input type="text" name="bankname" style="width:200px">
+        </td>
+      </tr>            
       <tr>
-        <td align="right" height="30">开户行：</td>
-        <td class="category"><input type="text" name="bank_name" style="width:250px"></td>
+        <td align="right" height="30">银行账户名称2：</td>
+        <td class="category">
+          <input type="text" name="bankaccountname2" style="width:200px">
+          &nbsp;&nbsp;&nbsp;&nbsp;银行账号2
+          <input type="text" name="bankaccount2" style="width:200px">
+          &nbsp;&nbsp;&nbsp;&nbsp;开户行名称2
+          <input type="text" name="bankname2" style="width:200px">
+        </td>
       </tr>          
       <tr>
         <td align="right" height="30">备注：</td>
@@ -115,12 +131,17 @@ return false;
 <%
 else
 nowcompany=request("company")
+nowfullname=request("fullname")
 nowtel=request("tel")
 nowaddress=request("address")
 nowfax=request("fax")
 nowemail=request("email")
-nowaccount=request("bank_account")
-nowbankname=request("bank_name")
+nowaccount=request("bankaccount")
+nowbankname=request("bankname")
+nowaccountname=request("bankaccountname")
+nowaccount2=request("bankaccount2")
+nowbankname2=request("bankname2")
+nowaccountname2=request("bankaccountname2")
 nowmemo=request("memo")
 sql="select * from Owncompany where Company='"&nowcompany&"'"
 set rs=conn.execute(sql)
@@ -134,7 +155,7 @@ window.history.go(-1)
   response.end
 end if
 
-sql="insert into Owncompany(Company,Address,Tel,Fax,Email,Bank_Account,Bank_Name,Memo,CreateDate,Creator) values('"&nowcompany&"','"&nowaddress&"','"&nowtel&"','"&nowfax&"','"&nowemail&"','"&nowaccount&"','"&nowbankname&"','"&nowmemo&"',#"&now()&"#,'"&session("redboy_username")&"')"
+sql="insert into Owncompany(Company,Fullname,Address,Tel,Fax,Email,bankaccount,bankname,bankaccountname,bankaccount2,bankname2,bankaccountname2,Memo,CreateDate,Creator) values('"&nowcompany&"','"&nowfullname&"','"&nowaddress&"','"&nowtel&"','"&nowfax&"','"&nowemail&"','"&nowaccount&"','"&nowbankname&"','"&nowaccountname&"','"&nowaccount2&"','"&nowbankname2&"','"&nowaccountname2&"','"&nowmemo&"',#"&now()&"#,'"&session("redboy_username")&"')"
 conn.execute(sql)
 %>
 <script language="javascript">

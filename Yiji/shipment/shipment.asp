@@ -82,6 +82,10 @@ function download_excel()
 {
 	window.location.href="download_excel.asp"
 }
+function create_sales_contract()
+{
+	window.location.href="create_sales_contract.asp"
+}
 </script>
 <form name="form1">
 <!-- ----------------维护船期表数据------------- -->
@@ -125,6 +129,12 @@ function download_excel()
 		  <input type="button" value=" 船期表导出" onClick="return download_excel()">		
 		</td>        	
 	</tr>	
+  <tr>
+  	<td></td>
+		<td>
+		  <input type="button" value=" 创建订货合同" onClick="return create_sales_contract()">	
+		</td>        	
+	</tr>		
 </table>
 </td>
 <td></td>

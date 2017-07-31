@@ -62,10 +62,14 @@ return false;
 <td>
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
       <tr>
-        <td width="25%" height="30" align="right">客户名称：</td>
+        <td width="25%" height="30" align="right">客户简称：</td>
         <td width="75%" class="category"><input type="text" name="username" style="width:200px"> 
         	&nbsp;<font color="#ff0000">*</font></td>
-      </tr>    
+      </tr>   
+      <tr>
+        <td align="right" height="30">客户全称：</td>
+        <td class="category"><input type="text" name="fullname" style="width:200px"></td>
+      </tr>        
       <tr>
         <td align="right" height="30">公司地址：</td>
         <td class="category"><input type="text" name="address" style="width:300px"></td>
@@ -107,6 +111,7 @@ return false;
 <%
 else
 nowusername=request("username")
+nowfullname=request("fullname")
 nowtel=request("tel")
 nowaddress=request("address")
 nowfax=request("fax")
@@ -125,7 +130,7 @@ window.history.go(-1)
   response.end
 end if
 
-sql="insert into Customer(CustomerName,Address,Tel,Fax,Email,Memo,CreateDate,Creator) values('"&nowusername&"','"&nowaddress&"','"&nowtel&"','"&nowfax&"','"&nowemail&"','"&nowbeizhu&"',#"&now()&"#,'"&session("redboy_username")&"')"
+sql="insert into Customer(CustomerName,Fullname,Address,Tel,Fax,Email,Memo,CreateDate,Creator) values('"&nowusername&"','"&nowfullname&"','"&nowaddress&"','"&nowtel&"','"&nowfax&"','"&nowemail&"','"&nowbeizhu&"',#"&now()&"#,'"&session("redboy_username")&"')"
 conn.execute(sql)
 %>
 <script language="javascript">

@@ -225,8 +225,8 @@ set rs=conn.execute(sql)
 				&nbsp;&nbsp;&nbsp;入库原因
 		  		<input name="reason" style="width:100px" value="<%=rs("reason")%>">				
 				&nbsp;&nbsp;&nbsp;剩余数量
-		  		<input name="remainqty" style="width:100px" readonly value="<%=rs("remainqty")%>">				
-				</td>
+		  		<input name="remainqty" style="cursor:hand;width:100px" readonly value="<%=rs("remainqty")%>" onClick="JavaScript:window.open('query_stock.asp?refshipment=refshipment&refitem=refitem','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');">				
+		</td>
       </tr>
       <tr>	  
 	    	<td align="right" height="30">生产日期：</td>

@@ -97,6 +97,15 @@ function add_agent()
 {
 	window.location.href="add_agent.asp"
 }
+//本司公司
+function query_owncompany()
+{
+  window.location.href="query_owncompany.asp"
+}
+function add_owncompany()
+{
+  window.location.href="add_own_company.asp"
+}
 </script>
 <form name="form1">
 <!-- ----------------维护客户主数据------------- -->
@@ -275,6 +284,14 @@ function add_agent()
 		  <input type="button" value=" 录入代理公司" onClick="return add_agent()">
 		  <input type="button" value=" 查询代理公司" onClick="return query_agent()">
 		</td>
+  </tr>   
+  <tr>
+    <td width="25%" height="30" align="right">
+    </td>
+    <td width="75%" class="category">
+      <input type="button" value=" 录入本司公司" onClick="return add_owncompany()">
+      <input type="button" value=" 查询本司公司" onClick="return query_owncompany()">
+    </td>
   </tr>   
 </table>
 </td>

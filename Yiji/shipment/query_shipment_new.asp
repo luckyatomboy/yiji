@@ -287,7 +287,22 @@ nowto=request("dateto")
   do while rs_shipment.eof=false
   %>
 
-	<td align="center" height="30"><%=rs_shipment("shipmentnum")%></td>
+    <tr align="center" 
+        onDblClick="window.opener.document.<%=request("queryform")%>.<%=request("refship")%>.value='<%=rs_shipment("shipmentnum")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("refitem")%>.value='<%=rs_shipment("itemnum")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("material")%>.value='<%=rs_shipment("material")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("spec")%>.value='<%=rs_shipment("spec")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("package")%>.value='<%=rs_shipment("package")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("quantity")%>.value='<%=rs_shipment("casenumber")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("weight")%>.value='<%=rs_shipment("contractweight")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("boarddate")%>.value='<%=rs_shipment("boarddate")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("deliveryport")%>.value='<%=rs_shipment("destination")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("guobie")%>.value='<%=rs_shipment("country")%>';
+                    window.opener.document.<%=request("queryform")%>.<%=request("plant")%>.value='<%=rs_shipment("plant")%>';                    
+                    window.close();" 
+        <%if rs_shipment("status")="进库" then%>bgcolor="darkgrey"<%elseif rs_shipment("status")="通关中" then%>bgcolor="lawngreen"<%elseif rs_shipment("status")="已送货" then%>bgcolor="red"<%end if%>>     
+
+  <td align="center" height="30"><%=rs_shipment("shipmentnum")%></td>    
   <td align="center"><%=rs_shipment("status")%></td>	  
   <td align="center"><%=rs_shipment("customer")%></td>
   <td align="center"><%=rs_shipment("vendor")%></td>
@@ -302,7 +317,7 @@ nowto=request("dateto")
   <td align="center"><%=rs_shipment("deliverydate")%></td>
   <td align="center"><%=rs_shipment("case")%></td>
   <td align="center">
-    	<a href="change_shipment.asp?form=<%=request("form")%>&shipment=<%=rs_shipment("shipmentnum")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">修改</a>
+    	<a href="change_shipment_new.asp?form=<%=request("form")%>&shipment=<%=rs_shipment("shipmentnum")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">修改</a>
   </td>
   <td align="center">
   	<input type="checkbox" name="sel" value="<%=rs_shipment("shipmentnum")&rs_shipment("itemnum")%>" style="border:0">
