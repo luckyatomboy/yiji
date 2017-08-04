@@ -68,7 +68,8 @@ return false;
       </tr>   
       <tr>
         <td align="right" height="30">客户全称：</td>
-        <td class="category"><input type="text" name="fullname" style="width:200px"></td>
+        <td class="category"><input type="text" name="fullname" style="width:200px">
+        &nbsp;<font color="#ff0000">*</font></td>
       </tr>        
       <tr>
         <td align="right" height="30">公司地址：</td>
