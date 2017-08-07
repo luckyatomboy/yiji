@@ -13,10 +13,10 @@ end if
 
 <html>
 <head>
-<title><%=dianming%> - 修改船期表</title>
+<title><%=dianming%> - 脨脼赂脛麓卢脝脷卤铆</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <!--<meta http-equiv="Content-Type" content="application/x-www-form-urlencoded; charset=gb2312">-->
-<link href="../style/style.css" rel="stylesheet" type="text/css">
+<link href="../style/style.css" rel="stylesheet" type="text/css"> 
 <style>
 body {
 	background-color:#FFFFFF;
@@ -28,7 +28,7 @@ body {
 <%
 if fla1="0" and fla2="0" and fla3="0" and fla4="0" then
 %>
-<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">你不具备此权限，请与管理员联系！</font></center>
+<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">脛茫虏禄戮脽卤赂麓脣脠篓脧脼拢卢脟毛脫毛鹿脺脌铆脭卤脕陋脧碌拢隆</font></center>
 <%  
   response.end
 end if
@@ -37,6 +37,7 @@ end if
 <%
 if request("hid1")="ok" then
 sql="select * from shipment where shipmentnum="&request("shipment")
+'set rs=conn.execute(sql)
 set rs=server.createobject("ADODB.RecordSet")
 rs.open sql,conn,1,3
 
@@ -49,16 +50,16 @@ rs("country")=request("country")
 
 rs("incoterm")=request("incoterm")
 rs("dongjiancom")=request("dongjiancom")
-if request("dongjian")="单击选择动检证" then
-  rs("dongjian")=""
+if request("dongjian")="碌楼禄梅脩隆脭帽露炉录矛脨铆驴脡脰陇" then
+	rs("dongjian")=""
 else
-  rs("dongjian")=request("dongjian")
+	rs("dongjian")=request("dongjian")
 end if
 rs("zidongcom")=request("zidongcom")
-if request("zidong")="单击选择自动证" then
-  rs("zidong")=""
+if request("zidong")="碌楼禄梅脩隆脭帽脳脭露炉脨铆驴脡脰陇" then
+	rs("zidong")=""
 else
-  rs("zidong")=request("zidong")
+	rs("zidong")=request("zidong")
 end if
 rs("planship")=request("planship")
 rs("plant")=request("plant")
@@ -78,13 +79,13 @@ rs("ladnumber")=request("ladnumber")
 rs("shipname")=request("shipname")
 
 rs("warranty")=request("warranty")
-rs("claiminformation")=request("claiminformation")
+rs("claim")=request("claim")
 rs("applycustom")=request("applycustom")
 if request("paydate")<>"" then
   rs("paydate")=request("paydate")
 end if
-rs("prepayment")=request("prepayment")
-rs("trancurrency")=request("currency")
+rs("payment")=request("payment")
+rs("currency")=request("currency")
 rs("memo")=request("memo")
 if request("cargodate")<>"" then
   rs("cargodate")=request("cargodate")
@@ -96,56 +97,27 @@ rs("changer")=session("redboy_username")
 rs.update
 rs.close
 
-'先删除已有的item'
+'脧脠脡戮鲁媒脪脩脫脨碌脛item'
 sql="delete from shipmentitem where shipmentnum="&request("shipment")
 conn.execute(sql)
 
-'再插入item'
+'脭脵虏氓脠毛items'
 for i = 1 to request("itemno").count
 nowitemno=i
 nowmatitem=request("material"&i)
 nowcusitem=request("customer"&i)
 nowspecitem=request("spec"&i)
-if request("contractweight"&i)<>"" then
-  nowcontweightitem=request("contractweight"&i)
-else
-  nowcontweightitem=0
-end if
-if request("actualweight"&i)<>"" then
-  nowactualweightitem=request("actualweight"&i)
-else
-  nowactualweightitem=0
-end if
-if request("purchaseprice"&i)<>"" then
-  nowpurpriceitem=request("purchaseprice"&i)
-else
-  nowpurpriceitem=0
-end if
-if request("produceDate"&i)<>"" then
-  nowproducedateitem=request("produceDate"&i)
-else
-  nowproducedateitem=DateSerial(1900, 1, 1)
-end if
-if request("casenum"&i)<>"" then
-  nowcasenumitem=request("casenum"&i)
-else
-  nowcasenumitem=0
-end if
-if request("invamount"&i)<>"" then
-  nowinvamtitem=request("invamount"&i)
-else
-  nowinvamtitem=0
-end if
+nowcontweightitem=request("contractweight"&i)
+nowactualweightitem=request("actualweight"&i)
+nowpurpriceitem=request("purchaseprice"&i)
+nowproducedateitem=request("produceDate"&i)
+nowcasenumitem=request("casenum"&i)
+nowinvamtitem=request("invamount"&i)
 nowcurritem=request("invcurr"&i)
-if request("finalamount"&i)<>"" then
-  nowfinalamtitem=request("finalamount"&i)
-else
-  nowfinalamtitem=0
-end if
+nowfinalamtitem=request("finalamount"&i)
 
-sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,contractweight,contractweightuom,actualnetweight,actualnetweightuom,purchaseprice,purchasepriceunit,productiondate,casenumber,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&request("shipment")&",'"&nowitemno&"','"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowcontweightitem&"','公斤','"&nowactualweightitem&"','公斤','"&nowpurpriceitem&"','公斤',#"&nowproducedateitem&"#,'"&nowcasenumitem&"',"&nowinvamtitem&",'"&nowcurritem&"',"&nowfinalamtitem&",'"&nowcurritem&"')"
-
-'sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,contractweight,contractweightuom,actualnetweight,actualnetweightuom) values("&request("shipment")&","&nowitemno&",'"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"',"&nowcontweightitem&",'公斤',"&nowactualweightitem&",'公斤')"
+'sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,contractweight,contractweightuom,purchaseprice,purchasepriceunit,productiondate,casenumber,actualnetweight,actualnetweightuom,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&nowshipment&",'"&nowitemno&"','"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowcontweightitem&"','鹿芦陆茂','"&nowpurpriceitem&"','鹿芦陆茂','"&nowproducedateitem&"',"&nowcasenumitem&",'"&nowactualweightitem&"','鹿芦陆茂','"&nowinvamtitem&"','"&nowcurritem&"','"&nowfinalamtitem&"','"&nowcurritem&"')"
+sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,contractweight,contractweightuom,actualnetweight,actualnetweightuom,purchaseprice,purchasepriceunit,productiondate,casenumber,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&nowshipment&",'"&nowitemno&"','"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowcontweightitem&"','鹿芦陆茂','"&nowactualweightitem&"','鹿芦陆茂','"&nowpurpriceitem&"','鹿芦陆茂',#"&nowproducedateitem&"#,'"&nowcasenumitem&"',"&nowinvamtitem&",'"&nowcurritem&"',"&nowfinalamtitem&",'"&nowcurritem&"')"
 conn.execute(sql)
 
 next
@@ -153,7 +125,7 @@ next
 %>
 <script language="javascript">
 //alert(&nowshipment&)
-alert("船期表录入成功！")
+alert("麓卢脝脷卤铆脗录脠毛鲁脡鹿娄拢隆")
 window.location.href="shipment.asp"
 </script>
 
@@ -163,7 +135,7 @@ else
 <script language="javascript">
 
 <% 
-'二级数据保存到数组 
+'露镁录露脢媒戮脻卤拢麓忙碌陆脢媒脳茅 
 dim vendorCount
 sql="select * from vendor order by vendorname"
 set rs_vendor=conn.execute(sql)
@@ -171,7 +143,7 @@ set rs_vendor=conn.execute(sql)
 var country = new Array(); 
 var plant = new Array();
 var incoterm = new Array();
-//数组结构：一级根值,二级根值,二级显示值 
+//脢媒脳茅陆谩鹿鹿拢潞脪禄录露赂霉脰碌,露镁录露赂霉脰碌,露镁录露脧脭脢戮脰碌 
 <% 
 vendorCount = 0 
 do while not rs_vendor.eof 
@@ -191,7 +163,7 @@ rs_vendor.close
 %> 
 
 <%
-'保存品名数据到数组
+'卤拢麓忙脝路脙没脢媒戮脻碌陆脢媒脳茅
 dim materialCount
 dim material()
 sql="select * from material order by materialname"
@@ -207,7 +179,7 @@ rs_mat.close
 %>   
 
 <%
-'保存客户数据到数组
+'卤拢麓忙驴脥禄搂脢媒戮脻碌陆脢媒脳茅
 dim customerCount
 dim customer()
 sql="select * from customer order by customername"
@@ -223,7 +195,7 @@ rs_customer.close
 %>   
 
 <%
-'保存用户数据到数组
+'卤拢麓忙脫脙禄搂脢媒戮脻碌陆脢媒脳茅
 dim buyerCount, salesCount, customCount
 dim buyer()
 dim sales()
@@ -256,26 +228,26 @@ rs_user.close
 %>  
       	
 function check1(){
-<!-- 检查合同号 -->
+<!-- 录矛虏茅潞脧脥卢潞脜 -->
 if (document.form1.contract.value=="")
 {
-alert("请输入合同号！");
+alert("脟毛脢盲脠毛潞脧脥卢潞脜拢隆");
 return false;
 }
-<!-- 检查自动证 -->
-<!-- 检查自动证 -->
+<!-- 录矛虏茅脳脭露炉脰陇 -->
+<!-- 录矛虏茅脳脭露炉脰陇 -->
 }
 
 
 function chsel(vendor){
-//设置国家	
+//脡猫脰脙鹿煤录脪	
     document.form1.country.length = 0; 
     for (i=0; i<country.length; i++) 
     { 
         if (country[i][0]==vendor) 
         {document.form1.country.options[0] = new Option(country[i][1]);} 
     } 
-//设置工厂    
+//脡猫脰脙鹿陇鲁搂    
     document.form1.plant.length = 0; 
     for (m=0; m<plant.length; m++) 
     {    	
@@ -289,7 +261,7 @@ function chsel(vendor){
       	} 
     	}  
     }       
-//设置付款条件   
+//脡猫脰脙赂露驴卯脤玫录镁   
     document.form1.incoterm.length = 0; 
     for (m=0; m<incoterm.length; m++) 
     {    	
@@ -305,20 +277,20 @@ function chsel(vendor){
     }       
 }
  
-  //窗口表格增加一行
+  //麓掳驴脷卤铆赂帽脭枚录脫脪禄脨脨
   function addNewRow(){
-   var tabObj=document.getElementById("item");//获取添加数据的表格
-   var rowsNum = tabObj.rows.length;  //获取当前行数
-   var colsNum=tabObj.rows[0].cells.length;//获取行的列数
-   var myNewRow = tabObj.insertRow(rowsNum);//插入新行.
+   var tabObj=document.getElementById("item");//禄帽脠隆脤铆录脫脢媒戮脻碌脛卤铆赂帽
+   var rowsNum = tabObj.rows.length;  //禄帽脠隆碌卤脟掳脨脨脢媒
+   var colsNum=tabObj.rows[0].cells.length;//禄帽脠隆脨脨碌脛脕脨脢媒
+   var myNewRow = tabObj.insertRow(rowsNum);//虏氓脠毛脨脗脨脨.
       
-   var itemObj=document.getElementsByName("itemno");//取得所有行的itemno
+   var itemObj=document.getElementsByName("itemno");//脠隆碌脙脣霉脫脨脨脨碌脛itemno
    var itemNo=1;
    if (itemObj.length==0) {
-  	 itemNo=1;//如果没有item,给1
+  	 itemNo=1;//脠莽鹿没脙禄脫脨item,赂酶1
   	 
   }else{
-  	 itemNo=parseInt(itemObj[itemObj.length-1].value) + 1; //取最大行itemno加1
+  	 itemNo=parseInt(itemObj[itemObj.length-1].value) + 1; //脠隆脳卯麓贸脨脨itemno录脫1
   } 
    var newTdObj1=myNewRow.insertCell(0);
    newTdObj1.innerHTML="<input type='checkbox' name='chkArr'  id='chkArr' />";
@@ -346,7 +318,7 @@ function chsel(vendor){
    newTdObj6.innerHTML="<input type='text' name='contractWeight"+itemNo+"' id='contractWeight"+itemNo+"' style='width:80px' align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";  
    newTdObj6.align="center"; 		 
    var newTdObj7=myNewRow.insertCell(6);
-   newTdObj7.innerHTML="公斤";   
+   newTdObj7.innerHTML="鹿芦陆茂";   
    newTdObj7.align="center";
    var newTdObj8=myNewRow.insertCell(7);
    newTdObj8.innerHTML="<input type='text' name='actualWeight"+itemNo+"' id='actualWeight"+itemNo+"' style='width:80px'  align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
@@ -355,32 +327,32 @@ function chsel(vendor){
    newTdObj9.innerHTML="<input type='text' name='purchasePrice"+itemNo+"' id='purchasePrice"+itemNo+"' style='width:80px' align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
    newTdObj9.align="center";	 
    var newTdObj10=myNewRow.insertCell(9);
-   newTdObj10.innerHTML="公斤";     
+   newTdObj10.innerHTML="鹿芦陆茂";     
    newTdObj10.align="center";
    var newTdObj11=myNewRow.insertCell(10);
    newTdObj11.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' readonly align='center' style='width:80px'"
 //   	+ " <img src='../images/date.gif' align='absmiddle' style='cursor:pointer;'" 
    	+ " onClick=\""+"JavaScript:window.open('../day.asp?field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";   
    newTdObj11.align="center";  
-   var newTdObj12=myNewRow.insertCell(11);   	//箱数
+   var newTdObj12=myNewRow.insertCell(11);   	//脧盲脢媒
 	 newTdObj12.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' style='width:80px' align='center' onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
    newTdObj12.align="center";	
-   var newTdObj13=myNewRow.insertCell(12);   	//发票总金额
+   var newTdObj13=myNewRow.insertCell(12);   	//路垄脝卤脳脺陆冒露卯
 	 newTdObj13.innerHTML="<input name='invAmount"+itemNo+"' id='invAmt"+itemNo+"' style='width:80px' align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
    newTdObj13.align="center";	 
    var newTdObj14=myNewRow.insertCell(13);
    newTdObj14.innerHTML="<select name='invCurr"+itemNo+"' id='invCurr"+itemNo+"' style='width:50px' align='center'>"
-	 		+" <option value='美元'>美元</option>"
-	 		+" <option value='澳币'>澳币</option>"
+	 		+" <option value='脙脌脭陋'>脙脌脭陋</option>"
+	 		+" <option value='掳脛卤脪'>掳脛卤脪</option>"
 	 		+" </select>";   
    newTdObj14.align="center";
-   var newTdObj15=myNewRow.insertCell(14);   	//尾款金额
+   var newTdObj15=myNewRow.insertCell(14);   	//脦虏驴卯陆冒露卯
 	 newTdObj15.innerHTML="<input name='finalAmount"+itemNo+"' id='finalAmt"+itemNo+"' style='width:80px' value=0 align='center' onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
    newTdObj15.align="center";		 
 
   }
 
-//窗口表格删除一行
+//麓掳驴脷卤铆赂帽脡戮鲁媒脪禄脨脨
   function removeRow(){
    var chkObj=document.getElementsByName("chkArr");
    var tabObj=document.getElementById("item");
@@ -390,7 +362,7 @@ function chsel(vendor){
 
    for(var k=0;k<chkObj.length;k++){
     if(chkObj[k].checked){
-//检查是否已经有结算单或入库记录。如果有，则不能删除
+//录矛虏茅脢脟路帽脪脩戮颅脫脨陆谩脣茫碌楼禄貌脠毛驴芒录脟脗录隆拢脠莽鹿没脫脨拢卢脭貌虏禄脛脺脡戮鲁媒
 	<%    
 	sql="select * from salescontract where refshipment="&request("shipment")
 	set rs_contract=conn.execute(sql)
@@ -398,7 +370,6 @@ function chsel(vendor){
 	%>	
      tabObj.deleteRow(k+1);
      k=-1;
-     break;
     <%else
     	do while not rs_contract.eof 
     %>
@@ -411,7 +382,7 @@ function chsel(vendor){
       end if
     %>
     if (existing==1) {
-    	alert("已经有结算单，不能删除该项目！")
+    	alert("脪脩戮颅脫脨陆谩脣茫碌楼拢卢虏禄脛脺脡戮鲁媒赂脙脧卯脛驴拢隆")
     }else{
      	tabObj.deleteRow(k+1);
      k=-1;    
@@ -435,7 +406,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 <td width="100%" background="../images/r_0.gif">
   <table cellpadding="0" cellspacing="0" width="100%">
     <tr>
-      <td width="10%" align="left">&nbsp;修改船期表资料(新)  ---  </td>
+      <td width="10%" align="left">&nbsp;脨脼赂脛麓卢脝脷卤铆脳脢脕脧(脨脗)  ---  </td>
 	  <td align="left"><%=rs("shipmentnum")%></td>
     </tr>
   </table>
@@ -449,13 +420,13 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
 <!--	  <form name="form1">	-->
       <tr>
-        <td width="20%" align="right" height="30">船期表号码：</td>
+        <td width="20%" align="right" height="30">麓卢脝脷卤铆潞脜脗毛拢潞</td>
         <td width="80%" class="category"><input name="shipment" id="shipment" value=<%=rs("shipmentnum")%> readonly></td>
       </tr>
       <tr>
-        <td width="20%" align="right" height="30">一般信息：</td>
+        <td width="20%" align="right" height="30">脪禄掳茫脨脜脧垄拢潞</td>
         <td width="80%" class="category">
-        	类型：
+        	脌脿脨脥拢潞
 					<%
 					sql="select * from trantype"
 					set rs_trantype=conn.execute(sql)
@@ -468,7 +439,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							loop
 						%>
 			</select>
-					&nbsp;&nbsp;&nbsp;&nbsp;状态
+					&nbsp;&nbsp;&nbsp;&nbsp;脳麓脤卢
 					<%
 					sql="select * from status"
 					set rs_status=conn.execute(sql)
@@ -481,7 +452,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							loop
 						%>
 					</select>
-					&nbsp;&nbsp;&nbsp;&nbsp;结算单状态
+					&nbsp;&nbsp;&nbsp;&nbsp;陆谩脣茫碌楼脳麓脤卢
 					<%
 					sql="select * from invoicestatus"
 					set rs_invoicestatus=conn.execute(sql)
@@ -497,20 +468,20 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 			  </td>
 			</tr>
       <tr>	  
-	    	<td align="right" height="30">采购：</td>
+	    	<td align="right" height="30">虏脡鹿潞拢潞</td>
         <td class="category">		
 					<select name="buyer">
 	    			<% for i = 0 to buyerCount-1 %>
 	 						<option value=<%=buyer(i)%> <%if buyer(i)=rs("buyer") then%>selected="selected"<%end if%>><%=buyer(i)%></option>
 	 					<% next %>  			
 					</select>						
-					&nbsp;&nbsp;&nbsp;&nbsp;跟单	      
+					&nbsp;&nbsp;&nbsp;&nbsp;赂煤碌楼	      
 					<select name="custom">
 	    			<% for i = 0 to customCount-1 %>
 	 						<option value=<%=custom(i)%> <%if custom(i)=rs("handler") then%>selected="selected"<%end if%>><%=custom(i)%></option>
 	 					<% next %>  			
 					</select>				
-					&nbsp;&nbsp;&nbsp;&nbsp;销售	      
+					&nbsp;&nbsp;&nbsp;&nbsp;脧煤脢脹	      
 					<select name="sales">
 	    			<% for i = 0 to salesCount-1 %>
 	 						<option value=<%=sales(i)%> <%if sales(i)=rs("sales") then%>selected="selected"<%end if%>><%=sales(i)%></option>
@@ -519,14 +490,14 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 				</td>
       </tr>			
       <tr>	  
-	    	<td align="right" height="30">供应商：</td>
+	    	<td align="right" height="30">鹿漏脫娄脡脤拢潞</td>
         <td class="category">
 					<%
 					sql="select * from vendor order by vendorname"
 					set rs_vendor=conn.execute(sql)
 					%>
 					<select name="vendor" onchange="chsel(this.value)">
-						<option selected="selected">---请选择---</option>	
+						<option selected="selected">---脟毛脩隆脭帽---</option>	
 						<%
 							do while rs_vendor.eof=false
 						%>
@@ -538,15 +509,15 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						%>
 					</select>
 					&nbsp;<font color="#ff0000">*</font>
-					&nbsp;&nbsp;&nbsp;&nbsp;国别				
+					&nbsp;&nbsp;&nbsp;&nbsp;鹿煤卤冒				
 					<select name="country">			
 						<option selected="selected"><%=rs("country")%></option>		  			
 					</select>						
-					&nbsp;&nbsp;&nbsp;&nbsp;厂号						
+					&nbsp;&nbsp;&nbsp;&nbsp;鲁搂潞脜						
 					<select name="plant"> <!-- onchange="this.selectedIndex=this.defaultIndex;">-->
 						  <option selected="selected"><%=rs("plant")%></option>		
 					</select>					
-		  		&nbsp;&nbsp;&nbsp;付款方式
+		  		&nbsp;&nbsp;&nbsp;赂露驴卯路陆脢陆
 <!--		  		<input name="incoterm" style="width:150px">							 -->
 					<select name="incoterm">			
 						  <option selected="selected"><%=rs("incoterm")%></option>										
@@ -554,11 +525,11 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 				</td>
       </tr>
       <tr>	  
-	    	<td align="right" height="30">合同号：</td>
+	    	<td align="right" height="30">潞脧脥卢潞脜拢潞</td>
         <td class="category">
 		  		<input name="contract" value=<%=rs("contract")%> style="width:150px" maxlength="20">
 		  		&nbsp;<font color="#ff0000">*</font>
-		  		&nbsp;&nbsp;&nbsp;&nbsp;品类
+		  		&nbsp;&nbsp;&nbsp;&nbsp;脝路脌脿
 					<%
 					sql="select * from materialtype"
 					set rs_mattype=conn.execute(sql)
@@ -574,7 +545,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							rs_mattype.close
 						%>		 
 					</select>							
-		  		&nbsp;&nbsp;&nbsp;&nbsp;代理公司
+		  		&nbsp;&nbsp;&nbsp;&nbsp;麓煤脌铆鹿芦脣戮
 					<%
 					sql="select * from agent order by company"
 					set rs_agent=conn.execute(sql)
@@ -590,7 +561,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							rs_agent.close
 						%>								
 					</select>		  	
-		  		&nbsp;&nbsp;&nbsp;&nbsp;进口批文
+		  		&nbsp;&nbsp;&nbsp;&nbsp;陆酶驴脷脜煤脦脛
 					<%
 					sql="select * from piwen order by company"
 					set rs_piwen=conn.execute(sql)
@@ -606,13 +577,13 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							rs_piwen.close
 						%>								
 					</select>			
-					&nbsp;&nbsp;&nbsp;两证
+					&nbsp;&nbsp;&nbsp;脕陆脰陇
 		  		<input name="twodocumentsready" id="twodocumentsready" value="<%=rs("twodocumentready")%>" readonly style="width:80px">
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=twodocumentsready&oldDate='+twodocumentsready.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">										 		
 				</td>
       </tr>    
       <tr>	  
-	    	<td align="right" height="30">港口：</td>
+	    	<td align="right" height="30">赂脹驴脷拢潞</td>
         <td class="category">
 					<%
 					sql="select * from port"
@@ -628,12 +599,12 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							loop
 							rs_port.close
 						%>						
-<!--						  <option value="上海">上海</option>		
-						  <option value="大连">大连</option>		
-						  <option value="天津">天津</option>		
-						  <option value="待定">待定</option>				-->						
+<!--						  <option value="脡脧潞拢">脡脧潞拢</option>		
+						  <option value="麓贸脕卢">麓贸脕卢</option>		
+						  <option value="脤矛陆貌">脤矛陆貌</option>		
+						  <option value="麓媒露篓">麓媒露篓</option>				-->						
 					</select>		
-					&nbsp;&nbsp;&nbsp;&nbsp;靠泊码头
+					&nbsp;&nbsp;&nbsp;&nbsp;驴驴虏麓脗毛脥路
 					<%
 					sql="select * from terminal"
 					set rs_terminal=conn.execute(sql)
@@ -648,12 +619,12 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							loop
 							rs_terminal.close
 						%>	
-<!--						  <option value="天津外代">天津外代</option>		
-						  <option value="外五">外五</option>		
-						  <option value="洋一">洋一</option>		
-						  <option value="洋三">洋三</option>				-->						
+<!--						  <option value="脤矛陆貌脥芒麓煤">脤矛陆貌脥芒麓煤</option>		
+						  <option value="脥芒脦氓">脥芒脦氓</option>		
+						  <option value="脩贸脪禄">脩贸脪禄</option>		
+						  <option value="脩贸脠媒">脩贸脠媒</option>				-->						
 					</select>			
-					&nbsp;&nbsp;&nbsp;&nbsp;船公司
+					&nbsp;&nbsp;&nbsp;&nbsp;麓卢鹿芦脣戮
 					<%
 					sql="select * from carrier"
 					set rs_carrier=conn.execute(sql)
@@ -673,89 +644,89 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						  <option value="CMA CGM">CMA CGM</option>		
 						  <option value="COSCO">COSCO</option>			-->							
 					</select>				
-					&nbsp;&nbsp;&nbsp;&nbsp;船名航次
+					&nbsp;&nbsp;&nbsp;&nbsp;麓卢脙没潞陆麓脦
 					<input name="shipname" style="width:150px" maxlength="20">							
 				</td>
       </tr>               
       <tr>	  
-	    	<td align="right" height="30">动检证：</td>
+	    	<td align="right" height="30">露炉录矛脰陇拢潞</td>
         <td class="category">
-		  		<input name="dongjian" readonly onClick="JavaScript:window.open('../huiyuan/query_license.asp?queryform=form1&licensetype=动检证&field=dongjian&field2=dongjiancom','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');" style="cursor:hand;width:120px" value=<%=rs("dongjian")%>>
+		  		<input name="dongjian" readonly onClick="JavaScript:window.open('../huiyuan/query_license.asp?queryform=form1&licensetype=露炉录矛脰陇&field=dongjian&field2=dongjiancom','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');" style="cursor:hand;width:120px" value=<%=rs("dongjian")%>>
 		  		<input name="dongjiancom" readonly value=<%=rs("dongjiancom")%>>
 				</td>
       </tr>
       <tr>	  
-	    	<td align="right" height="30">自动证：</td>
+	    	<td align="right" height="30">脳脭露炉脰陇拢潞</td>
         <td class="category">
-		  		<input name="zidong" readonly onClick="JavaScript:window.open('../huiyuan/query_license.asp?queryform=form1&licensetype=自动证&field=zidong&field2=zidongcom','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');" style="cursor:hand;width:120px" value=<%=rs("zidong")%>>
+		  		<input name="zidong" readonly onClick="JavaScript:window.open('../huiyuan/query_license.asp?queryform=form1&licensetype=脳脭露炉脰陇&field=zidong&field2=zidongcom','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');" style="cursor:hand;width:120px" value=<%=rs("zidong")%>>
 		  		<input name="zidongcom" readonly value=<%=rs("zidongcom")%>>
-		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证交批日期
+		  		&nbsp;&nbsp;&nbsp;&nbsp;脳脭露炉脰陇陆禄脜煤脠脮脝脷
 		  		<input name="zidongapplydate" id="zidongapplydate" readonly style="width:80px" value=<%=rs("zidongapplydate")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=zidongapplydate&oldDate='+zidongapplydate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  				  		
-		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证上报日期
+		  		&nbsp;&nbsp;&nbsp;&nbsp;脳脭露炉脰陇脡脧卤篓脠脮脝脷
 		  		<input name="zidongreportdate" id="zidongreportdate" readonly style="width:80px" value=<%=rs("zidongreportdate")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=zidongreportdate&oldDate='+zidongreportdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  				  		
 				</td>
       </tr>
       <tr>	  
-	    	<td align="right" height="30">预保日：</td>
+	    	<td align="right" height="30">脭陇卤拢脠脮拢潞</td>
         <td class="category">
 		  		<input name="planinsurance" id="planinsurance" style="width:80px" value=<%=rs("planinsurance")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=planinsurance&oldDate='+planinsurance.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-		  		&nbsp;&nbsp;&nbsp;&nbsp;补保日
+		  		&nbsp;&nbsp;&nbsp;&nbsp;虏鹿卤拢脠脮
 		  		<input name="supinsurance" id="supinsurance" readonly style="width:80px" value=<%=rs("supinsurance")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=supinsurance&oldDate='+supinsurance.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-		  		&nbsp;&nbsp;&nbsp;&nbsp;保费支付日
+		  		&nbsp;&nbsp;&nbsp;&nbsp;卤拢路脩脰搂赂露脠脮
 		  		<input name="insurancepayment" id="insurancepayment" readonly style="width:80px" value=<%=rs("insurancepayment")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=insurancepayment&oldDate='+insurancepayment.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
-		  		&nbsp;&nbsp;&nbsp;&nbsp;保单
+		  		&nbsp;&nbsp;&nbsp;&nbsp;卤拢碌楼
 		  		<input name="insurancenumber" style="width:120px" value=<%=rs("insurancenumber")%>>
 				</td>
       </tr>      
       <tr>	  
-	    	<td align="right" height="30">预计装船月份：</td>
+	    	<td align="right" height="30">脭陇录脝脳掳麓卢脭脗路脻拢潞</td>
         <td class="category">
 		  		<input name="planship" style="width:100px">
-		  		&nbsp;&nbsp;&nbsp;&nbsp;实际装船期
+		  		&nbsp;&nbsp;&nbsp;&nbsp;脢碌录脢脳掳麓卢脝脷
 		  		<input name="shipdate" id="shipdate" readonly style="width:80px" value=<%=rs("shipdate")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=shipdate&oldDate='+shipdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-		  		&nbsp;&nbsp;&nbsp;&nbsp;预计到港期
+		  		&nbsp;&nbsp;&nbsp;&nbsp;脭陇录脝碌陆赂脹脝脷
 		  		<input name="boarddate" id="boarddate" readonly style="width:80px" value=<%=rs("boarddate")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=boarddate&oldDate='+boarddate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
-		  		&nbsp;&nbsp;&nbsp;&nbsp;客户交货期
+		  		&nbsp;&nbsp;&nbsp;&nbsp;驴脥禄搂陆禄禄玫脝脷
 		  		<input name="plandeliverydate" style="width:100px" value=<%=rs("plandeliverydate")%>>
 				</td>
       </tr>
       <tr>	  
-	    	<td align="right" height="30">箱号：</td>
+	    	<td align="right" height="30">脧盲潞脜拢潞</td>
         <td class="category">
 		  		<input name="case" style="width:120px" maxlength="15" value=<%=rs("case")%>>
-		  		&nbsp;&nbsp;&nbsp;提单号
+		  		&nbsp;&nbsp;&nbsp;脤谩碌楼潞脜
 		  		<input name="ladnumber" style="width:120px" maxlength="20" value=<%=rs("ladnumber")%>>
-		  		&nbsp;&nbsp;&nbsp;卫生证号
+		  		&nbsp;&nbsp;&nbsp;脦脌脡煤脰陇潞脜
 		  		<input name="weishengzheng" style="width:120px" maxlength="20" value=<%=rs("weishengzheng")%>>	
-					&nbsp;&nbsp;&nbsp;铅封号
+					&nbsp;&nbsp;&nbsp;脟娄路芒潞脜
 					<input name="locknumber" style="width:120px" maxlength="20" value=<%=rs("locknumber")%>>		
-		  		&nbsp;&nbsp;&nbsp;电子信息
+		  		&nbsp;&nbsp;&nbsp;碌莽脳脫脨脜脧垄
 					<select name="einformation">			
-						  <option value="有" <%if rs("einformation")="True" then%>selected="selected"<%end if%>>有</option>		
-						  <option value="无" <%if rs("einformation")="False" then%>selected="selected"<%end if%>>无</option>										
+						  <option value="脫脨" <%if rs("einformation")="True" then%>selected="selected"<%end if%>>脫脨</option>		
+						  <option value="脦脼" <%if rs("einformation")="False" then%>selected="selected"<%end if%>>脦脼</option>										
 					</select>	
-		  		&nbsp;&nbsp;&nbsp;清真证明
+		  		&nbsp;&nbsp;&nbsp;脟氓脮忙脰陇脙梅
 					<select name="MuslimCertification">			
-						  <option value="有" <%if rs("MuslimCertification")="True" then%>selected="selected"<%end if%>>有</option>		
-						  <option value="无" <%if rs("MuslimCertification")="False" then%>selected="selected"<%end if%>>无</option>										
+						  <option value="脫脨" <%if rs("MuslimCertification")="True" then%>selected="selected"<%end if%>>脫脨</option>		
+						  <option value="脦脼" <%if rs("MuslimCertification")="False" then%>selected="selected"<%end if%>>脦脼</option>										
 					</select>									 		  		
 				</td>
       </tr>
       <tr>	  
-	    	<td align="right" height="30">预付款日期：</td>
+	    	<td align="right" height="30">脭陇赂露驴卯脠脮脝脷拢潞</td>
         <td class="category">
 		  		<input name="paydate" id="paydate" readonly style="width:80px" value=<%=rs("prepaydate")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=paydate&oldDate='+paydate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-		  		&nbsp;&nbsp;&nbsp;预付款金额
-		  		<input name="prepayment" style="width:100px" maxlength="15" value=<%=rs("prepayment")%> onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
-		  		&nbsp;&nbsp;&nbsp;币种
+		  		&nbsp;&nbsp;&nbsp;脭陇赂露驴卯陆冒露卯
+		  		<input name="payment" style="width:100px" maxlength="15" value=<%=rs("prepayment")%> onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
+		  		&nbsp;&nbsp;&nbsp;卤脪脰脰
 					<%
 					sql="select * from trancurrency"
 					set rs_currency=conn.execute(sql)
@@ -770,10 +741,10 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							loop
 						%>
 					</select>
-				&nbsp;&nbsp;&nbsp;订金收到日期
+				&nbsp;&nbsp;&nbsp;露漏陆冒脢脮碌陆脠脮脝脷
 				<input name="downpaymentdate" id="downpaymentdate" readonly style="width:80px" value=<%=rs("downpaymentreceiptdate")%>>	
 				<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=downpaymentdate&oldDate='+downpaymentdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-				&nbsp;&nbsp;&nbsp;成交条款
+				&nbsp;&nbsp;&nbsp;鲁脡陆禄脤玫驴卯
 					<%
 					sql="select * from tradingterm"
 					set rs_term=conn.execute(sql)
@@ -799,64 +770,64 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 				</td>
       </tr> 
       <tr>	  
-	    	<td align="right" height="30">尾款支付日期：</td>
+	    	<td align="right" height="30">脦虏驴卯脰搂赂露脠脮脝脷拢潞</td>
         <td class="category">
 		  		<input name="finalpaymentdate" id="finalpaymentdate" readonly style="width:80px" value=<%=rs("finalpaymentdate")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=finalpaymentdate&oldDate='+finalpaymentdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-		  		&nbsp;&nbsp;&nbsp;免箱期
+		  		&nbsp;&nbsp;&nbsp;脙芒脧盲脝脷
 		  		<input name="freestayperiod" style="width:100px" value=<%=rs("freestayperiod")%>>
-		  		&nbsp;&nbsp;&nbsp;卫生证版本 
+		  		&nbsp;&nbsp;&nbsp;脦脌脡煤脰陇掳忙卤戮 
 				<input name="weishengzhengversion" style="width:100px" value=<%=rs("weishengzhengversion")%>>
-				&nbsp;&nbsp;&nbsp;放行日期
+				&nbsp;&nbsp;&nbsp;路脜脨脨脠脮脝脷
 		  		<input name="passdate" id="passdate" readonly style="width:80px" value=<%=rs("passdate")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=passdate&oldDate='+passdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
 				</td>
       </tr>       
       <tr>	  
-	    	<td align="right" height="30">到单日期：</td>
+	    	<td align="right" height="30">碌陆碌楼脠脮脝脷拢潞</td>
         <td class="category">
 		  		<input name="documentarrival" id="documentarrival" readonly style="width:80px" value=<%=rs("documentarrival")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=documentarrival&oldDate='+documentarrival.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-		  		&nbsp;&nbsp;&nbsp;预计赎单日期
+		  		&nbsp;&nbsp;&nbsp;脭陇录脝脢锚碌楼脠脮脝脷
 		  		<input name="planretirebill" id="planretirebill" readonly style="width:80px" value=<%=rs("planretirebill")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=planretirebill&oldDate='+planretirebill.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
-		  		&nbsp;&nbsp;&nbsp;我司赎单日期
+		  		&nbsp;&nbsp;&nbsp;脦脪脣戮脢锚碌楼脠脮脝脷
 		  		<input name="internalretirebill" id="internalretirebill" readonly style="width:80px" value=<%=rs("internalretirebill")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=internalretirebill&oldDate='+internalretirebill.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
-		  		&nbsp;&nbsp;&nbsp;代理赎单日期
+		  		&nbsp;&nbsp;&nbsp;麓煤脌铆脢锚碌楼脠脮脝脷
 		  		<input name="externalretirebill" id="externalretirebill" readonly style="width:80px" value=<%=rs("externalretirebill")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=externalretirebill&oldDate='+externalretirebill.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
 				</td>
       </tr>       
       <tr>	  
-	    	<td align="right" height="30">送货日期：</td>
+	    	<td align="right" height="30">脣脥禄玫脠脮脝脷拢潞</td>
         <td class="category">
 		  		<input name="cargodate" id="cargodate" readonly style="width:80px" value=<%=rs("cargodate")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=cargodate&oldDate='+cargodate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-		  		&nbsp;&nbsp;&nbsp;送货方向
+		  		&nbsp;&nbsp;&nbsp;脣脥禄玫路陆脧貌
 		  		<input name="cargodir" style="width:150px" value=<%=rs("cargodir")%>>
-		  		&nbsp;&nbsp;&nbsp;交单日期
+		  		&nbsp;&nbsp;&nbsp;陆禄碌楼脠脮脝脷
 		  		<input name="deliverydate" id="deliverydate" readonly style="width:80px" value=<%=rs("deliverydate")%>>
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=deliverydate&oldDate='+deliverydate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
 				</td>
       </tr> 
       <tr>
-        <td align="right" height="30" valign="top">单证问题：</td>
+        <td align="right" height="30" valign="top">碌楼脰陇脦脢脤芒拢潞</td>
         <td class="category" valign="top">
         	<textarea name="documentissue" cols="30" rows="3" value=<%=rs("documentissue")%>></textarea>&nbsp;&nbsp;&nbsp;
-        	<label for="documentcheck" style="vertical-align:top"> 审单情况 </label>
+        	<label for="documentcheck" style="vertical-align:top"> 脡贸碌楼脟茅驴枚 </label>
         	<textarea name="documentcheck" id="documentcheck" cols="30" rows="3" value=<%=rs("documentcheck")%>></textarea>&nbsp;&nbsp;&nbsp;
-        	<label for="documentdelivery" style="vertical-align:top"> 寄单情况 </label>
+        	<label for="documentdelivery" style="vertical-align:top"> 录脛碌楼脟茅驴枚 </label>
         	<textarea name="documentdelivery" id="documentdelivery" cols="30" rows="3" value=<%=rs("documentdelivery")%>></textarea>&nbsp;&nbsp;&nbsp;
-        	<label for="clearcustom" style="vertical-align:top">清关进程</label>
+        	<label for="clearcustom" style="vertical-align:top">脟氓鹿脴陆酶鲁脤</label>
         	<textarea name="clearcustom" id="clearcustom" cols="30" rows="3" value=<%=rs("clearcustom")%>></textarea>            	   	
         </td>
       </tr>	 
       <tr>
-        <td align="right" height="30" valign="top">保证金情况：</td>
+        <td align="right" height="30" valign="top">卤拢脰陇陆冒脟茅驴枚拢潞</td>
         <td class="category" valign="top">
         	<textarea name="warrantyinformation" cols="30" rows="3" value=<%=rs("warrantyinformation")%>></textarea>&nbsp;&nbsp;&nbsp;
-        	<label for="warrantystatus" style="vertical-align:top">保证金进度</label>
+        	<label for="warrantystatus" style="vertical-align:top">卤拢脰陇陆冒陆酶露脠</label>
 					<%
 					sql="select * from warrantystatus"
 					set rs_warrstatus=conn.execute(sql)
@@ -873,23 +844,23 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 					</select>	 
 <!--					       	
 					<select name="warrantystatus" style="vertical-align:top">
-	 						<option value="审核中">审核中</option>	
-	 						<option value="已退保">已退保</option>	
-	 						<option value="已到账">已到账</option>	
+	 						<option value="脡贸潞脣脰脨">脡贸潞脣脰脨</option>	
+	 						<option value="脪脩脥脣卤拢">脪脩脥脣卤拢</option>	
+	 						<option value="脪脩碌陆脮脣">脪脩碌陆脮脣</option>	
 					</select>			-->
-					<label for="warranty" style="vertical-align:top">&nbsp;&nbsp;&nbsp;保证金金额</label>	
+					<label for="warranty" style="vertical-align:top">&nbsp;&nbsp;&nbsp;卤拢脰陇陆冒陆冒露卯</label>	
 					<input name="warranty" style="vertical-align:top;width:100px" maxlength="15" value=<%=rs("warranty")%> onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
-					<label for="returnwarranty" style="vertical-align:top">&nbsp;&nbsp;&nbsp;退保证金金额</label>	
+					<label for="returnwarranty" style="vertical-align:top">&nbsp;&nbsp;&nbsp;脥脣卤拢脰陇陆冒陆冒露卯</label>	
 					<input name="returnwarranty" style="vertical-align:top;width:100px" maxlength="15" value=<%=rs("returnwarranty")%> onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
         </td>
       </tr>	        
       <tr>
-        <td align="right" height="30" valign="top">少货情况：</td>
+        <td align="right" height="30" valign="top">脡脵禄玫脟茅驴枚拢潞</td>
         <td class="category" valign="top">
         	<textarea name="stockmiss" cols="30" rows="3" value=<%=rs("stockmiss")%>></textarea>&nbsp;&nbsp;&nbsp;
-        	<label for="claiminformation" style="vertical-align:top">索赔情况</label>
+        	<label for="claiminformation" style="vertical-align:top">脣梅脜芒脟茅驴枚</label>
         	<textarea name="claiminformation" id="claiminformation" cols="30" rows="3" value=<%=rs("claiminformation")%>></textarea>&nbsp;&nbsp;&nbsp;
-					<label for="claimstatus" style="vertical-align:top">索赔状态</label>
+					<label for="claimstatus" style="vertical-align:top">脣梅脜芒脳麓脤卢</label>
 					<%
 					sql="select * from claimstatus"
 					set rs_claimstatus=conn.execute(sql)
@@ -906,11 +877,11 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 					</select>					
 <!--
 					<select name="claimstatus" style="vertical-align:top">
-							<option value="索赔中">索赔中</option>
-							<option value="需索赔">需索赔</option>
-							<option value="不需索赔">不需索赔</option>
+							<option value="脣梅脜芒脰脨">脣梅脜芒脰脨</option>
+							<option value="脨猫脣梅脜芒">脨猫脣梅脜芒</option>
+							<option value="虏禄脨猫脣梅脜芒">虏禄脨猫脣梅脜芒</option>
 					</select>     -->
-					<label for="claimprocessor" style="vertical-align:top">索赔负责人</label>
+					<label for="claimprocessor" style="vertical-align:top">脣梅脜芒赂潞脭冒脠脣</label>
 					<select name="claimprocessor" style="vertical-align:top">
 	    			<% for i = 0 to customCount-1 %>
 	 						<option value=<%=custom(i)%> <%if rs("claimprocessor")=custom(i) then%>selected="selected"<%end if%>><%=custom(i)%></option>
@@ -919,35 +890,35 @@ sql="select * from shipment where shipmentnum="&request("shipment")
         </td>
       </tr>	       
       <tr>
-		  <input type="submit" value=" 确认录入 " onClick="return check1();" class="button">&nbsp;&nbsp;&nbsp;
+		  <input type="submit" value=" 脠路脠脧脗录脠毛 " onClick="return check1();" class="button">&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="reset" value=" 重新填写 " class="button">
+		  <input type="reset" value=" 脰脴脨脗脤卯脨麓 " class="button">
       </tr>    
 </table>  
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
-	  <form name="formitem">
+<!--	  <form name="formitem" action="" method="post">-->
       <tr>
-		<input type="button" onclick="addNewRow()" value="增加一行" class="button"/>&nbsp;&nbsp;&nbsp;
-		<input type="button" onclick="removeRow()" value="删除一行" class="button"/>
+		<input type="button" onclick="addNewRow()" value="脭枚录脫脪禄脨脨" class="button"/>&nbsp;&nbsp;&nbsp;
+		<input type="button" onclick="removeRow()" value="脡戮鲁媒脪禄脨脨" class="button"/>
       </tr>	      
       <tr>
 		<table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1" id="item">
 		  <tr>
 		  	<td width="20"></td>			
-	        <td width="30" align="center">项目号</td>
-	        <td width="100" align="center">品名</td>
-	        <td width="100" align="center" >客户</td> 	
-	        <td width=100" align="center" >规格</td> 		
-	        <td width=80" align="center" >合同重量</td> 			
-	        <td width="40" align="center" >重量单位</td> 		
-	        <td width="80" align="center" >实际净重</td> 				    
-	        <td width="80" align="center" >采购价格</td> 			
-	        <td width="40" align="center" >价格单位</td> 				        	            		        	        		        
-	        <td width="50" align="center" >生产日期</td> 		
-	        <td width="50" align="center" >箱数</td> 		
-	        <td width="100" align="center" >发票总金额</td> 		
-	        <td width="50" align="center" >币种</td> 		
-	        <td width="100" align="center" >尾款金额</td> 					        			        			        			        			        
+	        <td width="30" align="center">脧卯脛驴潞脜</td>
+	        <td width="100" align="center">脝路脙没</td>
+	        <td width="100" align="center" >驴脥禄搂</td> 	
+	        <td width=100" align="center" >鹿忙赂帽</td> 		
+	        <td width=80" align="center" >潞脧脥卢脰脴脕驴</td> 			
+	        <td width="40" align="center" >脰脴脕驴碌楼脦禄</td> 		
+	        <td width="80" align="center" >脢碌录脢戮禄脰脴</td> 				    
+	        <td width="80" align="center" >虏脡鹿潞录脹赂帽</td> 			
+	        <td width="40" align="center" >录脹赂帽碌楼脦禄</td> 				        	            		        	        		        
+	        <td width="50" align="center" >脡煤虏煤脠脮脝脷</td> 		
+	        <td width="50" align="center" >脧盲脢媒</td> 		
+	        <td width="100" align="center" >路垄脝卤脳脺陆冒露卯</td> 		
+	        <td width="50" align="center" >卤脪脰脰</td> 		
+	        <td width="100" align="center" >脦虏驴卯陆冒露卯</td> 					        			        			        			        			        
      	  </tr>		
      	  <%
      	  	sql = "select * from shipmentitem where shipmentnum="&request("shipment")
@@ -961,34 +932,34 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 		  	<td width="20"><input type='checkbox' name='chkArr'  id='chkArr' /></td>			
 	        <td width="30" align="center" ><input type='text' name='itemno' id='itemno' value='<%=rs_items("itemnum")%>' style='width:30px' readonly/></td>
 	        <td width="100" align="center" >
-	        	<select name="material<%=rs_items("itemnum")%>" id="material<%=rs_items("itemnum")%>" style='width:100px'>
+	        	<select name="material"&"<%=rs_items("itemnum")%>" id="material"&"<%=rs_items("itemnum")%>" style='width:100px'>
 	    			<% for i = 0 to materialCount-1 %>
 	 					<option value='<%=material(i)%>' <%if rs_items("material")=material(i) then%>selected="selected"<%end if%>><%=material(i)%></option>
 	 				<% next %>
 	 			</select>
 	        </td>
 	        <td width="100" align="center" >
-	        	<select name="customer<%=rs_items("itemnum")%>" id="customer<%=rs_items("itemnum")%>" style='width:100px'>
+	        	<select name="customer"&"<%=rs_items("itemnum")%>" id="customer"&"<%=rs_items("itemnum")%>" style='width:100px'>
 	    			<% for i = 0 to customerCount-1 %>
 	 					<option value='<%=customer(i)%>' <%if rs_items("customer")=customer(i) then%>selected="selected"<%end if%>><%=customer(i)%></option>
 	 				<% next %>
 	 			</select>	        	
 	        </td> 	
-	        <td width=100" align="center" ><input type='text' name="spec<%=rs_items("itemnum")%>" id="spec<%=rs_items("itemnum")%>" value='<%=rs_items("spec")%>' style='width:100px'/></td> 		
-	        <td width=80" align="center" ><input type='text' name="contractweight<%=rs_items("itemnum")%>" id="contractweight<%=rs_items("itemnum")%>" value='<%=rs_items("contractweight")%>' style='width:80px'/></td> 
-	        <td width="40" align="center" >公斤</td> 		
-	        <td width="80" align="center" ><input type='text' name="actualweight<%=rs_items("itemnum")%>" id="actualweight<%=rs_items("itemnum")%>" value='<%=rs_items("actualnetweight")%>' style='width:80px'/></td>
-	        <td width="80" align="center" ><input type='text' name="purchaseprice<%=rs_items("itemnum")%>" id="purchaseprice<%=rs_items("itemnum")%>" value='<%=rs_items("purchaseprice")%>' style='width:80px'/></td> 	
-	        <td width="40" align="center" >公斤</td> 				        	            		        	        		        
-	        <td width="50" align="center" ><input name="producedate<%=rs_items("itemnum")%>" id="producedate<%=rs_items("itemnum")%>" value="<%=rs_items("productiondate")%>" readonly style='width:80px' onClick="JavaScript:window.open('../day.asp?field=producedate<%=rs_items("itemnum")%>&oldDate='+producedate<%=rs_items("itemnum")%>.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');"/></td> 		
-	        <td width="50" align="center" ><input type='text' name="casenum<%=rs_items("itemnum")%>" id="casenum<%=rs_items("itemnum")%>" value='<%=rs_items("casenumber")%>' style='width:80px'/></td> 		
-	        <td width="100" align="center" ><input type='text' name="invamount<%=rs_items("itemnum")%>" id="invamount<%=rs_items("itemnum")%>" value='<%=rs_items("invoiceamount")%>' style='width:80px'/></td> 	
+	        <td width=100" align="center" ><input type='text' name="spec"&"<%=rs_items("itemnum")%>" id="spec"&"<%=rs_items("itemnum")%>" value='<%=rs_items("spec")%>' style='width:100px'/></td> 		
+	        <td width=80" align="center" ><input type='text' name="contractweight"&"<%=rs_items("itemnum")%>" id="contractweight"&"<%=rs_items("itemnum")%>" value='<%=rs_items("contractweight")%>' style='width:80px'/></td> 
+	        <td width="40" align="center" >鹿芦陆茂</td> 		
+	        <td width="80" align="center" ><input type='text' name="actualnetweight"&"<%=rs_items("itemnum")%>" id="actualnetweight"&"<%=rs_items("itemnum")%>" value='<%=rs_items("actualnetweight")%>' style='width:80px'/></td>
+	        <td width="80" align="center" ><input type='text' name="purchaseprice"&"<%=rs_items("itemnum")%>" id="purchaseprice"&"<%=rs_items("itemnum")%>" value='<%=rs_items("purchaseprice")%>' style='width:80px'/></td> 	
+	        <td width="40" align="center" >鹿芦陆茂</td> 				        	            		        	        		        
+	        <td width="50" align="center" ><input name="productiondate"&"<%=rs_items("itemnum")%>" id="productiondate"&"<%=rs_items("itemnum")%>" value='<%=rs_items("productiondate")%>' style='width:80px'/></td> 		
+	        <td width="50" align="center" ><input type='text' name="casenumber"&"<%=rs_items("itemnum")%>" id="casenumber"&"<%=rs_items("itemnum")%>" value='<%=rs_items("casenumber")%>' style='width:80px'/></td> 		
+	        <td width="100" align="center" ><input type='text' name="invoiceamount"&"<%=rs_items("itemnum")%>" id="invoiceamount"&"<%=rs_items("itemnum")%>" value='<%=rs_items("invoiceamount")%>' style='width:80px'/></td> 	
 	        <td width="50" align="center" >
 					<%
 					sql="select * from trancurrency"
 					set rs_currency=conn.execute(sql)
 					%>
-					<select name="invcurr<%=rs_items("itemnum")%>" style='width:50px'>
+					<select name="currency"&"<%=rs_items("itemnum")%>" style='width:50px'>
 						<%
 							do while rs_currency.eof=false
 						%>
@@ -999,7 +970,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						%>
 					</select>	        	
 	        </td> 		
-	        <td width="100" align="center" ><input type='text' name="finalamount<%=rs_items("itemnum")%>" id="finalamount<%=rs_items("itemnum")%>" value='<%=rs_items("finalpayment")%>' style='width:80px'/></td>
+	        <td width="100" align="center" ><input type='text' name="finalpayment"&"<%=rs_items("itemnum")%>" id="finalpayment"&"<%=rs_items("itemnum")%>" value='<%=rs_items("finalpayment")%>' style='width:80px'/></td>
      	  </tr>	
 		  <%
 		    	rs_items.movenext
@@ -1009,7 +980,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
         </table>			  	
       </tr>	          
 
-  </form>
+<!--  </form>-->
 </table>
 </form>
 </td>

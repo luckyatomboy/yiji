@@ -18,7 +18,7 @@ end if
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
-	background-color:#FFFFFF;
+	background-color:#FFFFFF;  
 }
 </style>
 </HEAD>
