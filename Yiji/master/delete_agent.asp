@@ -14,6 +14,10 @@ end if
 sql="delete from agent where company='"&request("company")&"'"
 conn.execute(sql)
 
+'删除逻辑锁'
+sql="delete from locktable where tablename='agent' and combinedkey='"&request("company")&"'"
+conn.execute(sql)
+
 response.redirect "master.asp"
 %>
 

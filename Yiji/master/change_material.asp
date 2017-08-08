@@ -33,7 +33,36 @@ if fla35="0" and session("redboy_id")<>"1" then
 end if
 %>
 
-<%if request("hid1")="" then
+<%
+  sql="select * from locktable where tablename='material' and combinedkey='"&request("material")&"'"
+  set rs_lock=conn.execute(sql)
+  if rs_lock.eof = false then
+%>
+    <script language="javascript">
+    alert("用户<%=rs_lock("username")%>正在编辑该记录！请稍后再试！");
+    window.location.href="master.asp";
+    </script> 
+<%else
+    sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('material','"&request("material")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
+    conn.execute(sql)
+end if
+%>
+
+<%if request("hid1")="" then %>
+<script language="javascript">
+function releaseAndBack()
+{
+<%
+  if request("hid1")="ok" then
+    sql="delete from locktable where tablename='material' and combinedkey='"&request("material")&"'"
+    conn.execute(sql)
+  end if
+%>  
+  window.history.go(-1);
+}    
+</script>
+
+<%
 sql="select * from material where materialname='"&request("material")&"'"
 set rs=conn.execute(sql)
 %>
@@ -85,9 +114,9 @@ set rs=conn.execute(sql)
       <tr>
 	    <td height="30">&nbsp;</td>
         <td class="category">
-		  <input type="submit" value=" 确认修改 " onClick="return check()" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
+		  <input type="submit" value=" 确认修改 " class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-			<input type="button" value=" 放弃修改返回 " onClick="window.history.go(-1)" class="button"> </td>
+			<input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button"> </td>
       </tr>	    
 </table>
 </td>
@@ -114,6 +143,9 @@ rs("changedate")=now
 rs("changer")=session("redboy_username")
 rs.update
 rs.close
+
+sql="delete from locktable where tablename='material' and combinedkey="&request("material")
+conn.execute(sql)
 
 %>
 <script language="javascript">

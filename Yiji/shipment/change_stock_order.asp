@@ -46,6 +46,21 @@ if fla32="0" then
 end if
 %>
 
+<%
+  sql="select * from locktable where tablename='stockdocument' and combinedkey='"&request("stocknumber")&"'"
+  set rs_lock=conn.execute(sql)
+  if rs_lock.eof = false then
+%>
+    <script language="javascript">
+    alert("用户<%=rs_lock("username")%>正在编辑该记录！请稍后再试！");
+    window.location.href="shipment.asp";
+    </script> 
+<%else
+    sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('stockdocument','"&request("stocknumber")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
+    conn.execute(sql)
+end if
+%>
+
 <%if request("hid1")="" then%>
 <script language="javascript">
 function isNumberString (InString,RefString)
@@ -72,6 +87,17 @@ alert("年份无效!");
 return false;
 }
 }
+
+function releaseAndBack()
+{
+<%
+  if request("hid1")="ok" then
+    sql="delete from locktable where tablename='stockdocument' and combinedkey='"&request("stocknumber")&"'"
+    conn.execute(sql)
+  end if
+%>  
+  window.history.go(-1);
+}    
 </script>
 <%
 sql="select * from stockdocument where stocknumber='"&request("stocknumber")&"'"
@@ -180,15 +206,15 @@ set rs=conn.execute(sql)
 						%>
 					</select>	           	
 		  		&nbsp;&nbsp;&nbsp;规格
-		  		<input name="spec" style="width:100px" value="<%=rs("spec")%>">
+		  		<input name="spec" style="width:100px" value="<%=rs("spec")%>" readonly>
 		  		&nbsp;&nbsp;&nbsp;单价
-		  		<input name="price" style="width:100px" value="<%=rs("price")%>" onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">&nbsp;/吨
+		  		<input name="price" style="width:100px" value="<%=rs("price")%>" readonly>&nbsp;/公斤
 		  		&nbsp;&nbsp;&nbsp;币种
 				<%
 				sql="select * from trancurrency"
 				set rs_currency=conn.execute(sql)
 				%>
-				<select name="currency">
+				<select name="currency" readonly>
 					<%
 						do while rs_currency.eof=false
 					%>
@@ -203,7 +229,7 @@ set rs=conn.execute(sql)
       <tr>	  
 	    	<td align="right" height="30">箱号：</td>
         <td class="category">
-		  		<input name="case" style="width:120px" maxlength="15" value="<%=rs("case")%>">
+		  		<input name="case" style="width:120px" maxlength="15" value="<%=rs("case")%>" readonly>
 		  		&nbsp;&nbsp;&nbsp;箱数
 		  		<input name="quantity" style="width:80px" maxlength="5" value="<%=rs("quantity")%>"  onKeyPress="javascript:CheckNum();"  onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
 		  		&nbsp;&nbsp;&nbsp;重量
@@ -225,7 +251,7 @@ set rs=conn.execute(sql)
 				&nbsp;&nbsp;&nbsp;入库原因
 		  		<input name="reason" style="width:100px" value="<%=rs("reason")%>">				
 				&nbsp;&nbsp;&nbsp;剩余数量
-		  		<input name="remainqty" style="cursor:hand;width:100px" readonly value="<%=rs("remainqty")%>" onClick="JavaScript:window.open('query_stock.asp?refshipment=refshipment&refitem=refitem','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');">				
+		  		<input name="remainqty" style="color:blue;text-decoration:underline;cursor:hand;width:100px" readonly value="<%=rs("remainqty")%>" onClick="JavaScript:window.open('query_remain_stock.asp?refshipment=refshipment&refitem=refitem','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');">				
 		</td>
       </tr>
       <tr>	  
@@ -242,7 +268,7 @@ set rs=conn.execute(sql)
         <td class="category">
 		  <input type="submit" value=" 确认修改 " onClick="return check()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="reset" value=" 放弃修改返回 " onClick="window.history.go(-1)" class="button">
+		  <input type="reset" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">
 		  </td>
       </tr>
 	  </form>
@@ -345,6 +371,10 @@ rs("changedate")=now()
 rs("changer")=session("redboy_username")
 rs.update
 rs.close
+
+'删除逻辑锁'
+sql="delete from locktable where tablename='stockdocument' and combinedkey="&request("stocknumber")
+conn.execute(sql)
 
 %>
 <script language="javascript">

@@ -14,6 +14,10 @@ end if
 sql="delete from piwen where company='"&request("company")&"'"
 conn.execute(sql)
 
+'删除逻辑锁'
+sql="delete from locktable where tablename='piwen' and combinedkey='"&request("company")&"'"
+conn.execute(sql)
+
 response.redirect "master.asp"
 %>
 
