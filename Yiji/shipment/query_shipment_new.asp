@@ -88,15 +88,16 @@ nowto=request("dateto")
 	<td align="right">
 	  搜索：
 		<%
-			sql="select * from sales order by name"
+			'sql="select * from sales order by name"
+      sql="select * from login where issales=1"
 			set rs_sales=conn.execute(sql)
-		%>
+		%>   
 			<select name="sales" onChange="form2.submit()">
 		     <option value="">所有销售员</option>
 	  <%
 			do while rs_sales.eof=false
 		%>
-		    <option value="<%=rs_sales("name")%>"<%if trim(cstr(rs_sales("name")))=nowsales then%> selected="selected"<%end if%>><%=rs_sales("name")%></option>
+		    <option value="<%=rs_sales("username")%>"<%if trim(cstr(rs_sales("username")))=nowsales then%> selected="selected"<%end if%>><%=rs_sales("username")%></option>
 		<%
 			  rs_sales.movenext
 			loop
@@ -135,13 +136,13 @@ nowto=request("dateto")
 </table>
 <%
 '  sql="select * from shipment where shipmentnum<=99999999"
-  sql="select a.*, b.* from shipment a inner join shipmentitem b on a.shipmentnum = b.shipmentnum where a.shipmentnum<=99999999"  
+  sql="select b.*, a.* from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where a.shipmentnum<=99999999"  
   if nowsales<>"" then
   	sql=sql&" and sales='"&nowsales&"'"
   end if
-'  if nowcustomer<>"" then
-'  	sql=sql&" and customer='"&nowcustomer&"'"
-'  end if  
+  if nowcustomer<>"" then
+  	sql=sql&" and customer='"&nowcustomer&"'"
+  end if  
   if nowkeyword<>"" then
   	sql=sql&" and shipmentnum="&nowkeyword
   end if  
@@ -235,7 +236,7 @@ nowto=request("dateto")
   <input type="hidden" name="order12" value="<%=request("order12")%>">
   <input type="hidden" name="order13" value="<%=request("order13")%>">
   <tr align="center">
-	<td class="category" width="60" height="30">
+	<td class="category" width="100" height="30">
 		<a href="?order1=<%if request("order1")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">船期表号码<%if request("order1")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
 	</td>
 	<td class="category" width="80" height="30">
@@ -298,7 +299,8 @@ nowto=request("dateto")
                     window.opener.document.<%=request("queryform")%>.<%=request("boarddate")%>.value='<%=rs_shipment("boarddate")%>';
                     window.opener.document.<%=request("queryform")%>.<%=request("deliveryport")%>.value='<%=rs_shipment("destination")%>';
                     window.opener.document.<%=request("queryform")%>.<%=request("guobie")%>.value='<%=rs_shipment("country")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("plant")%>.value='<%=rs_shipment("plant")%>';                    
+                    window.opener.document.<%=request("queryform")%>.<%=request("plant")%>.value='<%=rs_shipment("plant")%>';      
+
                     window.close();" 
         <%if rs_shipment("status")="进库" then%>bgcolor="darkgrey"<%elseif rs_shipment("status")="通关中" then%>bgcolor="lawngreen"<%elseif rs_shipment("status")="已送货" then%>bgcolor="red"<%end if%>>     
 

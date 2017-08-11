@@ -35,6 +35,23 @@ end if
 %>
 
 <%
+  sql="select * from locktable where tablename='shipment' and combinedkey='"&request("shipment")&"'"
+  set rs_lock=conn.execute(sql)
+  if rs_lock.eof = false then
+    if rs_lock("username")<>session("redboy_username") then
+%>
+    <script language="javascript">
+    alert("用户<%=rs_lock("username")%>正在编辑该记录！请稍后再试！");
+    window.location.href="shipment.asp";
+    </script> 
+<%end if
+else
+    sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('shipment','"&request("shipment")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
+    conn.execute(sql)
+end if
+%>
+
+<%
 if request("hid1")="ok" then
 sql="select * from shipment where shipmentnum="&request("shipment")
 set rs=server.createobject("ADODB.RecordSet")
@@ -46,7 +63,7 @@ rs("invoicestatus")=request("invoicestatus")
 rs("vendor")=request("vendor")
 rs("contract")=request("contract")
 rs("country")=request("country")
-
+rs("sales")=request("sales")
 rs("incoterm")=request("incoterm")
 rs("dongjiancom")=request("dongjiancom")
 if request("dongjian")="单击选择动检证" then
@@ -149,6 +166,10 @@ sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,contrac
 conn.execute(sql)
 
 next
+
+'删除逻辑锁'
+sql="delete from locktable where tablename='shipment' and combinedkey='"&request("shipment")&"'"
+conn.execute(sql)
 
 %>
 <script language="javascript">
@@ -501,19 +522,19 @@ sql="select * from shipment where shipmentnum="&request("shipment")
         <td class="category">		
 					<select name="buyer">
 	    			<% for i = 0 to buyerCount-1 %>
-	 						<option value=<%=buyer(i)%> <%if buyer(i)=rs("buyer") then%>selected="selected"<%end if%>><%=buyer(i)%></option>
+	 						<option value="<%=buyer(i)%>" <%if buyer(i)=rs("buyer") then%>selected="selected"<%end if%>><%=buyer(i)%></option>
 	 					<% next %>  			
 					</select>						
 					&nbsp;&nbsp;&nbsp;&nbsp;跟单	      
 					<select name="custom">
 	    			<% for i = 0 to customCount-1 %>
-	 						<option value=<%=custom(i)%> <%if custom(i)=rs("handler") then%>selected="selected"<%end if%>><%=custom(i)%></option>
+	 						<option value="<%=custom(i)%>" <%if custom(i)=rs("handler") then%>selected="selected"<%end if%>><%=custom(i)%></option>
 	 					<% next %>  			
 					</select>				
 					&nbsp;&nbsp;&nbsp;&nbsp;销售	      
 					<select name="sales">
 	    			<% for i = 0 to salesCount-1 %>
-	 						<option value=<%=sales(i)%> <%if sales(i)=rs("sales") then%>selected="selected"<%end if%>><%=sales(i)%></option>
+	 						<option value="<%=sales(i)%>" <%if sales(i)=rs("sales") then%>selected="selected"<%end if%>><%=sales(i)%></option>
 	 					<% next %>  			
 					</select>									  		
 				</td>
@@ -919,11 +940,12 @@ sql="select * from shipment where shipmentnum="&request("shipment")
         </td>
       </tr>	       
       <tr>
-		  <input type="submit" value=" 确认录入 " onClick="return check1();" class="button">&nbsp;&nbsp;&nbsp;
+		  <input type="submit" value=" 确认修改 " onClick="return check1();" class="button">&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="reset" value=" 重新填写 " class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">
       </tr>    
 </table>  
+</form>
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
 	  <form name="formitem">
       <tr>

@@ -74,17 +74,7 @@ alert("年份无效!");
 return false;
 }
 }
-
-function releaseAndBack()
-{
-<%
-  if request("hid1")="ok" then
-    sql="delete from locktable where tablename='license' and combinedkey='"&request("company")&request("licensetype")&request("license")&"'"
-    conn.execute(sql)
-  end if
-%>  
-  window.history.go(-1);
-}   
+ 
 </script>
 <%
 sql="select * from license where company='"&request("company")&"' and licensetype='"&request("licensetype")&"' and license='"&request("license")&"'"
@@ -192,7 +182,7 @@ set rs=conn.execute(sql)
         <td class="category">
 		  <input type="submit" value=" 确认修改 " onClick="return check()" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-			<input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button"> </td>
+			<input type="button" value=" 放弃修改返回 " onClick="window.open('delete_lock_table.asp?combinedkey=<%=request("license")%>')" class="button"> </td>
       </tr>	    
 </table>
 </td>

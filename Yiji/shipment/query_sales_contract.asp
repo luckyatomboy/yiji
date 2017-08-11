@@ -12,12 +12,12 @@ end if
 <!-- #include file="../const.asp" --> 
 <html>
 <head>
-<title><%=dianming%> - 鏌ヨ</title>
+<title><%=dianming%> - 查询</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
-	background-color:#FFFFFF;
+  background-color:#FFFFFF;
 }
 </style>
 </HEAD>
@@ -26,13 +26,13 @@ body {
 <%
 if fla30="0" then
 %>
-<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">浣犱笉鍏峰姝ゆ潈闄愶紝璇蜂笌绠＄悊鍛樿仈绯伙紒</font></center>
+<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">你不具备此权限，请与管理员联系！</font></center>
 <%  
   response.end
 end if
 %>
 <%
-'鍙栧緱鎼滅储鍏抽敭瀛�  
+'取得搜索关键字  
 nowkeyword=request("keyword") 
 nowfrom=request("datefrom")
 nowto=request("dateto")
@@ -44,37 +44,37 @@ nowto=request("dateto")
   <input type="hidden" name="field2" value="<%=request("field2")%>">
   <input type="hidden" name="span1" value="<%=request("span1")%>">
   <tr> 
-	<td align="right">
-	  鎼滅储锛�
-		<input type="text" name="keyword" size="20" value="<%=nowkeyword%>">
-	</td>
+  <td align="right">
+    搜索：
+    <input type="text" name="keyword" size="20" value="<%=nowkeyword%>">
+  </td>
   </tr>
   <tr> 
-	<td align="right">
-	  鍚堝悓鏃ユ湡锛氫粠
-	  <input name="datefrom" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=datefrom&oldDate='+datefrom.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-	  &nbsp;&nbsp;&nbsp;&nbsp;鍒�
-	  <input name="dateto" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=dateto&oldDate='+dateto.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-	  <input type="submit" value=" 鏌ヨ " class="button">&nbsp;
-	</td>
+  <td align="right">
+    合同日期：从
+    <input name="datefrom" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=datefrom&oldDate='+datefrom.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+    &nbsp;&nbsp;&nbsp;&nbsp;到
+    <input name="dateto" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=dateto&oldDate='+dateto.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+    <input type="submit" value=" 查询 " class="button">&nbsp;
+  </td>
   </tr>  
 </form>  
 </table>
 <%
   sql="select * from salescontract"
   if nowkeyword<>"" then
-  	sql=sql&" where stocknumber='"&nowkeyword&"'"
+    sql=sql&" where contractnum="&nowkeyword
   end if  
 
   if nowfrom<>"" and nowto="" then
-	sql=sql&" and createdate=#"&nowfrom&"#"
+  sql=sql&" and createdate=#"&nowfrom&"#"
   elseif nowfrom="" and nowto<>"" then
-	sql=sql&" and createdate=#"&nowto&"#"
+  sql=sql&" and createdate=#"&nowto&"#"
   elseif nowfrom<>"" and nowto<>"" then
-	sql=sql&" and createdate>=#"&nowfrom&"# and createdate<=#"&nowto&"#"
+  sql=sql&" and createdate>=#"&nowfrom&"# and createdate<=#"&nowto&"#"
   end if
 
-	
+  
   if request("order1")<>"" then
     sql=sql&" order by contractnum "&request("order1")
   elseif request("order2")<>"" then
@@ -108,8 +108,8 @@ nowto=request("dateto")
 <td width="100%" background="../images/r_0.gif">
   <table cellpadding="0" cellspacing="0" width="100%">
     <tr>
-      <td>&nbsp;璁㈣揣鍚堝悓鏌ヨ</td>
-	  <td align="right">&nbsp;</td>
+      <td>&nbsp;订货合同查询</td>
+    <td align="right">&nbsp;</td>
     </tr>
   </table>
 </td>
@@ -139,7 +139,7 @@ nowto=request("dateto")
   <input type="hidden" name="field13" value="<%=request("field13")%>"> 
   <input type="hidden" name="field14" value="<%=request("field14")%>">
   <input type="hidden" name="field15" value="<%=request("field15")%>"> 
-  <input type="hidden" name="field16" value="<%=request("field16")%>">
+  <input type="hidden" name="field16" value="<%=request("field16")%>"> 
   <input type="hidden" name="field17" value="<%=request("field17")%>"> 
   <input type="hidden" name="field18" value="<%=request("field18")%>">
   <input type="hidden" name="field19" value="<%=request("field19")%>"> 
@@ -159,79 +159,83 @@ nowto=request("dateto")
   <input type="hidden" name="order11" value="<%=request("order11")%>">
   <input type="hidden" name="order12" value="<%=request("order12")%>">
   <tr align="center">
-	<td class="category" width="60" height="30">
-		<a href="?order1=<%if request("order1")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">璁㈣揣鍚堝悓鍙�<%if request("order1")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="80" height="30">
-		<a href="?order2=<%if request("order2")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">绫诲埆<%if request("order2")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="100" height="30">
-	  <a href="?order3=<%if request("order3")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">鐘舵��<%if request("order3")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="100" height="30">
-		<a href="?order4=<%if request("order4")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">鍏徃鍚嶇О<%if request("order4")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="120" height="30">
-		<a href="?order5=<%if request("order5")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">瀹㈡埛鍚嶇О<%if request("order5")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="80" height="30">
-		<a href="?order6=<%if request("order6")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">鍥藉<%if request("order6")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="80" height="30">
-		<a href="?order7=<%if request("order7")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">鍘傚彿<%if request("order7")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="80" height="30">
-		<a href="?order8=<%if request("order8")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">鍝佸悕<%if request("order8")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="80" height="30">
-		<a href="?order9=<%if request("order9")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">鍐峰簱鍚嶇О<%if request("order9")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+  <td class="category" width="100" height="30">
+    <a href="?order1=<%if request("order1")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">订货合同号<%if request("order1")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a> 
   </td>
-	<td class="category" width="80" height="30">
-		<a href="?order10=<%if request("order10")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">浜よ揣鍦�<%if request("order10")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+  <td class="category" width="80" height="30">
+    <a href="?order2=<%if request("order2")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">类别<%if request("order2")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
   </td>
-	<td class="category" width="80" height="30">
-		<a href="?order11=<%if request("order11")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">鍒版腐鏃ユ湡<%if request("order11")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+  <td class="category" width="100" height="30">
+    <a href="?order3=<%if request("order3")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">状态<%if request("order3")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
   </td>
-	<td class="category" width="80" height="30">
-		<a href="?order12=<%if request("order12")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">浜よ揣娓�<%if request("order12")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+  <td class="category" width="100" height="30">
+    <a href="?order4=<%if request("order4")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">公司名称<%if request("order4")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
+  </td>
+  <td class="category" width="120" height="30">
+    <a href="?order5=<%if request("order5")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">客户名称<%if request("order5")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
+  </td>
+  <td class="category" width="80" height="30">
+    <a href="?order6=<%if request("order6")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">国家<%if request("order6")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
+  </td>
+  <td class="category" width="80" height="30">
+    <a href="?order7=<%if request("order7")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">厂号<%if request("order7")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
+  </td>
+  <td class="category" width="80" height="30">
+    <a href="?order8=<%if request("order8")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">品名<%if request("order8")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
+  </td>
+  <td class="category" width="80" height="30">价格</td>
+  <td class="category" width="80" height="30">重量(吨)</td>
+  <td class="category" width="100" height="30">
+    <a href="?order9=<%if request("order9")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">冷库名称<%if request("order9")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
+  </td>
+  <td class="category" width="80" height="30">
+    <a href="?order10=<%if request("order10")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">交货地<%if request("order10")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
+  </td>
+  <td class="category" width="80" height="30">
+    <a href="?order11=<%if request("order11")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">到港日期<%if request("order11")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a> 
+  </td>
+  <td class="category" width="80" height="30">
+    <a href="?order12=<%if request("order12")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">交货港<%if request("order12")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>  
   </td>  
-  <td class="category">淇敼</td>
+  <td class="category">修改</td>
   </tr>
   <%
-  set rs_salescontract =server.createobject("ADODB.RecordSet")	
+  set rs_salescontract =server.createobject("ADODB.RecordSet")  
   rs_salescontract.open sql,conn,1,3
   if not rs_salescontract.eof then
   do while rs_salescontract.eof=false
   %>
   <tr align="center">
-	  <td align="center" height="30"><%=rs_salescontract("contractnum")%></td>	  
-	  <td align="center">
-  		<%if rs_salescontract("category")="A" then%>鐜拌揣
-      <%else%>鏈熻揣<%end if%>
+    <td align="center" height="30"><%=rs_salescontract("contractnum")%></td>    
+    <td align="center">
+      <%if rs_salescontract("category")="A" then%>现货
+      <%else%>期货<%end if%>
     </td>
-    <td align="center"><%=rs_salescontract("status")%></td>	  
-	  <td align="center"><%=rs_salescontract("owncompany")%></td>
-	  <td align="center"><%=rs_salescontract("customer")%></td>
-	  <td align="center"><%=rs_salescontract("country")%></td>
-	  <td align="center"><%=rs_salescontract("plant")%></td>
-	  <td align="center"><%=rs_salescontract("material")%></td>
-	  <td align="center"><%=rs_salescontract("coldstorage")%></td>
-	  <td align="center"><%=rs_salescontract("deliveryloc")%></td>
-	  <td align="center"><%=rs_salescontract("boarddate")%></td>
-	  <td align="center"><%=rs_salescontract("deliveryport")%></td>
-	  <td align="center">
-			<a href="change_sales_contract.asp?form=<%=request("form")%>&contractnum=<%=rs_salescontract("contractnum")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">淇敼</a>
-	  </td>
+    <td align="center"><%=rs_salescontract("status")%></td>   
+    <td align="center"><%=rs_salescontract("owncompany")%></td>
+    <td align="center"><%=rs_salescontract("customer")%></td>
+    <td align="center"><%=rs_salescontract("country")%></td>
+    <td align="center"><%=rs_salescontract("plant")%></td>
+    <td align="center"><%=rs_salescontract("material")%></td>
+    <td align="center"><%=rs_salescontract("price")%></td>
+    <td align="center"><%=rs_salescontract("weight")%></td>
+    <td align="center"><%=rs_salescontract("coldstorage")%></td>
+    <td align="center"><%=rs_salescontract("deliveryloc")%></td>
+    <td align="center"><%=rs_salescontract("boarddate")%></td>
+    <td align="center"><%=rs_salescontract("deliveryport")%></td>
+    <td align="center">
+      <a href="change_sales_contract.asp?form=<%=request("form")%>&contractnum=<%=rs_salescontract("contractnum")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">修改</a>
+    </td>
   </tr>
   </tr>
   <%
-  	'end if
+    'end if
     rs_salescontract.movenext
   loop
   else
   %>
   <tr align="center" onMouseOver="this.className='highlight'" onMouseOut="this.className=''">
-    <td colspan="12" height="25" align="center" style="color:red"><b>娌℃湁鎵惧埌璁板綍</b></td>
+    <td colspan="12" height="25" align="center" style="color:red"><b>没有找到记录</b></td>
   </tr>
   <%
   end if

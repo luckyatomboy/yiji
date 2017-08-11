@@ -41,7 +41,7 @@ end if
 %>
     <script language="javascript">
     alert("用户<%=rs_lock("username")%>正在编辑该记录！请稍后再试！");
-    window.location.href="master.asp";
+    window.location.href="shipment.asp";
     </script> 
 <%else
     sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('SalesContract','"&request("ContractNum")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
@@ -91,29 +91,19 @@ nowstorage=request("coldstorage")
 nowdeliveryloc=request("deliveryloc")
 nowdeliveryport=request("deliveryport")
 
-if nowcategory="A" then
-	sql="select top 1 * from SalesContract where ContractNum like '1%' order by ContractNum desc"
-else
-	sql="select top 1 * from SalesContract where ContractNum like '2%' order by ContractNum desc"
-end if
+sql="select * from SalesContract where ContractNum="&request("ContractNum")
+set rs=server.createobject("ADODB.RecordSet")
+rs.open sql,conn,1,3
 
-set rs_count=conn.execute(sql)
-
-if rs_count.bof and rs_count.eof then
-	if nowcategory="A" then
-		nowcontract="10000001"
-	else
-		nowcontract="20000001"
-	end if
-else
-	rs_count.movefirst
-	nowcontract=rs_count("ContractNum") + 1
-end if	
-
-'创建订货合同'
-sql="insert into SalesContract(ContractNum,category,status,owncompany,customer,country,plant,material,spec,package,quantity,weight,price,coldstorage,deliveryloc,boarddate,deliveryport,refshipment,refitem,createdate,creator)"
-sql=sql&" values("&nowcontract&",'"&nowcategory&"','"&nowstatus&"','"&nowowncompany&"','"&nowcustomer&"','"&nowcountry&"','"&nowplant&"','"&nowmaterial&"','"&nowspec&"','"&nowpackage&"',"&nowquantity&","&nowweight&","&nowprice&",'"&nowstorage&"','"&nowdeliveryloc&"',#"&nowboarddate&"#,'"&nowdeliveryport&"','"&nowrefshipment&"','"&nowrefitem&"',#"&now()&"#,'"&session("redboy_username")&"')"
-conn.execute(sql)
+rs("category")=nowcategory
+rs("owncompany")=nowowncompany
+rs("customer")=nowcustomer
+rs("status")=nowstatus
+rs("quantity")=nowquantity
+rs("weight")=nowweight
+rs("price")=nowprice
+rs.update
+rs.close
 
 '如果有入库单，更新剩余库存数量'
 sql="select * from stockdocument where refshipment="&nowrefshipment&" and refitem="&nowrefitem
@@ -141,7 +131,7 @@ else
 %>
 
 <%
-sql="select * from SalesContract where ContractNum='"&request("ContractNum")&"'"
+sql="select * from SalesContract where ContractNum="&request("ContractNum")
 set rs=conn.execute(sql)
 %>
 
@@ -166,19 +156,6 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	return false;
 	}
 }
-<!--检查剩余库存-->
-<%
-	sql="select * from stockdocument where refshipment="&request("refshipment")&" and refitem="&request("refitem")
-	rs_stock=conn.execute(sql)
-	if rs_stock.eof=false then
-		if rs_stock("remainqty")<request("quantity") then 
-%>
-			alert("剩余库存为"<%=rs_stock("remainqty")%>"，请重新输入数量！");
-			return false;		
-<%	
-		end if
-	end if
-%>
 
 function releaseAndBack()
 {
@@ -198,7 +175,7 @@ function releaseAndBack()
 <td width="100%" background="../images/r_0.gif">
   <table cellpadding="0" cellspacing="0" width="100%">
     <tr>
-      <td>&nbsp;订货合同&nbsp;<%=request("ContractNum")%> </td>
+      <td>&nbsp;订货合同&nbsp;<%=rs("ContractNum")%> </td>
 	  <td align="right">&nbsp;</td>
     </tr>
   </table>
@@ -210,12 +187,13 @@ function releaseAndBack()
 <td>
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
 	  <form name="form1"> 	  
+	  <input type="hidden" name="ContractNum" value="<%=request("ContractNum")%>">
       <tr>
         <td align="right" height="30">合同类型：</td>
         <td class="category">
 			<select name="category">
-				<option value="A" <%if rs("stockstatus")="A" then%>selected="selected"<%end if%>>现货</option>
-				<option value="B" <%if rs("stockstatus")="B" then%>selected="selected"<%end if%>>期货</option>
+				<option value="A" <%if rs("status")="A" then%>selected="selected"<%end if%>>现货</option>
+				<option value="B" <%if rs("status")="B" then%>selected="selected"<%end if%>>期货</option>
 			</select>				
 	    </td>
 	  </tr>	  
@@ -330,9 +308,9 @@ function releaseAndBack()
       <tr>
 	    <td height="30">&nbsp;</td>
         <td class="category">
-		  <input type="submit" value=" 确认录入 " onClick="return check1()" class="button">
+		  <input type="submit" value=" 确认修改 " onClick="return check1()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="reset" value=" 重新填写 " class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">
 			<%
 			if fla7="0" and session("redboy_id")<>"1" then
 			else

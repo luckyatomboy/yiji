@@ -86,6 +86,10 @@ function create_sales_contract()
 {
 	window.location.href="create_sales_contract.asp"
 }
+function query_sales_contract()
+{
+	window.location.href="query_sales_contract.asp"
+}
 </script>
 <form name="form1">
 <!-- ----------------维护船期表数据------------- -->
@@ -111,17 +115,18 @@ function create_sales_contract()
     <td width="25%" height="30" align="right">
     </td>
     <td width="75%" class="category">
-		  <input type="button" value=" 创建船期表 " onClick="return add_shipment()">&nbsp;&nbsp;&nbsp;&nbsp;
-		  <input type="button" value=" 创建船期表(新) " onClick="return add_shipment_new()">
+<!--		  <input type="button" value=" 创建船期表 " onClick="return add_shipment()">&nbsp;&nbsp;&nbsp;&nbsp;  -->
+		  <input type="button" value=" 创建船期表 " onClick="return add_shipment_new()">
 		</td>
   </tr>
   <tr>
   	<td></td>
 		<td>
-		  <input type="button" value=" 船期表查询 " onClick="return query_shipment()">&nbsp;&nbsp;&nbsp;&nbsp;		
-		  <input type="button" value=" 船期表查询(新) " onClick="return query_shipment_new()">		
+<!--		  <input type="button" value=" 船期表查询 " onClick="return query_shipment()">&nbsp;&nbsp;&nbsp;&nbsp;		-->
+		  <input type="button" value=" 船期表查询 " onClick="return query_shipment_new()">		
 		</td>        	
 	</tr>
+<!--暂时不开放导入导出功能
   <tr>
   	<td></td>
 		<td>
@@ -129,12 +134,7 @@ function create_sales_contract()
 		  <input type="button" value=" 船期表导出" onClick="return download_excel()">		
 		</td>        	
 	</tr>	
-  <tr>
-  	<td></td>
-		<td>
-		  <input type="button" value=" 创建订货合同" onClick="return create_sales_contract()">	
-		</td>        	
-	</tr>		
+-->	
 </table>
 </td>
 <td></td>
@@ -198,6 +198,50 @@ function create_sales_contract()
 <td width="100%" background="../images/r_0.gif">
   <table cellpadding="0" cellspacing="0" width="100%">
     <tr>
+      <td>&nbsp;订货合同管理</td>
+	  <td align="right">&nbsp;</td>
+    </tr>
+  </table>
+</td>
+<td><img src="../images/r_2.gif" alt="" /></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
+  <tr>
+    <td width="25%" height="30" align="right">
+    </td>
+    <td width="75%" class="category">
+		  <input type="button" value=" 创建订货合同 " onClick="return create_sales_contract()">
+		</td>
+  </tr>
+  <tr>
+  	<td></td>
+		<td>
+		  <input type="button" value=" 订货合同查询 " onClick="return query_sales_contract()">
+		</td>        	
+	</tr>
+</table>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td><img src="../images/r_4.gif" alt="" /></td>
+<td></td>
+<td><img src="../images/r_3.gif" alt="" /></td>
+</tr>
+</table>
+
+<!--暂时不需要出库管理
+<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
+<tr>
+<td><img src="../images/r_1.gif" alt="" /></td>
+<td width="100%" background="../images/r_0.gif">
+  <table cellpadding="0" cellspacing="0" width="100%">
+    <tr>
       <td>&nbsp;出库管理</td>
 	  <td align="right">&nbsp;</td>
     </tr>
@@ -234,7 +278,7 @@ function create_sales_contract()
 <td><img src="../images/r_3.gif" alt="" /></td>
 </tr>
 </table>
-
+-->
 
 </form>
 

@@ -162,7 +162,7 @@ return false;
       <tr>	  
 	    	<td align="right" height="30">参考船期表：</td>
         <td class="category">
-					<input name="refshipment" readonly style="cursor:hand;width:100px" value="单击选择船期表项目" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&field4=contract&material=material&field6=guobie&field7=spec&field8=price&field9=currency&field10=case&field11=quantity&field12=weight&field13=producedate','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> 
+                    <input name="refshipment" readonly style="cursor:hand;width:100px" value="单击选择船期表项目" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&contract=contract&case=case&&guobie=guobie&spec=spec&quantity=quantity&weight=weight','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> 
 					&nbsp;&nbsp;&nbsp;项目号	
 					<input name="refitem" readonly style="width:50px"
 				</td>

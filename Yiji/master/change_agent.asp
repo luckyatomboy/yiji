@@ -49,21 +49,8 @@ end if
 end if
 %>
 
-<%if request("hid1")="" then%>
-<script language="javascript">
-function releaseAndBack()
-{
-<%
-  if request("hid1")="ok" then
-    sql="delete from locktable where tablename='agent' and combinedkey='"&request("company")&"'"
-    conn.execute(sql)
-  end if
-%>  
-  window.history.go(-1);
-}    
-</script>
+<%if request("hid1")="" then
 
-<%
 sql="select * from agent where company='"&request("company")&"'"
 set rs=conn.execute(sql)
 %>
@@ -133,7 +120,7 @@ set rs=conn.execute(sql)
         <td class="category">
 		  <input type="submit" value=" 确认修改 " class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-			<input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value=" 放弃修改返回 " onClick="window.open('delete_lock_table.asp?combinedkey=<%=request("company")%>')" class="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<%
 			if fla7="0" and session("redboy_id")<>"1" then
 			else

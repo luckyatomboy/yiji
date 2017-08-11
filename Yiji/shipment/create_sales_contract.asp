@@ -101,11 +101,11 @@ sql=sql&" values("&nowcontract&",'"&nowcategory&"','"&nowstatus&"','"&nowowncomp
 conn.execute(sql)
 
 '如果有入库单，更新剩余库存数量'
-sql="select * from stockdocument where refshipment="&nowrefshipment&" and refitem="&nowrefitem
+sql="select * from stockdocument where refshipment='"&nowrefshipment&"' and refitem='"&nowrefitem&"'"
 set rs=server.createobject("ADODB.RecordSet")
 rs.open sql,conn,1,3
 
-rs("remainqty")=rs("remainqty")-nowquantity
+rs("remainqty")=nowquantity
 rs("changedate")=now()
 rs("changer")=session("redboy_username")
 rs.update
@@ -143,18 +143,7 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	}
 }
 <!--检查剩余库存-->
-<%
-	sql="select * from stockdocument where refshipment="&request("refshipment")&" and refitem="&request("refitem")
-	rs=conn.execute(sql)
-	if rs.eof=false then
-		if rs("remainqty")<request("quantity") then 
-%>
-			alert("剩余库存为"<%=rs("remainqty")%>"，请重新输入数量！");
-			return false;		
-<%	
-		end if
-	end if
-%>
+
 </script>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
@@ -278,7 +267,7 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
       <tr>	  
 	    <td align="right" height="30">存放冷库：</td>
         <td class="category">
-		  		<input name="coldstorage" style="width:100px" readonly>
+		  		<input name="coldstorage" style="width:100px" >
 				&nbsp;&nbsp;&nbsp;交货地
 		  		<input name="deliveryloc" value="上海" style="width:100px">
 				</td>

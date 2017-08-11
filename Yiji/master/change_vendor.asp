@@ -48,20 +48,8 @@ end if
 end if
 %>
 
-<%if request("hid1")="" then%>
-<script language="javascript">
-function releaseAndBack()
-{
-<%
-  if request("hid1")="ok" then
-    sql="delete from locktable where tablename='vendor' and combinedkey='"&request("vendorname")&"'"
-    conn.execute(sql)
-  end if
-%>  
-  window.history.go(-1);
-}    
-</script>
-<%
+<%if request("hid1")="" then
+
 sql="select * from vendor where vendorname='"&request("vendorname")&"'"
 set rs=conn.execute(sql)
 %>
@@ -149,12 +137,13 @@ set rs=conn.execute(sql)
         <td class="category">
 		  <input type="submit" value=" 确认修改 " class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-			<input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="hidden" name="hid2" value="vendor">
+			<input type="button" value=" 放弃修改返回 " onClick="window.open('delete_lock_table.asp?tablename='<%=request("hid2")%>'&combinedkey='<%=request("vendorname")%>'')" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 			<%
 			if fla35="0" and session("redboy_id")<>"1" then
 			else
 			%>			
-			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该供应商吗？')) {window.open('delete_vendor.asp?vendorname=<%=request("vendorname")%>')}" class="button"></td>
+			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该供应商吗？')) {window.open('delete_vendor.asp?vendorname=<%=request("vendorname")%>');}" class="button"></td>
 			<%end if%>				
       </tr>	    
 </table>

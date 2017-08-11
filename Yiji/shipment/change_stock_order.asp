@@ -268,7 +268,7 @@ set rs=conn.execute(sql)
         <td class="category">
 		  <input type="submit" value=" 确认修改 " onClick="return check()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="reset" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">
 		  </td>
       </tr>
 	  </form>
