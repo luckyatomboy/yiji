@@ -101,7 +101,7 @@ sql=sql&" values("&nowcontract&",'"&nowcategory&"','"&nowstatus&"','"&nowowncomp
 conn.execute(sql)
 
 '如果有入库单，更新剩余库存数量'
-sql="select * from stockdocument where refshipment='"&nowrefshipment&"' and refitem='"&nowrefitem&"'"
+sql="select * from stockdocument where refshipment="&nowrefshipment&" and refitem="&nowrefitem
 set rs=server.createobject("ADODB.RecordSet")
 rs.open sql,conn,1,3
 

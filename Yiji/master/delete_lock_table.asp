@@ -12,9 +12,7 @@ end if
 <%
 
 '删除逻辑锁'
-'sql="delete from locktable where tablename='customer' and combinedkey='TYSON'"
-'sql="delete from locktable where tablename='"&request("tablename")&"' and combinedkey='"&request("combinedkey")&"'"
-sql="delete from locktable where tablename='customer' and combinedkey='"&request("combinedkey")&"'"
+sql="delete from locktable where tablename='"&request("tablename")&"' and combinedkey='"&request("combinedkey")&"'"
 conn.execute(sql)
 
 %>

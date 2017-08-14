@@ -182,7 +182,7 @@ set rs=conn.execute(sql)
         <td class="category">
 		  <input type="submit" value=" 确认修改 " onClick="return check()" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-			<input type="button" value=" 放弃修改返回 " onClick="window.open('delete_lock_table.asp?combinedkey=<%=request("license")%>')" class="button"> </td>
+			<input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('delete_lock_table.asp?tablename=license&combinedkey=<%=request("license")%>'); window.history.go(-2);}" class="button"> </td>
       </tr>	    
 </table>
 </td>

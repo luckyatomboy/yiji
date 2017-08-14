@@ -44,7 +44,7 @@ end if
     window.location.href="shipment.asp";
     </script> 
 <%else
-    sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('SalesContract','"&request("ContractNum")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
+    sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('salescontract','"&request("ContractNum")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
     conn.execute(sql)
 end if
 %>
@@ -110,7 +110,8 @@ sql="select * from stockdocument where refshipment="&nowrefshipment&" and refite
 set rs=server.createobject("ADODB.RecordSet")
 rs.open sql,conn,1,3
 
-rs("remainqty")=rs("remainqty")-nowquantity
+nowremainqty=rs("remainqty")-nowquantity
+rs("remainqty")=nowremainqty
 rs("changedate")=now()
 rs("changer")=session("redboy_username")
 rs.update
@@ -156,17 +157,6 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	return false;
 	}
 }
-
-function releaseAndBack()
-{
-<%
-  if request("hid1")="ok" then
-    sql="delete from locktable where tablename='SalesContract' and combinedkey='"&request("ContractNum")&"'"
-    conn.execute(sql)
-  end if
-%>  
-  window.history.go(-1);
-}   
 </script>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
@@ -310,12 +300,12 @@ function releaseAndBack()
         <td class="category">
 		  <input type="submit" value=" 确认修改 " onClick="return check1()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=salescontract&combinedkey=<%=request("contractnum")%>');window.history.go(-2);}" class="button">
 			<%
 			if fla7="0" and session("redboy_id")<>"1" then
 			else
 			%>			
-			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该订货合同吗？')) {window.open('delete_sales_contract.asp?ContractNum=<%=request("ContractNum")%>')}" class="button"></td>
+			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该订货合同吗？')) {window.open('delete_sales_contract.asp?status=<%=rs("status")%>&ContractNum=<%=request("ContractNum")%>'); window.history.go(-2);}" class="button"></td>
 			<%end if%>			  
 		  </td>
       </tr>

@@ -18,6 +18,8 @@ conn.execute(sql)
 sql="delete from locktable where tablename='vendor' and combinedkey='"&request("vendorname")&"'"
 conn.execute(sql)
 
-response.redirect "master.asp"
 %>
 
+<script language="javascript">
+window.close();
+</script>

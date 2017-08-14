@@ -942,7 +942,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>
 		  <input type="submit" value=" 确认修改 " onClick="return check1();" class="button">&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=shipment&combinedkey=<%=request("shipment")%>'); window.history.go(-2);}" class="button">
       </tr>    
 </table>  
 </form>

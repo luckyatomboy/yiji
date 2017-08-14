@@ -138,12 +138,12 @@ set rs=conn.execute(sql)
 		  <input type="submit" value=" 确认修改 " class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
       <input type="hidden" name="hid2" value="vendor">
-			<input type="button" value=" 放弃修改返回 " onClick="window.open('delete_lock_table.asp?tablename='<%=request("hid2")%>'&combinedkey='<%=request("vendorname")%>'')" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('delete_lock_table.asp?tablename=vendor&combinedkey=<%=request("vendorname")%>'); window.history.go(-2);}" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 			<%
 			if fla35="0" and session("redboy_id")<>"1" then
 			else
 			%>			
-			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该供应商吗？')) {window.open('delete_vendor.asp?vendorname=<%=request("vendorname")%>');}" class="button"></td>
+			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该供应商吗？')) {window.open('delete_vendor.asp?vendorname=<%=request("vendorname")%>'); window.history.go(-2);}" class="button"></td>
 			<%end if%>				
       </tr>	    
 </table>

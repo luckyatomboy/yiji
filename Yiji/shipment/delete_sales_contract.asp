@@ -9,28 +9,44 @@ top.location.href="../index.asp"
 end if
 %>
 <!-- #include file="../conn2.asp" -->
+
+<html>
+<head>
+<title>É¾³ı¶©»õºÏÍ¬</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link href="../style/style.css" rel="stylesheet" type="text/css">
+</HEAD>
+
 <%
 
-sql="select from salescontract where contractnum='"&request("contractnum")&"'"
-rs=conn.execute(sql)
-'å¦‚æœçŠ¶æ€ä¸æ˜¯æ–°å»ºï¼Œåˆ™ä¸è®¸åˆ é™¤
-if rs("status")<>"01" then
+'Èç¹û×´Ì¬²»ÊÇĞÂ½¨£¬Ôò²»ĞíÉ¾³ı
+if request("status")<>"01" then
 %>
 <script language="javascript">
-	alert("è®¢è´§åˆåŒå·²ç»è¢«å¤„ç†ï¼Œä¸èƒ½åˆ é™¤ï¼")
-	window.history.go(-1);
+	alert("¸Ã¶©»õºÏÍ¬ÒÑ±»´¦Àí£¬²»ÄÜÉ¾³ı£¡")
+	window.close();
 </script>
 <%
+
+dim lv_deny
+lv_deny=1
 end if
 
-'åˆ é™¤è®¢è´§åˆåŒ'
-sql="delete from salescontract where contractnum='"&request("contractnum")&"'"
+if lv_deny <> 1 then
+'É¾³ı¶©»õºÏÍ¬'
+sql="delete from salescontract where contractnum="&request("contractnum")
 conn.execute(sql)
+end if
 
-'åˆ é™¤é€»è¾‘é”'
+
+'É¾³ıÂß¼­Ëø'
 sql="delete from locktable where tablename='salescontract' and combinedkey='"&request("contractnum")&"'"
 conn.execute(sql)
-
-response.redirect "shipment.asp"
+'response.redirect "shipment.asp"
 %>
 
+<script language="javascript">
+	window.close();
+</script>
+
+</html>
