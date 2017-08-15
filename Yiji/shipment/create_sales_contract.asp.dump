@@ -13,7 +13,7 @@ end if
 
 <html>
 <head>
-<title><%=dianming%> - åˆ›å»ºè®¢è´§åˆåŒ</title>
+<title><%=dianming%> - ´´½¨¶©»õºÏÍ¬</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
@@ -28,14 +28,20 @@ body {
 <!--if fla1="0" and session("redboy_id")<>"1" then-->
 if fla27="0" then
 %>
-<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">ä½ ä¸å…·å¤‡æ­¤æƒé™ï¼Œè¯·ä¸ç®¡ç†å‘˜è”ç³»ï¼</font></center>
+<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">Äã²»¾ß±¸´ËÈ¨ÏŞ£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ£¡</font></center>
 <%  
   response.end
 end if
 %>
 
+
+
 <%
-if request("hid1")="ok" then
+if request("hid1")="ok" then%>
+
+
+
+<%
 nowcategory=request("category")
 nowowncompany=request("owncompany")
 nowcustomer=request("customer")
@@ -95,26 +101,29 @@ else
 	nowcontract=rs_count("ContractNum") + 1
 end if	
 
-'åˆ›å»ºè®¢è´§åˆåŒ'
+'´´½¨¶©»õºÏÍ¬'
 sql="insert into SalesContract(ContractNum,category,status,owncompany,customer,country,plant,material,spec,package,quantity,weight,price,coldstorage,deliveryloc,boarddate,deliveryport,refshipment,refitem,createdate,creator)"
 sql=sql&" values("&nowcontract&",'"&nowcategory&"','"&nowstatus&"','"&nowowncompany&"','"&nowcustomer&"','"&nowcountry&"','"&nowplant&"','"&nowmaterial&"','"&nowspec&"','"&nowpackage&"',"&nowquantity&","&nowweight&","&nowprice&",'"&nowstorage&"','"&nowdeliveryloc&"',#"&nowboarddate&"#,'"&nowdeliveryport&"','"&nowrefshipment&"','"&nowrefitem&"',#"&now()&"#,'"&session("redboy_username")&"')"
 conn.execute(sql)
 
-'å¦‚æœæœ‰å…¥åº“å•ï¼Œæ›´æ–°å‰©ä½™åº“å­˜æ•°é‡'
+'Èç¹ûÓĞÈë¿âµ¥£¬¸üĞÂÊ£Óà¿â´æÊıÁ¿'
 sql="select * from stockdocument where refshipment="&nowrefshipment&" and refitem="&nowrefitem
 set rs=server.createobject("ADODB.RecordSet")
 rs.open sql,conn,1,3
 
-rs("remainqty")=nowquantity
+if rs.eof=false then
+nowremainqty=rs("remainqty")-nowquantity
+rs("remainqty")=nowremainqty
 rs("changedate")=now()
 rs("changer")=session("redboy_username")
 rs.update
 rs.close
+end if
 
 %>
 <script language="javascript">
 //alert(&nowshipment&)
-alert("è®¢è´§åˆåŒå½•å…¥æˆåŠŸï¼")
+alert("¶©»õºÏÍ¬Â¼Èë³É¹¦£¡")
 window.location.href="shipment.asp"
 </script>
 
@@ -123,27 +132,53 @@ else
 %>
 <script language="javascript">
 function check1(){
-<!-- æ£€æŸ¥å“å -->
+<!-- ¼ì²éÆ·Ãû -->
 if (document.form1.material.value=="")
 	{
-	alert("è¯·è¾“å…¥å“åï¼");
+	alert("ÇëÊäÈëÆ·Ãû£¡");
 	return false;
 	}
-<!-- æ£€æŸ¥å•ä»· -->
+<!-- ¼ì²éµ¥¼Û -->
 if (document.form1.price.value=="0" || document.form1.price.value=="")
 	{
-	alert("è¯·è¾“å…¥å•ä»·ï¼");
+	alert("ÇëÊäÈëµ¥¼Û¼Ó£¡");
 	return false;
 	}	
-<!-- æ£€æŸ¥æ—¥æœŸ -->
+<!-- ¼ì²éÈÕÆÚ -->
 if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	{
-	alert("æœŸè´§åˆåŒè¯·è¾“å…¥é¢„è®¡åˆ°æ¸¯æœŸï¼");
+	alert("ÆÚ»õºÏÍ¬ÇëÊäÈëÔ¤¼Æµ½¸ÛÆÚ£¡");
 	return false;
 	}
-}
-<!--æ£€æŸ¥å‰©ä½™åº“å­˜-->
 
+<!--¼ì²éÊ£Óà¿â´æ-->
+var filePath = location.href.substring(0, location.href.indexOf("create_sales_contract.asp"));    //ÒÔµ±Ç°Ò³ÃæÎÄ¼şÎª»ù´¡£¬ÕÒµ½ÎÄ¼şËùÔÚµÄ¾ø¶ÔÂ·¾¶  
+//var path = filePath + "/data/red#jxc.mdb"; 
+var path = "http://localhost:81/data/red#jxc.mdb";
+var objdbConn = new ActiveXObject("ADODB.Connection");         
+var strdsn = "driver={Microsoft Access Driver (*.mdb)};dbq="+path;     
+objdbConn.Open(strdsn);     
+var rs = new ActiveXObject("ADODB.Recordset");                   
+var sql="SELECT * FROM stockdocument WHERE refshipment="+document.form1.refshipment.value+" and refitem="+document.form1.refitem.value;
+rs.open(sql,objdbConn);
+//var objrs = objdbConn.Execute(sql); 
+while (!rs.EOF){ 
+  //if (objrs("remainqty")<document.form1.quantity.value){
+  	if (document.form1.quantity.value>10){
+	alert("Ê£Óà¿â´æÎª"+rs.field("remainqty")+"£¬Çëµ÷ÕûºÏÍ¬ÊıÁ¿£¡");
+	return false;  	
+  }
+  rs.moveNext(); 
+
+}
+
+rs.close();
+rs=null;
+objdbConn.Close();   
+objdbConn=null;
+alert("ÔõÃ´»ØÊÂ");
+
+}
 </script>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
@@ -152,7 +187,7 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 <td width="100%" background="../images/r_0.gif">
   <table cellpadding="0" cellspacing="0" width="100%">
     <tr>
-      <td>&nbsp;è®¢è´§åˆåŒ </td>
+      <td>&nbsp;¶©»õºÏÍ¬ </td>
 	  <td align="right">&nbsp;</td>
     </tr>
   </table>
@@ -165,16 +200,16 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
 	  <form name="form1">
       <tr>
-        <td align="right" height="30">åˆåŒç±»å‹ï¼š</td>
+        <td align="right" height="30">ºÏÍ¬ÀàĞÍ£º</td>
         <td class="category">
 			<select name="category">
-				<option value="A">ç°è´§</option>
-				<option value="B">æœŸè´§</option>
+				<option value="A">ÏÖ»õ</option>
+				<option value="B">ÆÚ»õ</option>
 			</select>				
 	    </td>
 	  </tr>	  
       <tr>
-        <td align="right" height="30">æˆ‘æ–¹å…¬å¸ï¼š</td>
+        <td align="right" height="30">ÎÒ·½¹«Ë¾£º</td>
         <td class="category">
 			<%
 			sql="select * from owncompany order by company"
@@ -191,7 +226,7 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 					rs_owncompany.close
 				%>								
 			</select>			
-			&nbsp;&nbsp;&nbsp;&nbsp;å®¢æˆ·
+			&nbsp;&nbsp;&nbsp;&nbsp;¿Í»§
 			<%
 			sql="select * from customer order by customername"
 			set rs_customer=conn.execute(sql)
@@ -210,7 +245,7 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	    </td>    		
 	  </tr>	  
       <tr>
-        <td width="20%" align="right" height="30">çŠ¶æ€ï¼š</td>
+        <td width="20%" align="right" height="30">×´Ì¬£º</td>
         <td width="80%" class="category">
 			<%
 			sql="select * from contractstatus"
@@ -227,66 +262,66 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	    </td>
 	  </tr>
       <tr>	  
-	    	<td align="right" height="30">å‚è€ƒèˆ¹æœŸè¡¨ï¼š</td>
+	    	<td align="right" height="30">²Î¿¼´¬ÆÚ±í£º</td>
         <td class="category">
-					<input name="refshipment" readonly style="cursor:hand;width:100px" value="å•å‡»é€‰æ‹©èˆ¹æœŸè¡¨é¡¹ç›®" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&guobie=guobie&spec=spec&package=package&quantity=quantity&weight=weight&coldstorage=coldstorage&boarddate=boarddate&deliveryport=deliveryport','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> 
-					&nbsp;&nbsp;&nbsp;é¡¹ç›®å·	
+					<input name="refshipment" readonly style="cursor:hand;width:100px" value="µ¥»÷Ñ¡Ôñ´¬ÆÚ±íÏîÄ¿" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&guobie=guobie&spec=spec&package=package&quantity=quantity&weight=weight&coldstorage=coldstorage&boarddate=boarddate&deliveryport=deliveryport','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> &nbsp;<font color="#ff0000">*</font>
+					&nbsp;&nbsp;&nbsp;ÏîÄ¿ºÅ	
 					<input name="refitem" readonly style="width:50px"
 				</td>
       </tr>   
       <tr>	  
-	    <td align="right" height="30">å‚å·ï¼š</td>
+	    <td align="right" height="30">³§ºÅ£º</td>
         <td class="category">
 			<input name="plant" style="width:100px" readonly>
-			&nbsp;&nbsp;&nbsp;å›½åˆ«
+			&nbsp;&nbsp;&nbsp;¹ú±ğ
 			<input name="guobie" style="width:100px" readonly>
-<!--			&nbsp;&nbsp;&nbsp;æˆ‘å¸ç¼–å·	
+<!--			&nbsp;&nbsp;&nbsp;ÎÒË¾±àºÅ	
 			<input name="shipmentnum" style="width:150px" maxlength="20" readonly> -->
 		</td>
       </tr>       
       <tr>	  
-	    <td align="right" height="30">å“åï¼š</td>
+	    <td align="right" height="30">Æ·Ãû£º</td>
 		<td class="category">
           		<input name="material" style="width:100px" readonly>
-		  		&nbsp;&nbsp;&nbsp;è§„æ ¼
+		  		&nbsp;&nbsp;&nbsp;¹æ¸ñ
 		  		<input name="spec" style="width:100px" readonly>
-		  		&nbsp;&nbsp;&nbsp;åŒ…è£…
+		  		&nbsp;&nbsp;&nbsp;°ü×°
 		  		<input name="package" style="width:200px">		  		
 		</td>
       </tr>
       <tr>	  
-	    <td align="right" height="30">ä»¶æ•°ï¼š</td>
+	    <td align="right" height="30">¼şÊı£º</td>
         <td class="category">
 		  		<input name="quantity" style="width:60px" maxlength="5"  <% if nowquantity<>"" then%>value="<%=nowquantity%>"<%end if%> onKeyPress="javascript:CheckNum();"  onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
-		  		&nbsp;&nbsp;&nbsp;é‡é‡
-		  		<input name="weight" style="width:50px" maxlength="20" <% if nowweight<>"" then%>value="<%=nowweight%>"<%end if%>>å¨
-		  		&nbsp;&nbsp;&nbsp;å•ä»·
-		  		<input name="price" style="width:50px" value=0 onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">å…ƒ/å¨		  		
+		  		&nbsp;&nbsp;&nbsp;ÖØÁ¿
+		  		<input name="weight" style="width:50px" maxlength="20" <% if nowweight<>"" then%>value="<%=nowweight%>"<%end if%>>¶Ö
+		  		&nbsp;&nbsp;&nbsp;µ¥¼Û
+		  		<input name="price" style="width:50px" value=0 onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">Ôª/¶Ö		  		
 		</td>
       </tr>	  
       <tr>	  
-	    <td align="right" height="30">å­˜æ”¾å†·åº“ï¼š</td>
+	    <td align="right" height="30">´æ·ÅÀä¿â£º</td>
         <td class="category">
 		  		<input name="coldstorage" style="width:100px" >
-				&nbsp;&nbsp;&nbsp;äº¤è´§åœ°
-		  		<input name="deliveryloc" value="ä¸Šæµ·" style="width:100px">
+				&nbsp;&nbsp;&nbsp;½»»õµØ
+		  		<input name="deliveryloc" value="ÉÏº£" style="width:100px">
 				</td>
       </tr>
       <tr>	  
-	    <td align="right" height="30">é¢„è®¡åˆ°æ¸¯æœŸï¼š</td>
+	    <td align="right" height="30">Ô¤¼Æµ½¸ÛÆÚ£º</td>
         <td class="category">
 		  		<input name="boarddate" style="width:80px">
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=boarddate&oldDate='+boarddate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-				&nbsp;&nbsp;&nbsp;äº¤è´§æ¸¯
+				&nbsp;&nbsp;&nbsp;½»»õ¸Û
 		  		<input name="deliveryport" style="width:100px">							
 				</td>
       </tr>
       <tr>
 	    <td height="30">&nbsp;</td>
         <td class="category">
-		  <input type="submit" value=" ç¡®è®¤å½•å…¥ " onClick="return check1()" class="button">
+		  <input type="submit" value=" È·ÈÏÂ¼Èë " onClick="return check1()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="reset" value=" é‡æ–°å¡«å†™ " class="button">
+		  <input type="reset" value=" ÖØĞÂÌîĞ´ " class="button">
 		  </td>
       </tr>
 	  </form>

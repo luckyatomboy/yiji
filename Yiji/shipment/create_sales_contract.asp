@@ -34,8 +34,14 @@ if fla27="0" then
 end if
 %>
 
+
+
 <%
-if request("hid1")="ok" then
+if request("hid1")="ok" then%>
+
+
+
+<%
 nowcategory=request("category")
 nowowncompany=request("owncompany")
 nowcustomer=request("customer")
@@ -105,11 +111,14 @@ sql="select * from stockdocument where refshipment="&nowrefshipment&" and refite
 set rs=server.createobject("ADODB.RecordSet")
 rs.open sql,conn,1,3
 
-rs("remainqty")=nowquantity
+if rs.eof=false then
+nowremainqty=rs("remainqty")-nowquantity
+rs("remainqty")=nowremainqty
 rs("changedate")=now()
 rs("changer")=session("redboy_username")
 rs.update
 rs.close
+end if
 
 %>
 <script language="javascript">
@@ -132,7 +141,7 @@ if (document.form1.material.value=="")
 <!-- 检查单价 -->
 if (document.form1.price.value=="0" || document.form1.price.value=="")
 	{
-	alert("请输入单价！");
+	alert("请输入单价加！");
 	return false;
 	}	
 <!-- 检查日期 -->
@@ -141,9 +150,35 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	alert("期货合同请输入预计到港期！");
 	return false;
 	}
-}
-<!--检查剩余库存-->
 
+<!--检查剩余库存-->
+var filePath = location.href.substring(0, location.href.indexOf("create_sales_contract.asp"));    //以当前页面文件为基础，找到文件所在的绝对路径  
+//var path = filePath + "/data/red#jxc.mdb"; 
+var path = "http://localhost:81/data/red#jxc.mdb";
+var objdbConn = new ActiveXObject("ADODB.Connection");         
+var strdsn = "driver={Microsoft Access Driver (*.mdb)};dbq="+path;     
+objdbConn.Open(strdsn);     
+var rs = new ActiveXObject("ADODB.Recordset");                   
+var sql="SELECT * FROM stockdocument WHERE refshipment="+document.form1.refshipment.value+" and refitem="+document.form1.refitem.value;
+rs.open(sql,objdbConn);
+//var objrs = objdbConn.Execute(sql); 
+while (!rs.EOF){ 
+  //if (objrs("remainqty")<document.form1.quantity.value){
+  	if (document.form1.quantity.value>10){
+	alert("剩余库存为"+rs.field("remainqty")+"，请调整合同数量！");
+	return false;  	
+  }
+  rs.moveNext(); 
+
+}
+
+rs.close();
+rs=null;
+objdbConn.Close();   
+objdbConn=null;
+alert("怎么回事");
+
+}
 </script>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
@@ -229,7 +264,7 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
       <tr>	  
 	    	<td align="right" height="30">参考船期表：</td>
         <td class="category">
-					<input name="refshipment" readonly style="cursor:hand;width:100px" value="单击选择船期表项目" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&guobie=guobie&spec=spec&package=package&quantity=quantity&weight=weight&coldstorage=coldstorage&boarddate=boarddate&deliveryport=deliveryport','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> 
+					<input name="refshipment" readonly style="cursor:hand;width:100px" value="单击选择船期表项目" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&guobie=guobie&spec=spec&package=package&quantity=quantity&weight=weight&coldstorage=coldstorage&boarddate=boarddate&deliveryport=deliveryport','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> &nbsp;<font color="#ff0000">*</font>
 					&nbsp;&nbsp;&nbsp;项目号	
 					<input name="refitem" readonly style="width:50px"
 				</td>

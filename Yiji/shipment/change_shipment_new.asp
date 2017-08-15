@@ -381,7 +381,7 @@ function chsel(vendor){
    var newTdObj11=myNewRow.insertCell(10);
    newTdObj11.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' readonly align='center' style='width:80px'"
 //   	+ " <img src='../images/date.gif' align='absmiddle' style='cursor:pointer;'" 
-   	+ " onClick=\""+"JavaScript:window.open('../day.asp?field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";   
+   	+ " onClick=\""+"JavaScript:window.open('../day.asp?form=form1&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";   
    newTdObj11.align="center";  
    var newTdObj12=myNewRow.insertCell(11);   	//箱数
 	 newTdObj12.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' style='width:80px' align='center' onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
@@ -942,7 +942,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>
 		  <input type="submit" value=" 确认修改 " onClick="return check1();" class="button">&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=shipment&combinedkey=<%=request("shipment")%>'); window.history.go(-2);}" class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=shipment&combinedkey=<%=request("shipment")%>'); window.location.href='shipment.asp';}" class="button">
       </tr>    
 </table>  
 </form>

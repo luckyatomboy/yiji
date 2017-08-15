@@ -142,6 +142,9 @@ return false;
 <td>
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
 	  <form name="form1">
+	  <input type="hidden" name="package" value="<%=request("package")%>">
+	  <input type="hidden" name="boarddate" value="<%=request("boarddate")%>">
+	  <input type="hidden" name="deliveryport" value="<%=request("deliveryport")%>">
       <tr>
         <td width="20%" align="right" height="30">状态：</td>
         <td width="80%" class="category">
@@ -162,7 +165,7 @@ return false;
       <tr>	  
 	    	<td align="right" height="30">参考船期表：</td>
         <td class="category">
-                    <input name="refshipment" readonly style="cursor:hand;width:100px" value="单击选择船期表项目" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&contract=contract&case=case&&guobie=guobie&spec=spec&quantity=quantity&weight=weight','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> 
+                    <input name="refshipment" readonly style="cursor:hand;width:100px" value="单击选择船期表项目" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&guobie=guobie&spec=spec&quantity=quantity&weight=weight','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> &nbsp;<font color="#ff0000">*</font>
 					&nbsp;&nbsp;&nbsp;项目号	
 					<input name="refitem" readonly style="width:50px"
 				</td>
@@ -228,7 +231,7 @@ return false;
 	    	<td align="right" height="30">生产日期：</td>
         <td class="category">
 		  		<input name="producedate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=productdate&oldDate='+productdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=producedate&oldDate='+producedate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保质期
 				<input name="warranty" style="width:100px">
 				</td>

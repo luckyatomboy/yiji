@@ -35,6 +35,8 @@ end if
 %>
 
 <%
+if request("hid1")="" then
+
   sql="select * from locktable where tablename='SalesContract' and combinedkey='"&request("ContractNum")&"'"
   set rs_lock=conn.execute(sql)
   if rs_lock.eof = false then
@@ -47,91 +49,7 @@ end if
     sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('salescontract','"&request("ContractNum")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
     conn.execute(sql)
 end if
-%>
 
-<%
-if request("hid1")="ok" then
-nowcategory=request("category")
-nowowncompany=request("owncompany")
-nowcustomer=request("customer")
-nowstatus=request("status")
-nowrefshipment=request("refshipment")
-nowrefitem=request("refitem")
-nowcountry=request("guobie")
-if request("material")<>"" then
-	nowmaterial=request("material")
-	nowspec=request("spec")
-	nowprice=request("price")
-else
-	nowmaterial=""
-	nowspec=""
-	nowprice=0	
-end if
-nowplant=request("plant")
-'nowcasenumber=request("casenumber")
-'nowcase=request("case")
-if request("weight")<>"" then
-	nowweight=request("weight")
-else
-	nowweight=0
-end if
-if request("quantity")<>"" then
-	nowquantity=request("quantity")
-else
-	nowquantity=0
-end if
-
-if request("boarddate")<>"" then
-	nowboarddate=request("boarddate")
-else
-	nowboarddate=date()
-end if
-nowpackage=request("package")
-nowstorage=request("coldstorage")
-nowdeliveryloc=request("deliveryloc")
-nowdeliveryport=request("deliveryport")
-
-sql="select * from SalesContract where ContractNum="&request("ContractNum")
-set rs=server.createobject("ADODB.RecordSet")
-rs.open sql,conn,1,3
-
-rs("category")=nowcategory
-rs("owncompany")=nowowncompany
-rs("customer")=nowcustomer
-rs("status")=nowstatus
-rs("quantity")=nowquantity
-rs("weight")=nowweight
-rs("price")=nowprice
-rs.update
-rs.close
-
-'如果有入库单，更新剩余库存数量'
-sql="select * from stockdocument where refshipment="&nowrefshipment&" and refitem="&nowrefitem
-set rs=server.createobject("ADODB.RecordSet")
-rs.open sql,conn,1,3
-
-nowremainqty=rs("remainqty")-nowquantity
-rs("remainqty")=nowremainqty
-rs("changedate")=now()
-rs("changer")=session("redboy_username")
-rs.update
-rs.close
-
-sql="delete from locktable where tablename='SalesContract' and combinedkey="&request("ContractNum")
-conn.execute(sql)
-
-%>
-<script language="javascript">
-//alert(&nowshipment&)
-alert("订货合同修改成功！")
-window.location.href="shipment.asp"
-</script>
-
-<%
-else
-%>
-
-<%
 sql="select * from SalesContract where ContractNum="&request("ContractNum")
 set rs=conn.execute(sql)
 %>
@@ -243,7 +161,7 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
       <tr>	  
 	    	<td align="right" height="30">参考船期表：</td>
         <td class="category">
-					<input name="refshipment" readonly style="cursor:hand;width:100px" value="<%=rs("refshipment")%>"> 
+					<input name="refshipment" readonly style="width:100px" value="<%=rs("refshipment")%>"> 
 					&nbsp;&nbsp;&nbsp;项目号	
 					<input name="refitem" readonly style="width:50px" value="<%=rs("refitem")%>"> 
 				</td>
@@ -300,12 +218,12 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
         <td class="category">
 		  <input type="submit" value=" 确认修改 " onClick="return check1()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=salescontract&combinedkey=<%=request("contractnum")%>');window.history.go(-2);}" class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=salescontract&combinedkey=<%=request("contractnum")%>'); window.location.href='shipment.asp';}" class="button">
 			<%
 			if fla7="0" and session("redboy_id")<>"1" then
 			else
 			%>			
-			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该订货合同吗？')) {window.open('delete_sales_contract.asp?status=<%=rs("status")%>&ContractNum=<%=request("ContractNum")%>'); window.history.go(-2);}" class="button"></td>
+			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该订货合同吗？')) {window.open('delete_sales_contract.asp?status=<%=rs("status")%>&ContractNum=<%=request("ContractNum")%>'); window.location.href='shipment.asp';}" class="button"></td>
 			<%end if%>			  
 		  </td>
       </tr>
@@ -320,6 +238,87 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 <td><img src="../images/r_3.gif" alt="" /></td>
 </tr>
 </table>
+
+<%else
+nowcategory=request("category")
+nowowncompany=request("owncompany")
+nowcustomer=request("customer")
+nowstatus=request("status")
+nowrefshipment=request("refshipment")
+nowrefitem=request("refitem")
+nowcountry=request("guobie")
+if request("material")<>"" then
+	nowmaterial=request("material")
+	nowspec=request("spec")
+	nowprice=request("price")
+else
+	nowmaterial=""
+	nowspec=""
+	nowprice=0	
+end if
+nowplant=request("plant")
+'nowcasenumber=request("casenumber")
+'nowcase=request("case")
+if request("weight")<>"" then
+	nowweight=request("weight")
+else
+	nowweight=0
+end if
+if request("quantity")<>"" then
+	nowquantity=request("quantity")
+else
+	nowquantity=0
+end if
+
+if request("boarddate")<>"" then
+	nowboarddate=request("boarddate")
+else
+	nowboarddate=date()
+end if
+nowpackage=request("package")
+nowstorage=request("coldstorage")
+nowdeliveryloc=request("deliveryloc")
+nowdeliveryport=request("deliveryport")
+
+sql="select * from SalesContract where ContractNum="&request("ContractNum")
+set rs=server.createobject("ADODB.RecordSet")
+rs.open sql,conn,1,3
+
+if rs.eof=false then
+rs("category")=nowcategory
+rs("owncompany")=nowowncompany
+rs("customer")=nowcustomer
+rs("status")=nowstatus
+rs("quantity")=nowquantity
+rs("weight")=nowweight
+rs("price")=nowprice
+rs.update
+rs.close
+end if
+
+'如果有入库单，更新剩余库存数量'
+sql="select * from stockdocument where refshipment="&nowrefshipment&" and refitem="&nowrefitem
+set rs=server.createobject("ADODB.RecordSet")
+rs.open sql,conn,1,3
+if rs.eof=false then
+nowremainqty=rs("remainqty")-nowquantity
+rs("remainqty")=nowremainqty
+rs("changedate")=now()
+rs("changer")=session("redboy_username")
+rs.update
+rs.close
+end if
+
+'删除逻辑锁'
+sql="delete from locktable where tablename='SalesContract' and combinedkey='"&request("ContractNum")&"'"
+conn.execute(sql)
+
+%>
+<script language="javascript">
+//alert(&nowshipment&)
+alert("订货合同修改成功！")
+window.location.href="shipment.asp"
+</script>
 <%end if%>
 </body>
 </html>

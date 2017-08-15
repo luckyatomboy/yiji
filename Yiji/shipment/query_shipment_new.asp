@@ -289,17 +289,17 @@ nowto=request("dateto")
   %>
 
     <tr align="center" 
-        onDblClick="window.opener.document.<%=request("queryform")%>.<%=request("refship")%>.value='<%=rs_shipment("shipmentnum")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("refitem")%>.value='<%=rs_shipment("itemnum")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("material")%>.value='<%=rs_shipment("material")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("spec")%>.value='<%=rs_shipment("spec")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("package")%>.value='<%=rs_shipment("package")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("quantity")%>.value='<%=rs_shipment("casenumber")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("weight")%>.value='<%=rs_shipment("contractweight")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("boarddate")%>.value='<%=rs_shipment("boarddate")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("deliveryport")%>.value='<%=rs_shipment("destination")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("guobie")%>.value='<%=rs_shipment("country")%>';
-                    window.opener.document.<%=request("queryform")%>.<%=request("plant")%>.value='<%=rs_shipment("plant")%>';      
+        onDblClick="window.opener.document.<%=request("queryform")%>.refshipment.value='<%=rs_shipment("shipmentnum")%>';
+                    window.opener.document.<%=request("queryform")%>.refitem.value='<%=rs_shipment("itemnum")%>';
+                    window.opener.document.<%=request("queryform")%>.material.value='<%=rs_shipment("material")%>';
+                    window.opener.document.<%=request("queryform")%>.spec.value='<%=rs_shipment("spec")%>';
+                    window.opener.document.<%=request("queryform")%>.quantity.value='<%=rs_shipment("casenumber")%>';
+                    window.opener.document.<%=request("queryform")%>.weight.value='<%=rs_shipment("contractweight")%>';
+                    window.opener.document.<%=request("queryform")%>.guobie.value='<%=rs_shipment("country")%>';
+                    window.opener.document.<%=request("queryform")%>.plant.value='<%=rs_shipment("plant")%>';      
+                    window.opener.document.<%=request("queryform")%>.boarddate.value='<%=rs_shipment("boarddate")%>';
+                    window.opener.document.<%=request("queryform")%>.deliveryport.value='<%=rs_shipment("destination")%>';
+                    window.opener.document.<%=request("queryform")%>.package.value='<%=rs_shipment("package")%>';
 
                     window.close();" 
         <%if rs_shipment("status")="进库" then%>bgcolor="darkgrey"<%elseif rs_shipment("status")="通关中" then%>bgcolor="lawngreen"<%elseif rs_shipment("status")="已送货" then%>bgcolor="red"<%end if%>>     

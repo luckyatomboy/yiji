@@ -16,8 +16,8 @@ a:hover { color:#ff3333;text-decoration: none}
 </style> 
 <Script Language="JavaScript"> 
 function getDay(v){ 
-//window.opener.document.<%=request.querystring("form")%>.<%=request.querystring("field")%>.value=v; 
-window.opener.document.getElementById("<%=request("field")%>").value=v;
+window.opener.document.<%=request.querystring("form")%>.<%=request.querystring("field")%>.value=v; 
+//window.opener.document.getElementById("<%=request("field")%>").value=v;
 window.close(); 
 return false; 
 } 

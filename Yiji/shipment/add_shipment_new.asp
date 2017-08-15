@@ -336,7 +336,7 @@ function chsel(vendor){
    var newTdObj11=myNewRow.insertCell(10);
    newTdObj11.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' readonly style='width:80px'"
 //   	+ " <img src='../images/date.gif' align='absmiddle' style='cursor:pointer;'" 
-   	+ " onClick=\""+"JavaScript:window.open('../day.asp?field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";     
+   	+ " onClick=\""+"JavaScript:window.open('../day.asp?form=form1&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";     
    var newTdObj12=myNewRow.insertCell(11);   	//箱数
 	 newTdObj12.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' style='width:80px' onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
    var newTdObj13=myNewRow.insertCell(12);   	//发票总金额

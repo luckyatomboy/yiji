@@ -152,7 +152,7 @@ set rs=conn.execute(sql)
       <tr>	  
 	    	<td align="right" height="30">参考船期表：</td>
         <td class="category">
-					<input name="refshipment" style="cursor:hand;width:100px" value="<%=rs("refshipment")%>" onClick="JavaScript:window.open('query_shipment.asp?queryform=form1&field=refshipment&field2=refitem&field3=plant','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');">
+					<input name="refshipment" style="width:100px" value="<%=rs("refshipment")%>">
 					&nbsp;&nbsp;&nbsp;项目号
 					<input name="refitem" style="width:100px" value="<%=rs("refitem")%>">
 				</td>
@@ -251,7 +251,7 @@ set rs=conn.execute(sql)
 				&nbsp;&nbsp;&nbsp;入库原因
 		  		<input name="reason" style="width:100px" value="<%=rs("reason")%>">				
 				&nbsp;&nbsp;&nbsp;剩余数量
-		  		<input name="remainqty" style="color:blue;text-decoration:underline;cursor:hand;width:100px" readonly value="<%=rs("remainqty")%>" onClick="JavaScript:window.open('query_remain_stock.asp?refshipment=refshipment&refitem=refitem','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');">				
+		  		<input name="remainqty" style="color:blue;text-decoration:underline;cursor:hand;width:100px" readonly value="<%=rs("remainqty")%>" onClick="JavaScript:window.open('query_remain_stock.asp?refshipment='+refshipment.value+'&refitem='+refitem.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');">				
 		</td>
       </tr>
       <tr>	  
@@ -268,7 +268,7 @@ set rs=conn.execute(sql)
         <td class="category">
 		  <input type="submit" value=" 确认修改 " onClick="return check()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="button" value=" 放弃修改返回 " onClick="releaseAndBack()" class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=stockdocument&combinedkey=<%=request("stocknumber")%>'); window.location.href='shipment.asp';}" class="button">
 		  </td>
       </tr>
 	  </form>

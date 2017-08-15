@@ -33,7 +33,9 @@ if fla35="0" and session("redboy_id")<>"1" then
 end if
 %>
 
-<%
+<%if request("hid1")="" then
+
+
   sql="select * from locktable where tablename='vendor' and combinedkey='"&request("vendorname")&"'"
   set rs_lock=conn.execute(sql)
   if rs_lock.eof = false then
@@ -46,9 +48,7 @@ end if
     sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('vendor','"&request("vendorname")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
     conn.execute(sql)
 end if
-%>
 
-<%if request("hid1")="" then
 
 sql="select * from vendor where vendorname='"&request("vendorname")&"'"
 set rs=conn.execute(sql)
@@ -78,6 +78,25 @@ set rs=conn.execute(sql)
         <td width="75%" class="category"><%=rs("vendorname")%>
         	</td>
       </tr>    
+      <tr>
+        <td align="right" height="30">国别：</td>
+        <td class="category">
+          <%
+          sql="select * from country"
+          set rs_country=conn.execute(sql)
+          %>
+          <select name="country">
+            <%
+              do while rs_country.eof=false
+            %>
+              <option value="<%=rs_country("country")%>" <%if rs_country("country")=rs("country") then%>selected="selected"<%end if%>><%=rs_country("country")%></option>
+            <%
+              rs_country.movenext
+              loop
+            %>
+          </select>
+        </td>
+      </tr>        
       <tr>
         <td align="right" height="30">公司地址：</td>
         <td class="category"><input type="text" name="address" style="width:300px" value="<%=rs("address")%>"></td>
@@ -138,12 +157,12 @@ set rs=conn.execute(sql)
 		  <input type="submit" value=" 确认修改 " class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
       <input type="hidden" name="hid2" value="vendor">
-			<input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('delete_lock_table.asp?tablename=vendor&combinedkey=<%=request("vendorname")%>'); window.history.go(-2);}" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('delete_lock_table.asp?tablename=vendor&combinedkey=<%=request("vendorname")%>'); window.location.href='master.asp';}" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 			<%
 			if fla35="0" and session("redboy_id")<>"1" then
 			else
 			%>			
-			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该供应商吗？')) {window.open('delete_vendor.asp?vendorname=<%=request("vendorname")%>'); window.history.go(-2);}" class="button"></td>
+			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该供应商吗？')) {window.open('delete_vendor.asp?vendorname=<%=request("vendorname")%>'); window.location.href='master.asp';}" class="button"></td>
 			<%end if%>				
       </tr>	    
 </table>
@@ -171,6 +190,9 @@ nowplant3=request("plant3")
 nowplant4=request("plant4")
 nowdes=request("beizhu")
 nowkeyword=request("keyword")
+nowcountry=request("country")
+nowterm1=request("term1")
+nowterm2=request("term2")
 
 set rs=server.createobject("ADODB.RecordSet")
 sql="select * from vendor where vendorname='"&request("vendorname")&"'"
@@ -183,13 +205,16 @@ rs("plant1")=nowplant1
 rs("plant2")=nowplant2
 rs("plant3")=nowplant3
 rs("plant4")=nowplant4
+rs("country")=nowcountry
+rs("term1")=nowterm1
+rs("term2")=nowterm2
 rs("memo")=nowdes
 rs("changedate")=now
 rs("changer")=session("redboy_username")
 rs.update
 rs.close
 
-sql="delete from locktable where tablename='vendor' and combinedkey="&request("vendorname")
+sql="delete from locktable where tablename='vendor' and combinedkey='"&request("vendorname")&"'"
 conn.execute(sql)
 
 %>

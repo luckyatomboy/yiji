@@ -12,7 +12,7 @@ end if
 <!-- #include file="../const.asp" --> 
 <html>
 <head>
-<title><%=dianming%> - æŸ¥è¯¢</title>
+<title><%=dianming%> - ²éÑ¯</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
@@ -26,13 +26,13 @@ body {
 <%
 if fla30="0" then
 %>
-<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">ä½ ä¸å…·å¤‡æ­¤æƒé™ï¼Œè¯·ä¸ç®¡ç†å‘˜è”ç³»ï¼</font></center>
+<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">Äã²»¾ß±¸´ËÈ¨ÏŞ£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ£¡</font></center>
 <%  
   response.end
 end if
 %>
 <%
-'å–å¾—æœç´¢å…³é”®å­—  
+'È¡µÃËÑË÷¹Ø¼ü×Ö  
 nowkeyword=request("keyword") 
 nowfrom=request("datefrom")
 nowto=request("dateto")
@@ -45,23 +45,23 @@ nowto=request("dateto")
   <input type="hidden" name="span1" value="<%=request("span1")%>">
   <tr> 
 	<td align="right">
-	  æœç´¢ï¼š
+	  ËÑË÷£º
 		<input type="text" name="keyword" size="20" value="<%=nowkeyword%>">
 	</td>
   </tr>
   <tr> 
 	<td align="right">
-	  å…¥åº“æ—¥æœŸï¼šä»
+	  Èë¿âÈÕÆÚ£º´Ó
 	  <input name="datefrom" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=datefrom&oldDate='+datefrom.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-	  &nbsp;&nbsp;&nbsp;&nbsp;åˆ°
+	  &nbsp;&nbsp;&nbsp;&nbsp;µ½
 	  <input name="dateto" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=dateto&oldDate='+dateto.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-	  <input type="submit" value=" æŸ¥è¯¢ " class="button">&nbsp;
+	  <input type="submit" value=" ²éÑ¯ " class="button">&nbsp;
 	</td>
   </tr>  
 </form>  
 </table>
 <%
-  sql="select * from stockdocument where stockcategory='A'" <!--åªå–å…¥åº“å•
+  sql="select * from stockdocument where stockcategory='A'" <!--Ö»È¡Èë¿âµ¥
   if nowkeyword<>"" then
   	sql=sql&" and stocknumber='"&nowkeyword&"'"
   end if  
@@ -108,7 +108,7 @@ nowto=request("dateto")
 <td width="100%" background="../images/r_0.gif">
   <table cellpadding="0" cellspacing="0" width="100%">
     <tr>
-      <td>&nbsp;å…¥åº“å•æŸ¥è¯¢</td>
+      <td>&nbsp;Èë¿âµ¥²éÑ¯</td>
 	  <td align="right">&nbsp;</td>
     </tr>
   </table>
@@ -160,42 +160,42 @@ nowto=request("dateto")
   <input type="hidden" name="order12" value="<%=request("order12")%>">
   <tr align="center">
 	<td class="category" width="60" height="30">
-		<a href="?order1=<%if request("order1")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">åºå·<%if request("order1")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order1=<%if request("order1")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">ĞòºÅ<%if request("order1")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
 	</td>
 	<td class="category" width="80" height="30">
-		<a href="?order2=<%if request("order2")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">çŠ¶æ€<%if request("order2")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order2=<%if request("order2")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">×´Ì¬<%if request("order2")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
 	</td>
 	<td class="category" width="100" height="30">
-	  <a href="?order3=<%if request("order3")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">å‚è€ƒèˆ¹æœŸ<%if request("order3")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+	  <a href="?order3=<%if request("order3")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">²Î¿¼´¬ÆÚ<%if request("order3")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
 	</td>
 	<td class="category" width="100" height="30">
-		<a href="?order4=<%if request("order4")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">å‚è€ƒé¡¹ç›®<%if request("order4")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order4=<%if request("order4")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">²Î¿¼ÏîÄ¿<%if request("order4")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
 	</td>
 	<td class="category" width="120" height="30">
-		<a href="?order5=<%if request("order5")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">åˆåŒå·<%if request("order5")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order5=<%if request("order5")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">ºÏÍ¬ºÅ<%if request("order5")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
 	</td>
 	<td class="category" width="80" height="30">
-		<a href="?order6=<%if request("order6")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">å“å<%if request("order6")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order6=<%if request("order6")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">Æ·Ãû<%if request("order6")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
 	</td>
 	<td class="category" width="80" height="30">
-		<a href="?order7=<%if request("order7")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">å›½å®¶<%if request("order7")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order7=<%if request("order7")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">¹ú¼Ò<%if request("order7")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
 	</td>
 	<td class="category" width="80" height="30">
-		<a href="?order8=<%if request("order8")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">å‚å·<%if request("order8")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order8=<%if request("order8")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">³§ºÅ<%if request("order8")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
 	</td>
 	<td class="category" width="80" height="30">
-		<a href="?order9=<%if request("order9")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">å…¥åº“æ—¥æœŸ<%if request("order9")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order9=<%if request("order9")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">Èë¿âÈÕÆÚ<%if request("order9")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
   </td>
 	<td class="category" width="80" height="30">
-		<a href="?order10=<%if request("order10")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">å†·åº“åç§°<%if request("order10")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order10=<%if request("order10")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">Àä¿âÃû³Æ<%if request("order10")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
   </td>
 	<td class="category" width="80" height="30">
-		<a href="?order11=<%if request("order11")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">ç”Ÿäº§æ—¥æœŸ<%if request("order11")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order11=<%if request("order11")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">Éú²úÈÕÆÚ<%if request("order11")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
   </td>
 	<td class="category" width="80" height="30">
-		<a href="?order12=<%if request("order12")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">å‰©ä½™åº“å­˜<%if request("order12")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
+		<a href="?order12=<%if request("order12")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">Ê£Óà¿â´æ<%if request("order12")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
   </td>  
-  <td class="category">ä¿®æ”¹</td>
+  <td class="category">ĞŞ¸Ä</td>
   </tr>
   <%
   set rs_stock =server.createobject("ADODB.RecordSet")	
@@ -225,7 +225,7 @@ nowto=request("dateto")
 	  <td align="center"><%=rs_stock("productdate")%></td>
 	  <td align="center"><%=rs_stock("remainqty")%></td>
 	  <td align="center">
-			<a href="change_stock_order.asp?form=<%=request("form")%>&stocknumber=<%=rs_stock("stocknumber")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">ä¿®æ”¹</a>
+			<a href="change_stock_order.asp?form=<%=request("form")%>&stocknumber=<%=rs_stock("stocknumber")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">ĞŞ¸Ä</a>
 	  </td>
   </tr>
   </tr>
@@ -236,7 +236,7 @@ nowto=request("dateto")
   else
   %>
   <tr align="center" onMouseOver="this.className='highlight'" onMouseOut="this.className=''">
-    <td colspan="12" height="25" align="center" style="color:red"><b>æ²¡æœ‰æ‰¾åˆ°è®°å½•</b></td>
+    <td colspan="12" height="25" align="center" style="color:red"><b>Ã»ÓĞÕÒµ½¼ÇÂ¼</b></td>
   </tr>
   <%
   end if

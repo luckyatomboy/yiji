@@ -34,7 +34,8 @@ if fla6="0" and session("redboy_id")<>"1" then
 end if
 %>
 
-<%
+<%if request("hid1")="" then
+
   sql="select * from locktable where tablename='agent' and combinedkey='"&request("company")&"'"
   set rs_lock=conn.execute(sql)
   if rs_lock.eof = false then
@@ -47,9 +48,6 @@ end if
     sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('agent','"&request("company")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
     conn.execute(sql)
 end if
-%>
-
-<%if request("hid1")="" then
 
 sql="select * from agent where company='"&request("company")&"'"
 set rs=conn.execute(sql)
@@ -162,7 +160,7 @@ rs("changer")=session("redboy_username")
 rs.update
 rs.close
 
-sql="delete from locktable where tablename='agent' and combinedkey="&request("company")
+sql="delete from locktable where tablename='agent' and combinedkey='"&request("company")&"'"
 conn.execute(sql)
 
 %>

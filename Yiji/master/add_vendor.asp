@@ -86,6 +86,10 @@ return false;
         </td>
       </tr>	  
       <tr>
+        <td align="right" height="30">公司地址：</td>
+        <td class="category"><input type="text" name="address" style="width:300px"></td>
+      </tr>       
+      <tr>
         <td align="right" height="30">联系电话：</td>
         <td class="category"><input type="text" name="tel" style="width:200px"></td>
       </tr>	 
@@ -97,10 +101,7 @@ return false;
         <td align="right" height="30">Email：</td>
         <td class="category"><input type="text" name="email" style="width:200px"></td>
       </tr> 
-      <tr>
-        <td align="right" height="30">公司地址：</td>
-        <td class="category"><input type="text" name="address" style="width:300px"></td>
-      </tr> 	  
+	  
       <tr>
         <td align="right" height="30">付款方式1：</td>
         <td class="category"><input type="text" name="term1" style="width:100px"></td>
