@@ -54,8 +54,9 @@ sql="select * from SalesContract where ContractNum="&request("ContractNum")
 set rs=conn.execute(sql)
 %>
 
-<script language="javascript">
-function check1(){
+<script LANGUAGE="JAVASCRIPT">
+
+function check_sales_contract(){
 <!-- 检查品名 -->
 if (document.form1.material.value=="")
 	{
@@ -68,13 +69,54 @@ if (document.form1.price.value=="0" || document.form1.price.value=="")
 	alert("请输入单价！");
 	return false;
 	}	
+<!-- 检查数量 -->
+if (document.form1.quantity.value=="0" || document.form1.quantity.value=="")
+	{
+	alert("请输入数量！");
+	return false;
+	}		
 <!-- 检查日期 -->
 if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	{
 	alert("期货合同请输入预计到港期！");
 	return false;
 	}
+
+<!--如果是现货合同，检查剩余库存-->
+if (document.form1.category.value=="A"){
+	if (window.XMLHttpRequest)
+	  {// 针对 IE7+, Firefox, Chrome, Opera, Safari 的代码
+	 	 xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// 针对 IE6, IE5 的代码
+	  	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    	remainqty=xmlhttp.responseText;
+	    	if (remainqty=="e"){
+	    		alert("没有入库单，不能创建现货合同");
+	    		result="false";
+	    	}else if (parseInt(remainqty)<parseInt(document.form1.quantity.value)){
+	    		alert("剩余库存为"+remainqty+"，请重新输入数量");
+	    		result="false";
+	    	}else{
+	    		result="true";
+	    	}
+	    }
+	  }
+	xmlhttp.open("GET","check_remain_qty.asp?refshipment="+document.form1.refshipment.value+"&refitem="+document.form1.refitem.value,false);
+	xmlhttp.send();
+	
+	if (result=="false"){
+		return false;
+	}
+	}
 }
+
 </script>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
@@ -216,14 +258,14 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
       <tr>
 	    <td height="30">&nbsp;</td>
         <td class="category">
-		  <input type="submit" value=" 确认修改 " onClick="return check1()" class="button">
+		  <input type="submit" value=" 确认修改 " onClick="return check_sales_contract()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
 		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=salescontract&combinedkey=<%=request("contractnum")%>'); window.location.href='shipment.asp';}" class="button">
 			<%
 			if fla7="0" and session("redboy_id")<>"1" then
 			else
 			%>			
-			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该订货合同吗？')) {window.open('delete_sales_contract.asp?status=<%=rs("status")%>&ContractNum=<%=request("ContractNum")%>'); window.location.href='shipment.asp';}" class="button"></td>
+			<input type="button" value=" 删除 " onClick="if (confirm('确定要删除该订货合同吗？')) {window.open('delete_sales_contract.asp?status=<%=rs("status")%>&ContractNum=<%=request("ContractNum")%>&refshipment=<%=rs("refshipment")%>&refitem=<%=rs("refitem")%>&quantity=<%=rs("quantity")%>'); window.location.href='shipment.asp';}" class="button"></td>
 			<%end if%>			  
 		  </td>
       </tr>

@@ -36,6 +36,20 @@ if lv_deny <> 1 then
 '删除订货合同'
 sql="delete from salescontract where contractnum="&request("contractnum")
 conn.execute(sql)
+
+'更新入库单中剩余库存'
+sql="select * from stockdocument where refshipment="&request("refshipment")&" and refitem="&request("refitem")
+set rs=server.createobject("ADODB.RecordSet")
+rs.open sql,conn,1,3
+
+if rs.eof=false then
+	nowremainqty=rs("remainqty")+request("quantity")
+	rs("remainqty")=nowremainqty
+	rs.update
+	rs.close
+end if
+
+
 end if
 
 

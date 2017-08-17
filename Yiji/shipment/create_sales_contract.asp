@@ -15,6 +15,7 @@ end if
 <head>
 <title><%=dianming%> - 创建订货合同</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -130,8 +131,10 @@ window.location.href="shipment.asp"
 <%
 else
 %>
-<script language="javascript">
-function check1(){
+
+<script LANGUAGE="JAVASCRIPT">
+
+function check_sales_contract(){
 <!-- 检查品名 -->
 if (document.form1.material.value=="")
 	{
@@ -141,9 +144,15 @@ if (document.form1.material.value=="")
 <!-- 检查单价 -->
 if (document.form1.price.value=="0" || document.form1.price.value=="")
 	{
-	alert("请输入单价加！");
+	alert("请输入单价！");
 	return false;
 	}	
+<!-- 检查数量 -->
+if (document.form1.quantity.value=="0" || document.form1.quantity.value=="")
+	{
+	alert("请输入数量！");
+	return false;
+	}		
 <!-- 检查日期 -->
 if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	{
@@ -151,34 +160,43 @@ if (document.form1.category.value=="B" && document.form1.boarddate.value=="")
 	return false;
 	}
 
-<!--检查剩余库存-->
-var filePath = location.href.substring(0, location.href.indexOf("create_sales_contract.asp"));    //以当前页面文件为基础，找到文件所在的绝对路径  
-//var path = filePath + "/data/red#jxc.mdb"; 
-var path = "http://localhost:81/data/red#jxc.mdb";
-var objdbConn = new ActiveXObject("ADODB.Connection");         
-var strdsn = "driver={Microsoft Access Driver (*.mdb)};dbq="+path;     
-objdbConn.Open(strdsn);     
-var rs = new ActiveXObject("ADODB.Recordset");                   
-var sql="SELECT * FROM stockdocument WHERE refshipment="+document.form1.refshipment.value+" and refitem="+document.form1.refitem.value;
-rs.open(sql,objdbConn);
-//var objrs = objdbConn.Execute(sql); 
-while (!rs.EOF){ 
-  //if (objrs("remainqty")<document.form1.quantity.value){
-  	if (document.form1.quantity.value>10){
-	alert("剩余库存为"+rs.field("remainqty")+"，请调整合同数量！");
-	return false;  	
-  }
-  rs.moveNext(); 
-
+<!--如果是现货合同，检查剩余库存-->
+if (document.form1.category.value=="A"){
+	if (window.XMLHttpRequest)
+	  {// 针对 IE7+, Firefox, Chrome, Opera, Safari 的代码
+	 	 xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// 针对 IE6, IE5 的代码
+	  	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    	remainqty=xmlhttp.responseText;
+	    //document.getElementByName("remainqty").value=xmlhttp.responseText;
+	    	if (remainqty=="e"){
+	    		alert("没有入库单，不能创建现货合同");
+	    		result="false";
+	    	}else if (parseInt(remainqty)<parseInt(document.form1.quantity.value)){
+	    		alert("剩余库存为"+remainqty+"，请重新输入数量");
+	    		result="false";
+	    	}else{
+	    		result="true";
+	    	}
+	    }
+	  }
+	xmlhttp.open("GET","check_remain_qty.asp?refshipment="+document.form1.refshipment.value+"&refitem="+document.form1.refitem.value,false);
+	xmlhttp.send();
+//	window.open("check_remain_qty.asp?refshipment="+document.form1.refshipment.value+"&refitem="+document.form1.refitem.value,"","directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590");
+	
+	if (result=="false"){
+		return false;
+	}
+	}
 }
 
-rs.close();
-rs=null;
-objdbConn.Close();   
-objdbConn=null;
-alert("怎么回事");
-
-}
 </script>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
@@ -199,6 +217,7 @@ alert("怎么回事");
 <td>
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
 	  <form name="form1">
+	  <input type="hidden" name="remainqty" value="<%=request("remainqty")%>">
       <tr>
         <td align="right" height="30">合同类型：</td>
         <td class="category">
@@ -319,7 +338,7 @@ alert("怎么回事");
       <tr>
 	    <td height="30">&nbsp;</td>
         <td class="category">
-		  <input type="submit" value=" 确认录入 " onClick="return check1()" class="button">
+		  <input type="submit" value=" 确认录入 " onClick="return check_sales_contract()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
 		  <input type="reset" value=" 重新填写 " class="button">
 		  </td>
