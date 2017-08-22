@@ -107,6 +107,8 @@ set rs=conn.execute(sql)
             <td height="30">&nbsp;</td>
               <td class="category">
             <input type="button" value=" ·µ»Ø " onClick="window.history.go(-1);" class="button">&nbsp;&nbsp;&nbsp;&nbsp;        
+            </td>
+      </tr>
 </table>
 </td>
 <td></td>

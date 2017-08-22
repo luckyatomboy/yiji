@@ -15,6 +15,9 @@ end if
 <head>
 <title><%=dianming%> - 修改许可证</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -32,6 +35,13 @@ if fla35="0" and session("redboy_id")<>"1" then
   response.end
 end if
 %>
+
+<script>
+  $(function(){
+//日期控件
+    $(".datepicker").datepicker();
+  });
+</script>
 
 <%if request("hid1")="" then%>
 
@@ -170,15 +180,13 @@ set rs=conn.execute(sql)
       <tr>
         <td align="right" height="30">有效期起始日：</td>
         <td class="category">
-		  		<input name="validfrom" readonly style="width:80px" value="<%=rs("validfrom")%>">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form2&field=validfrom&oldDate='+validfrom.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="validfrom" readonly style="width:80px" value="<%=rs("validfrom")%>" class="datepicker">
 				</td>
       </tr> 	
       <tr>
         <td align="right" height="30">有效期终止日：</td>
         <td class="category">
-		  		<input name="validto" readonly style="width:80px" value="<%=rs("validto")%>">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form2&field=validto&oldDate='+validto.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="validto" readonly style="width:80px" value="<%=rs("validto")%>" class="datepicker">
 				</td>
       </tr>
       <tr>
