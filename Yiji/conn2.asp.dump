@@ -4,7 +4,7 @@ set rs=server.createobject("adodb.recordset")
 set conn=server.createobject("adodb.connection")
 mypath=server.mappath("../"+dbname)
 conn.open "driver={microsoft access driver (*.mdb)};dbq="&mypath&";uid=;pwd=123;"
-''è®ºå›ç”¨å‡½æ•°
+''ÂÛÌ³ÓÃº¯Êý
 function connClose
 Conn.close
 Set conn = Nothing
@@ -13,7 +13,7 @@ function errmsg(message)
 session("err")=message
 response.redirect"../gbook/err.asp"
 End Function
-''é€šè¿…å½•ç”¨è¿žæŽ¥
+''Í¨Ñ¸Â¼ÓÃÁ¬½Ó
 function dbconn(sessionname)
 	dim conn
 	Set conn=Server.CreateObject("ADODB.Connection")
@@ -23,15 +23,15 @@ function dbconn(sessionname)
 end function
 %>
 <!--
-''æ–‡ä»¶å…±äº«ç”¨
+''ÎÄ¼þ¹²ÏíÓÃ
 connstr = "Provider=Microsoft.Jet.Oledb.4.0;data source="&Server.MapPath("../"+dbname)
 set myconn = Server.CreateObject("adodb.connection")
 myconn.open connstr
-''é‚®ä»¶ç”¨
+''ÓÊ¼þÓÃ
 set conn1=server.createobject("adodb.connection")
 mypath=server.mappath("../"+dbname)
 conn1.open "driver={microsoft access driver (*.mdb)};dbq="&mypath&";uid=;pwd=123;"
-''å¤‡ä»½ç”¨
+''±¸·ÝÓÃ
 DataName = "../"+dbname
 SelectDataType = "Access"
 -->

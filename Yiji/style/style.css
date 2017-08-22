@@ -12,7 +12,7 @@ input,textarea,hr{color:navy;font:normal 12px/120% Verdana,sans-serif;padding-le
 .noinput input{border:none;}
 td{border-color:#C9DBEF;}
 a{color:#1A438E;text-decoration:none;}
-a:hover{color:#000000;text-decoration:none;}
+a:hover{color:#000000;text-decoration:underline;}
 form {margin:0px;}
 .grid{border:1px #B3CDE8 solid;border-collapse:collapse;}
 .nogrid{border:0px !important;}

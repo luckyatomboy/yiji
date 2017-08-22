@@ -14,6 +14,9 @@ end if
 <head>
 <title><%=dianming%> - 查询</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -31,6 +34,14 @@ if fla30="0" then
   response.end
 end if
 %>
+
+<script>
+  $(function(){
+//日期控件
+    $(".datepicker").datepicker();
+  });
+</script>
+
 <%
 '取得搜索关键字  
 nowkeyword=request("keyword") 
@@ -46,24 +57,24 @@ nowto=request("dateto")
   <tr> 
   <td align="right">
     搜索：
-    <input type="text" name="keyword" size="20" value="<%=nowkeyword%>">
+    <input type="text" name="keyword" placeholder="请输入订货合同号" size="20" value="<%=nowkeyword%>">
   </td>
   </tr>
   <tr> 
   <td align="right">
     合同日期：从
-    <input name="datefrom" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=datefrom&oldDate='+datefrom.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+    <input name="datefrom" style="width:80px" class="datepicker">
     &nbsp;&nbsp;&nbsp;&nbsp;到
-    <input name="dateto" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=dateto&oldDate='+dateto.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+    <input name="dateto" style="width:80px" class="datepicker">
     <input type="submit" value=" 查询 " class="button">&nbsp;
   </td>
   </tr>  
 </form>  
 </table>
 <%
-  sql="select * from salescontract"
+  sql="select * from salescontract where category<>''"
   if nowkeyword<>"" then
-    sql=sql&" where contractnum="&nowkeyword
+    sql=sql&" and contractnum="&nowkeyword
   end if  
 
   if nowfrom<>"" and nowto="" then

@@ -15,8 +15,11 @@ end if
 <head>
 <title><%=dianming%> - 创建订货合同</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
+
 <style>
 body {
 	background-color:#FFFFFF;
@@ -35,6 +38,12 @@ if fla27="0" then
 end if
 %>
 
+<script>
+	$(function(){
+//日期控件
+		$("#boarddate").datepicker();
+	});
+</script>
 
 
 <%
@@ -75,8 +84,6 @@ end if
 
 if request("boarddate")<>"" then
 	nowboarddate=request("boarddate")
-else
-	nowboarddate=date()
 end if
 nowpackage=request("package")
 nowstorage=request("coldstorage")
@@ -103,9 +110,47 @@ else
 end if	
 
 '创建订货合同'
-sql="insert into SalesContract(ContractNum,category,status,owncompany,customer,country,plant,material,spec,package,quantity,weight,price,coldstorage,deliveryloc,boarddate,deliveryport,refshipment,refitem,createdate,creator)"
-sql=sql&" values("&nowcontract&",'"&nowcategory&"','"&nowstatus&"','"&nowowncompany&"','"&nowcustomer&"','"&nowcountry&"','"&nowplant&"','"&nowmaterial&"','"&nowspec&"','"&nowpackage&"',"&nowquantity&","&nowweight&","&nowprice&",'"&nowstorage&"','"&nowdeliveryloc&"',#"&nowboarddate&"#,'"&nowdeliveryport&"','"&nowrefshipment&"','"&nowrefitem&"',#"&now()&"#,'"&session("redboy_username")&"')"
-conn.execute(sql)
+sql="select * from SalesContract where category='"&nowcategory&"'"
+set rs=server.createobject("ADODB.RecordSet")
+rs.open sql,conn,1,3
+rs.addnew
+rs("ContractNum")=nowcontract
+rs("category")=nowcategory
+rs("status")=nowstatus
+rs("owncompany")=nowowncompany
+rs("customer")=nowcustomer
+rs("country")=nowcountry
+rs("plant")=nowplant
+rs("material")=nowmaterial
+rs("spec")=nowspec
+rs("package")=nowpackage
+rs("quantity")=nowquantity
+rs("weight")=nowweight
+rs("price")=nowprice
+rs("coldstorage")=nowstorage
+rs("deliveryloc")=nowdeliveryloc
+if nowboarddate<>"" then
+	rs("boarddate")=nowboarddate
+end if
+rs("deliveryport")=nowdeliveryport
+rs("refshipment")=nowrefshipment
+rs("refitem")=nowrefitem
+rs("createdate")=now()
+rs("creator")=session("redboy_username")
+rs.update
+rs.close
+
+'sql="insert into SalesContract(ContractNum,category,status,owncompany,customer,country,plant,material,spec,package,quantity,weight,price,coldstorage,deliveryloc,"
+'if nowboarddate<>"" then
+''	sql=sql&"boarddate,"
+'end if
+'sql=sql&"deliveryport,refshipment,refitem,createdate,creator)"
+'sql=sql&" values("&nowcontract&",'"&nowcategory&"','"&nowstatus&"','"&nowowncompany&"','"&nowcustomer&"','"&nowcountry&"','"&nowplant&"','"&nowmaterial&"','"&nowspec&"','"&nowpackage&"',"&nowquantity&","&nowweight&","&nowprice&",'"&nowstorage&"','"&nowdeliveryloc&"',"
+'if nowboarddate<>"" then
+''	sql=sql&"#"&nowboarddate&"#,"
+'end if
+'sql=sql&"'"&nowdeliveryport&"','"&nowrefshipment&"','"&nowrefitem&"',#"&now()&"#,'"&session("redboy_username")&"')"
+'conn.execute(sql)
 
 '如果有入库单，更新剩余库存数量'
 sql="select * from stockdocument where refshipment="&nowrefshipment&" and refitem="&nowrefitem
@@ -329,8 +374,10 @@ if (document.form1.category.value=="A"){
       <tr>	  
 	    <td align="right" height="30">预计到港期：</td>
         <td class="category">
-		  		<input name="boarddate" style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=boarddate&oldDate='+boarddate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="boarddate" style="width:80px" id="boarddate">
+
+<!--	  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=boarddate&oldDate='+boarddate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+-->
 				&nbsp;&nbsp;&nbsp;交货港
 		  		<input name="deliveryport" style="width:100px">							
 				</td>

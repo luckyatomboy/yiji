@@ -33,7 +33,10 @@ function change_password()
 {
 	window.location.href="user_modi_mima.asp"
 }
-
+function release_lock()
+{
+  window.location.href="query_lock_table.asp"
+}
 </script>
 <%
 if fla23="0" and fla24="0" and fla23="0" and fla24="0" then
@@ -107,6 +110,44 @@ end if
     <td width="75%" class="category">
 		  <input type="button" value=" 修改密码 " onClick="return change_password()">
 		</td>
+  </tr>
+</table>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td><img src="../images/r_4.gif" alt="" /></td>
+<td></td>
+<td><img src="../images/r_3.gif" alt="" /></td>
+</tr>
+</table>
+
+<!-- ----------------系统管理------------- -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
+<tr>
+<td><img src="../images/r_1.gif" alt="" /></td>
+<td width="100%" background="../images/r_0.gif">
+  <table cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+      <td>&nbsp;系统管理</td>
+    <td align="right">&nbsp;</td>
+    </tr>
+  </table>
+</td>
+<td><img src="../images/r_2.gif" alt="" /></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
+  <tr>
+    <td width="25%" height="30" align="right">
+    </td>
+    <td width="75%" class="category">
+      <input type="button" value=" 记录解锁 " onClick="return release_lock()">
+    </td>
   </tr>
 </table>
 </td>

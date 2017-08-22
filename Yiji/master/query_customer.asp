@@ -88,13 +88,13 @@ nowkeyword=request("keyword")
   <input type="hidden" name="form" value="<%=request("form")%>">
   <input type="hidden" name="keyword" value="<%=nowkeyword%>">
   <tr align="center">
-	<td class="category" width="180" height="30">客户名称</td>
-	<td class="category" width="380" height="30">地址</td>
-	<td class="category" width="120" height="30">电话</td>
-	<td class="category" width="120" height="30">传真</td>
-	<td class="category" width="200" height="30">电子邮件</td>
+	<td class="category" width="14%" height="30">客户名称</td>
+	<td class="category" width="32%" height="30">地址</td>
+	<td class="category" width="12%" height="30">电话</td>
+	<td class="category" width="12%" height="30">传真</td>
+	<td class="category" width="20%" height="30">电子邮件</td>
 	<%if fla14="1" or session("redboy_id")="1" then%>
-    <td class="category" width="60">修改</td>
+    <td class="category" width="10%">操作</td>
 	<%end if%>
   </tr>
   <%
@@ -111,7 +111,9 @@ nowkeyword=request("keyword")
   <td align="center"><%=rs_customer("email")%></td>
 	<%if fla14="1" or session("redboy_id")="1" then%>
     <td align="center">
-    	<a href="change_customer.asp?form=<%=request("form")%>&customername=<%=rs_customer("customername")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">修改</a></td>
+    	<a href="change_customer.asp?form=<%=request("form")%>&customername=<%=rs_customer("customername")%>&keyword=<%=nowkeyword%>">修改</a>&nbsp;/&nbsp;
+      <a href="display_customer.asp?form=<%=request("form")%>&customername=<%=rs_customer("customername")%>">查看</a>
+    </td>
 	<%end if%>
   </tr>
   <%

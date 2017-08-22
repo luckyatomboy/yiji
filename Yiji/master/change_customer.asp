@@ -86,11 +86,11 @@ set rs=conn.execute(sql)
   		<input type="hidden" name="customername" value="<%=request("customername")%>">
       <tr>
         <td width="25%" height="30" align="right">客户简称：</td>
-        <td width="75%" class="category"><%=rs("customername")%></td>
+        <td width="75%" class="category" ><%=rs("customername")%></td>
       </tr>    
       <tr>
         <td height="30" align="right">客户全称：</td>
-        <td class="category"><input type="text" name="fullname" style="width:200px" value="<%=rs("fullname")%>">
+        <td class="category"><input type="text" name="fullname" style="width:200px;" value="<%=rs("fullname")%>">
         &nbsp;<font color="#ff0000">*</font></td>
       </tr>        
       <tr>

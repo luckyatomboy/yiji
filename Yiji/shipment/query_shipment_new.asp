@@ -14,6 +14,9 @@ end if
 <head>
 <title><%=dianming%> - 船期表查询</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -31,6 +34,14 @@ if fla1="0" and fla2="0" and fla3="0" and fla4="0" then
   response.end
 end if
 %>
+
+<script>
+  $(function(){
+//日期控件
+    $("#datefrom").datepicker();
+    $("#dateto").datepicker();
+  });
+</script>
 
 <script>
 
@@ -119,16 +130,16 @@ nowto=request("dateto")
 			loop
 		%>
 		  </select>	  	  
-		<input type="text" name="keyword" size="20" value="<%=nowkeyword%>">
+		<input type="text" name="keyword" placeholder="请输入船期表号码" size="20" value="<%=nowkeyword%>">
 <!--	  <input type="submit" value=" 查询 " class="button">&nbsp; -->
 	</td>
   </tr>
   <tr> 
 	<td align="right">
 	  到港日期：从
-	  <input name="datefrom" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=datefrom&oldDate='+datefrom.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+    <input name="datefrom" style="width:80px" id="datefrom">
 	  &nbsp;&nbsp;&nbsp;&nbsp;到
-	  <input name="dateto" style="width:80px" onClick="JavaScript:window.open('../day.asp?form=form2&field=dateto&oldDate='+dateto.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+    <input name="dateto" style="width:80px" id="dateto">
 	  <input type="submit" value=" 查询 " class="button">&nbsp;
 	</td>
   </tr>  

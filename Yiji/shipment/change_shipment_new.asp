@@ -15,7 +15,9 @@ end if
 <head>
 <title><%=dianming%> - 修改船期表</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<!--<meta http-equiv="Content-Type" content="application/x-www-form-urlencoded; charset=gb2312">-->
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -50,6 +52,15 @@ else
     conn.execute(sql)
 end if
 %>
+
+<script>
+  $(function(){
+//日期控件。要支持动态创建的控件
+    $("body").delegate(".datepicker","focusin",function(){
+      $(this).datepicker();
+    });
+  });
+</script>
 
 <%
 if request("hid1")="ok" then
@@ -379,9 +390,9 @@ function chsel(vendor){
    newTdObj10.innerHTML="公斤";     
    newTdObj10.align="center";
    var newTdObj11=myNewRow.insertCell(10);
-   newTdObj11.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' readonly align='center' style='width:80px'"
+   newTdObj11.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' style='width:80px' class='datepicker'>"
 //   	+ " <img src='../images/date.gif' align='absmiddle' style='cursor:pointer;'" 
-   	+ " onClick=\""+"JavaScript:window.open('../day.asp?form=form1&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";   
+//   	+ " onClick=\""+"JavaScript:window.open('../day.asp?form=formitem&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";   
    newTdObj11.align="center";  
    var newTdObj12=myNewRow.insertCell(11);   	//箱数
 	 newTdObj12.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' style='width:80px' align='center' onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
@@ -628,8 +639,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						%>								
 					</select>			
 					&nbsp;&nbsp;&nbsp;两证
-		  		<input name="twodocumentsready" id="twodocumentsready" value="<%=rs("twodocumentready")%>" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=twodocumentsready&oldDate='+twodocumentsready.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">										 		
+		  		<input name="twodocumentsready" id="twodocumentsready" value="<%=rs("twodocumentready")%>" class="datepicker"  style="width:80px">										 		
 				</td>
       </tr>    
       <tr>	  
@@ -711,24 +721,19 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 		  		<input name="zidong" readonly onClick="JavaScript:window.open('../huiyuan/query_license.asp?queryform=form1&licensetype=自动证&field=zidong&field2=zidongcom','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');" style="cursor:hand;width:120px" value=<%=rs("zidong")%>>
 		  		<input name="zidongcom" readonly value=<%=rs("zidongcom")%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证交批日期
-		  		<input name="zidongapplydate" id="zidongapplydate" readonly style="width:80px" value=<%=rs("zidongapplydate")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=zidongapplydate&oldDate='+zidongapplydate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  				  		
+		  		<input name="zidongapplydate" id="zidongapplydate" class="datepicker"  style="width:80px" value=<%=rs("zidongapplydate")%>>	  				  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证上报日期
-		  		<input name="zidongreportdate" id="zidongreportdate" readonly style="width:80px" value=<%=rs("zidongreportdate")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=zidongreportdate&oldDate='+zidongreportdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  				  		
+		  		<input name="zidongreportdate" id="zidongreportdate" class="datepicker"  style="width:80px" value=<%=rs("zidongreportdate")%>>	  				  		
 				</td>
       </tr>
       <tr>	  
 	    	<td align="right" height="30">预保日：</td>
         <td class="category">
-		  		<input name="planinsurance" id="planinsurance" style="width:80px" value=<%=rs("planinsurance")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=planinsurance&oldDate='+planinsurance.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="planinsurance" id="planinsurance" class="datepicker" style="width:80px" value=<%=rs("planinsurance")%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;补保日
-		  		<input name="supinsurance" id="supinsurance" readonly style="width:80px" value=<%=rs("supinsurance")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=supinsurance&oldDate='+supinsurance.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="supinsurance" id="supinsurance" class="datepicker"  style="width:80px" value=<%=rs("supinsurance")%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保费支付日
-		  		<input name="insurancepayment" id="insurancepayment" readonly style="width:80px" value=<%=rs("insurancepayment")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=insurancepayment&oldDate='+insurancepayment.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="insurancepayment" id="insurancepayment" class="datepicker" style="width:80px" value=<%=rs("insurancepayment")%>>	  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保单
 		  		<input name="insurancenumber" style="width:120px" value=<%=rs("insurancenumber")%>>
 				</td>
@@ -738,11 +743,9 @@ sql="select * from shipment where shipmentnum="&request("shipment")
         <td class="category">
 		  		<input name="planship" style="width:100px">
 		  		&nbsp;&nbsp;&nbsp;&nbsp;实际装船期
-		  		<input name="shipdate" id="shipdate" readonly style="width:80px" value=<%=rs("shipdate")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=shipdate&oldDate='+shipdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="shipdate" id="shipdate" class="datepicker" style="width:80px" value=<%=rs("shipdate")%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;预计到港期
-		  		<input name="boarddate" id="boarddate" readonly style="width:80px" value=<%=rs("boarddate")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=boarddate&oldDate='+boarddate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="boarddate" id="boarddate" class="datepicker" style="width:80px" value=<%=rs("boarddate")%>>  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;客户交货期
 		  		<input name="plandeliverydate" style="width:100px" value=<%=rs("plandeliverydate")%>>
 				</td>
@@ -772,8 +775,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>	  
 	    	<td align="right" height="30">预付款日期：</td>
         <td class="category">
-		  		<input name="paydate" id="paydate" readonly style="width:80px" value=<%=rs("prepaydate")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=paydate&oldDate='+paydate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="paydate" id="paydate" class="datepicker" style="width:80px" value=<%=rs("prepaydate")%>>
 		  		&nbsp;&nbsp;&nbsp;预付款金额
 		  		<input name="prepayment" style="width:100px" maxlength="15" value=<%=rs("prepayment")%> onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
 		  		&nbsp;&nbsp;&nbsp;币种
@@ -792,8 +794,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						%>
 					</select>
 				&nbsp;&nbsp;&nbsp;订金收到日期
-				<input name="downpaymentdate" id="downpaymentdate" readonly style="width:80px" value=<%=rs("downpaymentreceiptdate")%>>	
-				<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=downpaymentdate&oldDate='+downpaymentdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+				<input name="downpaymentdate" id="downpaymentdate" class="datepicker" style="width:80px" value=<%=rs("downpaymentreceiptdate")%>>	
 				&nbsp;&nbsp;&nbsp;成交条款
 					<%
 					sql="select * from tradingterm"
@@ -822,43 +823,35 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>	  
 	    	<td align="right" height="30">尾款支付日期：</td>
         <td class="category">
-		  		<input name="finalpaymentdate" id="finalpaymentdate" readonly style="width:80px" value=<%=rs("finalpaymentdate")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=finalpaymentdate&oldDate='+finalpaymentdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="finalpaymentdate" id="finalpaymentdate" class="datepicker" style="width:80px" value=<%=rs("finalpaymentdate")%>>
 		  		&nbsp;&nbsp;&nbsp;免箱期
 		  		<input name="freestayperiod" style="width:100px" value=<%=rs("freestayperiod")%>>
 		  		&nbsp;&nbsp;&nbsp;卫生证版本 
 				<input name="weishengzhengversion" style="width:100px" value=<%=rs("weishengzhengversion")%>>
 				&nbsp;&nbsp;&nbsp;放行日期
-		  		<input name="passdate" id="passdate" readonly style="width:80px" value=<%=rs("passdate")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=passdate&oldDate='+passdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="passdate" id="passdate" class="datepicker" style="width:80px" value=<%=rs("passdate")%>>
 				</td>
       </tr>       
       <tr>	  
 	    	<td align="right" height="30">到单日期：</td>
         <td class="category">
-		  		<input name="documentarrival" id="documentarrival" readonly style="width:80px" value=<%=rs("documentarrival")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=documentarrival&oldDate='+documentarrival.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="documentarrival" id="documentarrival" class="datepicker" style="width:80px" value=<%=rs("documentarrival")%>>
 		  		&nbsp;&nbsp;&nbsp;预计赎单日期
-		  		<input name="planretirebill" id="planretirebill" readonly style="width:80px" value=<%=rs("planretirebill")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=planretirebill&oldDate='+planretirebill.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="planretirebill" id="planretirebill" class="datepicker" style="width:80px" value=<%=rs("planretirebill")%>>	  		
 		  		&nbsp;&nbsp;&nbsp;我司赎单日期
-		  		<input name="internalretirebill" id="internalretirebill" readonly style="width:80px" value=<%=rs("internalretirebill")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=internalretirebill&oldDate='+internalretirebill.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="internalretirebill" id="internalretirebill" class="datepicker" style="width:80px" value=<%=rs("internalretirebill")%>>		  		
 		  		&nbsp;&nbsp;&nbsp;代理赎单日期
-		  		<input name="externalretirebill" id="externalretirebill" readonly style="width:80px" value=<%=rs("externalretirebill")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=externalretirebill&oldDate='+externalretirebill.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="externalretirebill" id="externalretirebill" class="datepicker" style="width:80px" value=<%=rs("externalretirebill")%>>		  		
 				</td>
       </tr>       
       <tr>	  
 	    	<td align="right" height="30">送货日期：</td>
         <td class="category">
-		  		<input name="cargodate" id="cargodate" readonly style="width:80px" value=<%=rs("cargodate")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=cargodate&oldDate='+cargodate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="cargodate" id="cargodate" class="datepicker" style="width:80px" value=<%=rs("cargodate")%>>
 		  		&nbsp;&nbsp;&nbsp;送货方向
 		  		<input name="cargodir" style="width:150px" value=<%=rs("cargodir")%>>
 		  		&nbsp;&nbsp;&nbsp;交单日期
-		  		<input name="deliverydate" id="deliverydate" readonly style="width:80px" value=<%=rs("deliverydate")%>>
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=deliverydate&oldDate='+deliverydate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="deliverydate" id="deliverydate" class="datepicker" style="width:80px" value=<%=rs("deliverydate")%>>	  		
 				</td>
       </tr> 
       <tr>
@@ -882,7 +875,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 					sql="select * from warrantystatus"
 					set rs_warrstatus=conn.execute(sql)
 					%>
-					<select name="warrantystatus">
+					<select name="warrantystatus"  style="vertical-align:top">
 						<%
 							do while rs_warrstatus.eof=false
 						%>
@@ -915,7 +908,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 					sql="select * from claimstatus"
 					set rs_claimstatus=conn.execute(sql)
 					%>
-					<select name="claimstatus">
+					<select name="claimstatus"  style="vertical-align:top">
 						<%
 							do while rs_claimstatus.eof=false
 						%>
@@ -936,7 +929,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 	    			<% for i = 0 to customCount-1 %>
 	 						<option value=<%=custom(i)%> <%if rs("claimprocessor")=custom(i) then%>selected="selected"<%end if%>><%=custom(i)%></option>
 	 					<% next %>  			
-					</select>								
+					</select>&nbsp;&nbsp;&nbsp;								
         </td>
       </tr>	       
       <tr>
@@ -1002,7 +995,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 	        <td width="80" align="center" ><input type='text' name="actualweight<%=rs_items("itemnum")%>" id="actualweight<%=rs_items("itemnum")%>" value='<%=rs_items("actualnetweight")%>' style='width:80px'/></td>
 	        <td width="80" align="center" ><input type='text' name="purchaseprice<%=rs_items("itemnum")%>" id="purchaseprice<%=rs_items("itemnum")%>" value='<%=rs_items("purchaseprice")%>' style='width:80px'/></td> 	
 	        <td width="40" align="center" >公斤</td> 				        	            		        	        		        
-	        <td width="50" align="center" ><input name="producedate<%=rs_items("itemnum")%>" id="producedate<%=rs_items("itemnum")%>" value="<%=rs_items("productiondate")%>" readonly style='width:80px' onClick="JavaScript:window.open('../day.asp?field=producedate<%=rs_items("itemnum")%>&oldDate='+producedate<%=rs_items("itemnum")%>.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');"/></td> 		
+	        <td width="50" align="center" ><input name="producedate<%=rs_items("itemnum")%>" id="producedate<%=rs_items("itemnum")%>" value="<%=rs_items("productiondate")%>" style='width:80px' class="datepicker"/></td> 		
 	        <td width="50" align="center" ><input type='text' name="casenum<%=rs_items("itemnum")%>" id="casenum<%=rs_items("itemnum")%>" value='<%=rs_items("casenumber")%>' style='width:80px'/></td> 		
 	        <td width="100" align="center" ><input type='text' name="invamount<%=rs_items("itemnum")%>" id="invamount<%=rs_items("itemnum")%>" value='<%=rs_items("invoiceamount")%>' style='width:80px'/></td> 	
 	        <td width="50" align="center" >

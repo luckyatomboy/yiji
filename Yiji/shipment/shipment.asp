@@ -169,15 +169,13 @@ function query_sales_contract()
     <td width="25%" height="30" align="right">
     </td>
     <td width="75%" class="category">
-		  <input type="button" value=" 创建入库单 " onClick="return create_stock_order()">&nbsp;&nbsp;&nbsp;&nbsp;	
-		  <input type="button" value=" 创建入库单(新) " onClick="return create_stock_order_new()">
+		  <input type="button" value=" 创建入库单" onClick="return create_stock_order_new()">
 		</td>
   </tr>
   <tr>
   	<td></td>
 		<td>
-		  <input type="button" value=" 入库单查询 " onClick="return query_stock_order()">	&nbsp;&nbsp;&nbsp;&nbsp;	
-		  <input type="button" value=" 入库单查询(新) " onClick="return query_stock_order_new()">	
+		  <input type="button" value=" 入库单查询" onClick="return query_stock_order_new()">	
 		</td>        	
 	</tr>
 </table>

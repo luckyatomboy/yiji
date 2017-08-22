@@ -15,6 +15,9 @@ end if
 <head>
 <title><%=dianming%> - 修改入库单</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -45,6 +48,13 @@ if fla32="0" then
   response.end
 end if
 %>
+
+<script>
+	$(function(){
+//日期控件
+		$("#stockdate").datepicker();
+	});
+</script>
 
 <%
   sql="select * from locktable where tablename='stockdocument' and combinedkey='"&request("stocknumber")&"'"
@@ -160,8 +170,7 @@ set rs=conn.execute(sql)
       <tr>	  
 	    	<td align="right" height="30">入库日期：</td>
         <td class="category">
-				<input name="stockdate" readonly style="width:80px" value="<%=rs("stockdate")%>">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=stockdate&oldDate='+stockdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+				<input name="stockdate" id="stockdate" style="width:80px" value="<%=rs("stockdate")%>">
 				</td>
       </tr>     
       <tr>	  
@@ -319,8 +328,6 @@ nowwarranty=request("warranty")
 nowcurrency=request("currency")
 if request("stockdate")<>"" then
 	nowstockdate=request("stockdate")
-else
-	nowstockdate=date()
 end if
 nowcustomer=request("customer")
 nowcoldstorage=request("coldstorage")
@@ -333,8 +340,6 @@ nowremainqty=nowstockqty
 nowreason=request("reason")
 if request("productdate")<>"" then
 	nowproductdate=request("productdate")
-else
-	nowproductdate=date()
 end if
 
 

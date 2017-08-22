@@ -15,6 +15,9 @@ end if
 <head>
 <title><%=dianming%> - 修改订货合同</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -33,6 +36,13 @@ if fla27="0" then
   response.end
 end if
 %>
+
+<script>
+	$(function(){
+//日期控件
+		$("#boarddate").datepicker();
+	});
+</script>
 
 <%
 if request("hid1")="" then
@@ -249,8 +259,10 @@ if (document.form1.category.value=="A"){
       <tr>	  
 	    <td align="right" height="30">预计到港期：</td>
         <td class="category">
-		  		<input name="boarddate" style="width:80px" value="<%=rs("boarddate")%>">
+		  		<input name="boarddate" style="width:80px" value="<%=rs("boarddate")%>" id="boarddate">
+<!--		  		
 		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=boarddate&oldDate='+boarddate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+-->		  		
 				&nbsp;&nbsp;&nbsp;交货港
 		  		<input name="deliveryport" style="width:100px" value="<%=rs("deliveryport")%>">							
 				</td>
@@ -314,8 +326,6 @@ end if
 
 if request("boarddate")<>"" then
 	nowboarddate=request("boarddate")
-else
-	nowboarddate=date()
 end if
 nowpackage=request("package")
 nowstorage=request("coldstorage")
@@ -327,15 +337,18 @@ set rs=server.createobject("ADODB.RecordSet")
 rs.open sql,conn,1,3
 
 if rs.eof=false then
-rs("category")=nowcategory
-rs("owncompany")=nowowncompany
-rs("customer")=nowcustomer
-rs("status")=nowstatus
-rs("quantity")=nowquantity
-rs("weight")=nowweight
-rs("price")=nowprice
-rs.update
-rs.close
+	rs("category")=nowcategory
+	rs("owncompany")=nowowncompany
+	rs("customer")=nowcustomer
+	rs("status")=nowstatus
+	rs("quantity")=nowquantity
+	rs("weight")=nowweight
+	rs("price")=nowprice
+	if nowboarddate<>"" then
+		rs("boarddate")=nowboarddate
+	end if
+	rs.update
+	rs.close
 end if
 
 '如果有入库单，更新剩余库存数量'

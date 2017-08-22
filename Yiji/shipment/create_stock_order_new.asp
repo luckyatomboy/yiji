@@ -15,6 +15,9 @@ end if
 <head>
 <title><%=dianming%> - 入库单</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -33,6 +36,13 @@ if fla27="0" then
   response.end
 end if
 %>
+
+<script>
+	$(function(){
+//日期控件
+		$("#stockdate").datepicker();
+	});
+</script>
 
 <%
 if request("hid1")="ok" then
@@ -68,8 +78,6 @@ nowcurrency=request("currency")
 nowcategory="A"
 if request("stockdate")<>"" then
 	nowstockdate=request("stockdate")
-else
-	nowstockdate=date()
 end if
 nowcustomer=request("customer")
 nowstorage=request("coldstorage")
@@ -82,8 +90,6 @@ nowremainqty=nowstockqty
 nowreason=request("reason")
 if request("productdate")<>"" then
 	nowproductdate=request("productdate")
-else
-	nowproductdate=date()
 end if
 'nowduedate=request("duedate")
 nowamount=0
@@ -99,8 +105,24 @@ else
 	nowstocknumber=rs_count("stocknumber") + 1
 end if	
 
-sql="insert into stockdocument(stocknumber,stockcategory,stockstatus,material,country,case,quantity,weight,plant,contract,stockdate,spec,customer,coldstorage,stockqty,remainqty,reason,productdate,warrantyperiod,price,stockamount,refshipment,refitem,createdate,creator,trancurrency)"
-sql=sql&" values("&nowstocknumber&",'"&nowcategory&"','"&nowstatus&"','"&nowmaterial&"','"&nowcountry&"','"&nowcase&"',"&nowquantity&","&nowweight&",'"&nowplant&"','"&nowcontract&"',#"&nowstockdate&"#,'"&nowspec&"','"&nowcustomer&"','"&nowstorage&"',"&nowquantity&","&nowremainqty&",'"&nowreason&"',#"&nowproductdate&"#,'"&nowwarranty&"',"&nowprice&","&nowamount&",'"&nowrefshipment&"','"&nowrefitem&"',#"&now()&"#,'"&session("redboy_username")&"','"&nowcurrency&"')"
+sql="insert into stockdocument(stocknumber,stockcategory,stockstatus,material,country,case,quantity,weight,plant,contract,"
+if nowstockdate<>"" then
+	sql=sql&"stockdate,"
+end if
+sql=sql&"spec,customer,coldstorage,stockqty,remainqty,reason,"
+if nowproductdate<>"" then
+	sql=sql&"productdate,"
+end if
+sql=sql&"warrantyperiod,price,stockamount,refshipment,refitem,createdate,creator,trancurrency)"
+sql=sql&" values("&nowstocknumber&",'"&nowcategory&"','"&nowstatus&"','"&nowmaterial&"','"&nowcountry&"','"&nowcase&"',"&nowquantity&","&nowweight&",'"&nowplant&"','"&nowcontract&"',"
+if nowstockdate<>"" then
+	sql=sql&"#"&nowstockdate&"#,"
+end if
+sql=sql&"'"&nowspec&"','"&nowcustomer&"','"&nowstorage&"',"&nowquantity&","&nowremainqty&",'"&nowreason&"',"
+if nowproductdate<>"" then
+	sql=sql&"#"&nowproductdate&"#,"
+end if
+sql=sql&"'"&nowwarranty&"',"&nowprice&","&nowamount&",'"&nowrefshipment&"','"&nowrefitem&"',#"&now()&"#,'"&session("redboy_username")&"','"&nowcurrency&"')"
 conn.execute(sql)
 %>
 <script language="javascript">
@@ -173,8 +195,9 @@ return false;
       <tr>	  
 	    	<td align="right" height="30">入库日期：</td>
         <td class="category">
-				<input name="stockdate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=stockdate&oldDate='+stockdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+				<input name="stockdate" id="stockdate" style="width:80px">
+<!--		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=stockdate&oldDate='+stockdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+-->
 				</td>
       </tr>     
       <tr>	  
@@ -231,7 +254,6 @@ return false;
 	    	<td align="right" height="30">生产日期：</td>
         <td class="category">
 		  		<input name="producedate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=producedate&oldDate='+producedate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保质期
 				<input name="warranty" style="width:100px">
 				</td>

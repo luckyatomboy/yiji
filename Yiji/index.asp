@@ -156,8 +156,7 @@ function checkform() {
 </html>
 <%
 else
-<!--nowclass=request.form("class")-->
-nowclass="1"
+
 nowusername=request.form("username")
 nowpassword=request.form("password")
 if Trim(Request.Form("Verifycode"))<>Trim(Session("Verifycode")) then 
@@ -169,20 +168,36 @@ window.history.go(-1)
 <%
   response.end
 end if
-if nowclass="1" then
-  sql="select * from login where (username='"&nowusername&"' and password='"&md5(nowpassword)&"') or (bianhao='"&nowusername&"' and password='"&md5(nowpassword)&"')"
-else
-  sql="select * from gys where company='"&nowusername&"' and password='"&md5(nowpassword)&"'"
-end if
+'设置error message初始值'
+errorMsg=""
+
+sql="select * from login where (username='"&nowusername&"' and password='"&md5(nowpassword)&"') or (bianhao='"&nowusername&"' and password='"&md5(nowpassword)&"')"
+
 set rs=conn.execute(sql)
 if rs.eof then
+	errorMsg="登录名称或密码错误！"
 %>
 <script language=javascript>
-alert('登录名称或密码错误！')
-window.history.go(-1)
+alert("<%=errorMsg%>");
+window.history.go(-1);
 </script>
 <%
-  response.end
+  response.end	
+else
+'判断是否重复登录
+	sql="select * from signinuser where id="&rs("id")
+	set rs_signin=conn.execute(sql)
+	if rs_signin.eof=false then
+%>		
+		<script language=javascript>
+		alert("用户已经登录！");
+		</script>
+<%
+	else
+'在已登录用户表中插入一条记录'	
+		sql="insert into signinuser(id, bianhao, UserName, signin_time) values("&rs("id")&",'"&rs("bianhao")&"','"&rs("username")&"',#"&now()&"#)"
+		conn.execute(sql)
+	end if
 end if
 
 session("redboy_username")=rs("username")

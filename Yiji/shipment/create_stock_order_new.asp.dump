@@ -13,8 +13,11 @@ end if
 
 <html>
 <head>
-<title><%=dianming%> - å…¥åº“å•</title>
+<title><%=dianming%> - Èë¿âµ¥</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -28,11 +31,18 @@ body {
 <!--if fla1="0" and session("redboy_id")<>"1" then-->
 if fla27="0" then
 %>
-<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">ä½ ä¸å…·å¤‡æ­¤æƒé™ï¼Œè¯·ä¸ç®¡ç†å‘˜è”ç³»ï¼</font></center>
+<br><center><img src="../images/note.gif" align="absmiddle">&nbsp;<font color="#FF0000">Äã²»¾ß±¸´ËÈ¨ÏŞ£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ£¡</font></center>
 <%  
   response.end
 end if
 %>
+
+<script>
+	$(function(){
+//ÈÕÆÚ¿Ø¼ş
+		$("#stockdate").datepicker();
+	});
+</script>
 
 <%
 if request("hid1")="ok" then
@@ -68,8 +78,6 @@ nowcurrency=request("currency")
 nowcategory="A"
 if request("stockdate")<>"" then
 	nowstockdate=request("stockdate")
-else
-	nowstockdate=date()
 end if
 nowcustomer=request("customer")
 nowstorage=request("coldstorage")
@@ -82,8 +90,6 @@ nowremainqty=nowstockqty
 nowreason=request("reason")
 if request("productdate")<>"" then
 	nowproductdate=request("productdate")
-else
-	nowproductdate=date()
 end if
 'nowduedate=request("duedate")
 nowamount=0
@@ -99,13 +105,29 @@ else
 	nowstocknumber=rs_count("stocknumber") + 1
 end if	
 
-sql="insert into stockdocument(stocknumber,stockcategory,stockstatus,material,country,case,quantity,weight,plant,contract,stockdate,spec,customer,coldstorage,stockqty,remainqty,reason,productdate,warrantyperiod,price,stockamount,refshipment,refitem,createdate,creator,trancurrency)"
-sql=sql&" values("&nowstocknumber&",'"&nowcategory&"','"&nowstatus&"','"&nowmaterial&"','"&nowcountry&"','"&nowcase&"',"&nowquantity&","&nowweight&",'"&nowplant&"','"&nowcontract&"',#"&nowstockdate&"#,'"&nowspec&"','"&nowcustomer&"','"&nowstorage&"',"&nowquantity&","&nowremainqty&",'"&nowreason&"',#"&nowproductdate&"#,'"&nowwarranty&"',"&nowprice&","&nowamount&",'"&nowrefshipment&"','"&nowrefitem&"',#"&now()&"#,'"&session("redboy_username")&"','"&nowcurrency&"')"
+sql="insert into stockdocument(stocknumber,stockcategory,stockstatus,material,country,case,quantity,weight,plant,contract,"
+if nowstockdate<>"" then
+	sql=sql&"stockdate,"
+end if
+sql=sql&"spec,customer,coldstorage,stockqty,remainqty,reason,"
+if nowproductdate<>"" then
+	sql=sql&"productdate,"
+end if
+sql=sql&"warrantyperiod,price,stockamount,refshipment,refitem,createdate,creator,trancurrency)"
+sql=sql&" values("&nowstocknumber&",'"&nowcategory&"','"&nowstatus&"','"&nowmaterial&"','"&nowcountry&"','"&nowcase&"',"&nowquantity&","&nowweight&",'"&nowplant&"','"&nowcontract&"',"
+if nowstockdate<>"" then
+	sql=sql&"#"&nowstockdate&"#,"
+end if
+sql=sql&"'"&nowspec&"','"&nowcustomer&"','"&nowstorage&"',"&nowquantity&","&nowremainqty&",'"&nowreason&"',"
+if nowproductdate<>"" then
+	sql=sql&"#"&nowproductdate&"#,"
+end if
+sql=sql&"'"&nowwarranty&"',"&nowprice&","&nowamount&",'"&nowrefshipment&"','"&nowrefitem&"',#"&now()&"#,'"&session("redboy_username")&"','"&nowcurrency&"')"
 conn.execute(sql)
 %>
 <script language="javascript">
 //alert(&nowshipment&)
-alert("å…¥åº“å•å½•å…¥æˆåŠŸï¼")
+alert("Èë¿âµ¥Â¼Èë³É¹¦£¡")
 window.location.href="shipment.asp"
 </script>
 
@@ -114,10 +136,10 @@ else
 %>
 <script language="javascript">
 function check1(){
-<!-- æ£€æŸ¥å“å -->
+<!-- ¼ì²éÆ·Ãû -->
 if (document.form1.material.value=="")
 {
-alert("è¯·è¾“å…¥å“åï¼");
+alert("ÇëÊäÈëÆ·Ãû£¡");
 return false;
 }
 
@@ -130,7 +152,7 @@ return false;
 <td width="100%" background="../images/r_0.gif">
   <table cellpadding="0" cellspacing="0" width="100%">
     <tr>
-      <td>&nbsp;å…¥åº“å• </td>
+      <td>&nbsp;Èë¿âµ¥ </td>
 	  <td align="right">&nbsp;</td>
     </tr>
   </table>
@@ -146,7 +168,7 @@ return false;
 	  <input type="hidden" name="boarddate" value="<%=request("boarddate")%>">
 	  <input type="hidden" name="deliveryport" value="<%=request("deliveryport")%>">
       <tr>
-        <td width="20%" align="right" height="30">çŠ¶æ€ï¼š</td>
+        <td width="20%" align="right" height="30">×´Ì¬£º</td>
         <td width="80%" class="category">
 					<%
 					sql="select * from stockstatus where category='A'"
@@ -163,85 +185,85 @@ return false;
 			  </td>
 			</tr>
       <tr>	  
-	    	<td align="right" height="30">å‚è€ƒèˆ¹æœŸè¡¨ï¼š</td>
+	    	<td align="right" height="30">²Î¿¼´¬ÆÚ±í£º</td>
         <td class="category">
-                    <input name="refshipment" readonly style="cursor:hand;width:100px" value="å•å‡»é€‰æ‹©èˆ¹æœŸè¡¨é¡¹ç›®" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&guobie=guobie&spec=spec&quantity=quantity&weight=weight','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> &nbsp;<font color="#ff0000">*</font>
-					&nbsp;&nbsp;&nbsp;é¡¹ç›®å·	
+                    <input name="refshipment" readonly style="cursor:hand;width:100px" value="µ¥»÷Ñ¡Ôñ´¬ÆÚ±íÏîÄ¿" onClick="JavaScript:window.open('query_shipment_new.asp?queryform=form1&refship=refshipment&refitem=refitem&plant=plant&material=material&guobie=guobie&spec=spec&quantity=quantity&weight=weight','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');"> &nbsp;<font color="#ff0000">*</font>
+					&nbsp;&nbsp;&nbsp;ÏîÄ¿ºÅ	
 					<input name="refitem" readonly style="width:50px"
 				</td>
       </tr>
       <tr>	  
-	    	<td align="right" height="30">å…¥åº“æ—¥æœŸï¼š</td>
+	    	<td align="right" height="30">Èë¿âÈÕÆÚ£º</td>
         <td class="category">
-				<input name="stockdate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=stockdate&oldDate='+stockdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+				<input name="stockdate" id="stockdate" style="width:80px">
+<!--		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=stockdate&oldDate='+stockdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+-->
 				</td>
       </tr>     
       <tr>	  
-	    	<td align="right" height="30">å‚å·ï¼š</td>
+	    	<td align="right" height="30">³§ºÅ£º</td>
         <td class="category">
 					<input name="plant" style="width:100px">
-					&nbsp;&nbsp;&nbsp;å›½åˆ«
+					&nbsp;&nbsp;&nbsp;¹ú±ğ
 					<input name="guobie" style="width:100px">
-				&nbsp;&nbsp;&nbsp;åˆåŒå·	
+				&nbsp;&nbsp;&nbsp;ºÏÍ¬ºÅ	
 				<input name="contract" style="width:150px" maxlength="20">
 				</td>
       </tr>       
       <tr>	  
-	    	<td align="right" height="30">å“åï¼š</td>
+	    	<td align="right" height="30">Æ·Ãû£º</td>
 			<td class="category">
           <input name="material" style="width:100px">
-		  		&nbsp;&nbsp;&nbsp;è§„æ ¼
+		  		&nbsp;&nbsp;&nbsp;¹æ¸ñ
 		  		<input name="spec" style="width:100px">
-		  		&nbsp;&nbsp;&nbsp;å•ä»·
-		  		<input name="price" style="width:100px" value=0 onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">&nbsp;/å¨
-		  		&nbsp;&nbsp;&nbsp;å¸ç§
+		  		&nbsp;&nbsp;&nbsp;µ¥¼Û
+		  		<input name="price" style="width:100px" value=0 onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">&nbsp;/¶Ö
+		  		&nbsp;&nbsp;&nbsp;±ÒÖÖ
 					<input name="currency" style="width:100px">
 			</td>
       </tr>
       <tr>	  
-	    	<td align="right" height="30">ç®±å·ï¼š</td>
+	    	<td align="right" height="30">ÏäºÅ£º</td>
         <td class="category">
 		  		<input name="case" style="width:120px" maxlength="15" <% if nowcase<>"" then%>value="<%=nowcase%>"<%end if%>>
-		  		&nbsp;&nbsp;&nbsp;ç®±æ•°
+		  		&nbsp;&nbsp;&nbsp;ÏäÊı
 		  		<input name="quantity" style="width:80px" maxlength="5"  <% if nowquantity<>"" then%>value="<%=nowquantity%>"<%end if%> onKeyPress="javascript:CheckNum();"  onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
-		  		&nbsp;&nbsp;&nbsp;é‡é‡
+		  		&nbsp;&nbsp;&nbsp;ÖØÁ¿
 		  		<input name="weight" style="width:150px" maxlength="20" <% if nowweight<>"" then%>value="<%=nowweight%>"<%end if%>>
 				</td>
       </tr>	  
       <tr>	  
-	    	<td align="right" height="30">å†·åº“åç§°ï¼š</td>
+	    	<td align="right" height="30">Àä¿âÃû³Æ£º</td>
         <td class="category">
 		  		<input name="coldstorage" style="width:100px">
-				&nbsp;&nbsp;&nbsp;è´§ä¸»
+				&nbsp;&nbsp;&nbsp;»õÖ÷
 		  		<input name="customer" style="width:100px">
 				</td>
       </tr>
       <tr>	  
-	    	<td align="right" height="30">å…¥åº“æ•°é‡ï¼š</td>
+	    	<td align="right" height="30">Èë¿âÊıÁ¿£º</td>
         <td class="category">
 		  		<input name="stockqty" style="width:100px">
-				&nbsp;&nbsp;&nbsp;å…¥åº“åŸå› 
+				&nbsp;&nbsp;&nbsp;Èë¿âÔ­Òò
 		  		<input name="reason" style="width:100px">				
-				&nbsp;&nbsp;&nbsp;å‰©ä½™æ•°é‡
+				&nbsp;&nbsp;&nbsp;Ê£ÓàÊıÁ¿
 		  		<input name="remainqty" style="width:100px" readonly >				
 				</td>
       </tr>
       <tr>	  
-	    	<td align="right" height="30">ç”Ÿäº§æ—¥æœŸï¼š</td>
+	    	<td align="right" height="30">Éú²úÈÕÆÚ£º</td>
         <td class="category">
 		  		<input name="producedate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=producedate&oldDate='+producedate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
-		  		&nbsp;&nbsp;&nbsp;&nbsp;ä¿è´¨æœŸ
+		  		&nbsp;&nbsp;&nbsp;&nbsp;±£ÖÊÆÚ
 				<input name="warranty" style="width:100px">
 				</td>
       </tr> 
       <tr>
 	    <td height="30">&nbsp;</td>
         <td class="category">
-		  <input type="submit" value=" ç¡®è®¤å½•å…¥ " onClick="return check1()" class="button">
+		  <input type="submit" value=" È·ÈÏÂ¼Èë " onClick="return check1()" class="button">
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="reset" value=" é‡æ–°å¡«å†™ " class="button">
+		  <input type="reset" value=" ÖØĞÂÌîĞ´ " class="button">
 		  </td>
       </tr>
 	  </form>

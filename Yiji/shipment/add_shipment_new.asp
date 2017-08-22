@@ -16,6 +16,9 @@ end if
 <title><%=dianming%> - 船期表</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <!--<meta http-equiv="Content-Type" content="application/x-www-form-urlencoded; charset=gb2312">-->
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
+<link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -34,6 +37,16 @@ if fla1="0" then
   response.end
 end if
 %>
+
+
+<script>
+	$(function(){
+//日期控件。要支持动态创建的控件
+		$("body").delegate(".datepicker","focusin",function(){
+			$(this).datepicker();
+		});
+	});
+</script>
 
 <%
 if request("hid1")="ok" then
@@ -334,9 +347,9 @@ function chsel(vendor){
    var newTdObj10=myNewRow.insertCell(9);
    newTdObj10.innerHTML="公斤";     
    var newTdObj11=myNewRow.insertCell(10);
-   newTdObj11.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' readonly style='width:80px'"
+   newTdObj11.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' style='width:80px' class='datepicker'>";
 //   	+ " <img src='../images/date.gif' align='absmiddle' style='cursor:pointer;'" 
-   	+ " onClick=\""+"JavaScript:window.open('../day.asp?form=form1&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";     
+//   	+ " onClick=\""+"JavaScript:window.open('../day.asp?form=formitem&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";     
    var newTdObj12=myNewRow.insertCell(11);   	//箱数
 	 newTdObj12.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' style='width:80px' onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
    var newTdObj13=myNewRow.insertCell(12);   	//发票总金额
@@ -539,10 +552,10 @@ function chsel(vendor){
 						%>								
 					</select>			
 					&nbsp;&nbsp;&nbsp;两证
-		  		<input name="twodocumentsready" id="twodocumentsready" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=twodocumentsready&oldDate='+twodocumentsready.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">										 		
+		  		<input name="twodocumentsready" id="twodocumentsready" class="datepicker" style="width:80px">									 		
 				</td>
       </tr>    
+
       <tr>	  
 	    	<td align="right" height="30">港口：</td>
         <td class="category">
@@ -622,24 +635,19 @@ function chsel(vendor){
 		  		<input name="zidong" readonly onClick="JavaScript:window.open('../huiyuan/query_license.asp?queryform=form1&licensetype=自动证&field=zidong&field2=zidongcom','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');" style="cursor:hand;width:120px" value="单击选择自动许可证">
 		  		<input name="zidongcom" readonly >
 		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证交批日期
-		  		<input name="zidongapplydate" id="zidongapplydate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=zidongapplydate&oldDate='+zidongapplydate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  				  		
+		  		<input name="zidongapplydate" id="zidongapplydate" class="datepicker" style="width:80px">		  				  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证上报日期
-		  		<input name="zidongreportdate" id="zidongreportdate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=zidongreportdate&oldDate='+zidongreportdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  				  		
+		  		<input name="zidongreportdate" id="zidongreportdate" class="datepicker" style="width:80px">	  				  		
 				</td>
       </tr>
       <tr>	  
 	    	<td align="right" height="30">预保日：</td>
         <td class="category">
-		  		<input name="planinsurance" id="planinsurance" style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=planinsurance&oldDate='+planinsurance.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="planinsurance" id="planinsurance" class="datepicker" style="width:80px">
 		  		&nbsp;&nbsp;&nbsp;&nbsp;补保日
-		  		<input name="supinsurance" id="supinsurance" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=supinsurance&oldDate='+supinsurance.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="supinsurance" id="supinsurance" class="datepicker" style="width:80px">
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保费支付日
-		  		<input name="insurancepayment" id="insurancepayment" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=insurancepayment&oldDate='+insurancepayment.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="insurancepayment" id="insurancepayment" class="datepicker" style="width:80px">	  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保单
 		  		<input name="insurancenumber" style="width:120px">
 				</td>
@@ -649,13 +657,11 @@ function chsel(vendor){
         <td class="category">
 		  		<input name="planship" style="width:100px">
 		  		&nbsp;&nbsp;&nbsp;&nbsp;实际装船期
-		  		<input name="shipdate" id="shipdate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=shipdate&oldDate='+shipdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="shipdate" id="shipdate" class="datepicker" style="width:80px">
 		  		&nbsp;&nbsp;&nbsp;&nbsp;预计到港期
-		  		<input name="boarddate" id="boarddate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=boarddate&oldDate='+boarddate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="boarddate" id="boarddate" class="datepicker" style="width:80px">	  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;客户交货期
-		  		<input name="plandeliverydate" style="width:100px">
+		  		<input name="plandeliverydate" class="datepicker" style="width:100px">
 				</td>
       </tr>
       <tr>	  
@@ -683,8 +689,7 @@ function chsel(vendor){
       <tr>	  
 	    	<td align="right" height="30">预付款日期：</td>
         <td class="category">
-		  		<input name="paydate" id="paydate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=paydate&oldDate='+paydate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="paydate" id="paydate" class="datepicker" style="width:80px">
 		  		&nbsp;&nbsp;&nbsp;预付款金额
 		  		<input name="payment" style="width:100px" maxlength="15" value=0 onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
 		  		&nbsp;&nbsp;&nbsp;币种
@@ -703,8 +708,7 @@ function chsel(vendor){
 						%>
 					</select>
 				&nbsp;&nbsp;&nbsp;订金收到日期
-				<input name="downpaymentdate" id="downpaymentdate" readonly style="width:80px">	
-				<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=downpaymentdate&oldDate='+downpaymentdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+				<input name="downpaymentdate" id="downpaymentdate" class="datepicker" style="width:80px">	
 				&nbsp;&nbsp;&nbsp;成交条款
 					<select name="tradingterm">
 							<option value="CIF">CIF</option>
@@ -718,43 +722,36 @@ function chsel(vendor){
       <tr>	  
 	    	<td align="right" height="30">尾款支付日期：</td>
         <td class="category">
-		  		<input name="finalpaymentdate" id="finalpaymentdate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=finalpaymentdate&oldDate='+finalpaymentdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="finalpaymentdate" id="finalpaymentdate" class="datepicker" style="width:80px">
 		  		&nbsp;&nbsp;&nbsp;免箱期
 		  		<input name="freestayperiod" style="width:100px">
 		  		&nbsp;&nbsp;&nbsp;卫生证版本
 					<input name="weishengzhengversion" style="width:100px">
 					&nbsp;&nbsp;&nbsp;放行日期
-		  		<input name="passdate" id="passdate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=passdate&oldDate='+passdate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="passdate" id="passdate" class="datepicker" style="width:80px">
 				</td>
-      </tr>       
+      </tr>     
+ 
       <tr>	  
 	    	<td align="right" height="30">到单日期：</td>
         <td class="category">
-		  		<input name="documentarrival" id="documentarrival" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=documentarrival&oldDate='+documentarrival.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="documentarrival" id="documentarrival" class="datepicker" style="width:80px">
 		  		&nbsp;&nbsp;&nbsp;预计赎单日期
-		  		<input name="planretirebill" id="planretirebill" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=planretirebill&oldDate='+planretirebill.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="planretirebill" id="planretirebill" class="datepicker" style="width:80px">		  		
 		  		&nbsp;&nbsp;&nbsp;我司赎单日期
-		  		<input name="internalretirebill" id="internalretirebill" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=internalretirebill&oldDate='+internalretirebill.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="internalretirebill" id="internalretirebill" class="datepicker" style="width:80px">	  		
 		  		&nbsp;&nbsp;&nbsp;代理赎单日期
-		  		<input name="externalretirebill" id="externalretirebill" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=externalretirebill&oldDate='+externalretirebill.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="externalretirebill" id="externalretirebill" class="datepicker" style="width:80px">	  		
 				</td>
       </tr>       
       <tr>	  
 	    	<td align="right" height="30">送货日期：</td>
         <td class="category">
-		  		<input name="cargodate" id="cargodate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=cargodate&oldDate='+cargodate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">
+		  		<input name="cargodate" id="cargodate" class="datepicker" style="width:80px">
 		  		&nbsp;&nbsp;&nbsp;送货方向
 		  		<input name="cargodir" style="width:150px">
 		  		&nbsp;&nbsp;&nbsp;交单日期
-		  		<input name="deliverydate" id="deliverydate" readonly style="width:80px">
-		  		<img src="../images/date.gif" align="absmiddle" style="cursor:pointer;" onClick="JavaScript:window.open('../day.asp?form=form1&field=deliverydate&oldDate='+deliverydate.value,'','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');">		  		
+		  		<input name="deliverydate" id="deliverydate" class="datepicker" style="width:80px">	  		
 				</td>
       </tr> 
       <tr>
@@ -810,9 +807,10 @@ function chsel(vendor){
 		  <input type="hidden" name="hid1" value="ok">
 		  <input type="reset" value=" 重新填写 " class="button">
       </tr>    
+
 </table>  
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
-<!--	  <form name="formitem" action="" method="post">-->
+	  <form name="formitem">
       <tr>
 					<input type="button" onclick="addNewRow()" value="增加一行" class="button"/>&nbsp;&nbsp;&nbsp;
 					<input type="button" onclick="removeRow()" value="删除一行" class="button"/>
@@ -839,7 +837,7 @@ function chsel(vendor){
 			    </table>			  	
       </tr>	          
 
-<!--  </form>-->
+  </form>
 </table>
 </form>
 </td>
