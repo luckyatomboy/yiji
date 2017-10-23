@@ -34,6 +34,24 @@ if fla6="0" and session("redboy_id")<>"1" then
 end if
 %>
 
+<%
+  sql="select * from locktable where tablename='customercontact' and combinedkey='"&request("customername")&request("contact")&"'"
+  set rs_lock=conn.execute(sql)
+  if rs_lock.eof = false then
+    if rs_lock("username")<>session("redboy_username") then
+%>
+    <script language="javascript">
+    alert("用户<%=rs_lock("username")%>正在编辑该记录！请稍后再试！");
+    window.location.href="shipment.asp";
+    </script> 
+<%end if
+else
+    sql="insert into locktable(tablename,combinedkey,status,username,locktime) values('customercontact','"&request("customername")&request("contact")&"','E','"&session("redboy_username")&"',#"&now()&"#)"  
+    conn.execute(sql)
+end if
+%>
+
+
 <%if request("hid1")="" then%>
 <%
 sql="select * from customercontact where customername='"&request("customername")&"' and contact='"&request("contact")&"'"
@@ -127,7 +145,7 @@ set rs=conn.execute(sql)
         <td class="category">
 		  <input type="submit" value=" 确认修改 " onClick="return check()" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-			<input type="button" value=" 放弃修改返回 " onClick="window.history.go(-1)" class="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('delete_lock_table.asp?tablename=customercontact&combinedkey=<%=request("customername")%><%=request("contact")%>'); window.location.href='master.asp';}" class="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<%
 			if fla6="0" and session("redboy_id")<>"1" then
 			else
