@@ -1,0 +1,33 @@
+.showColumn{
+position:relative;
+display:inline-block;
+z-index:9999;
+height:100%;
+padding-left:0px;
+ }
+ .showColumn  .margin-comm.span-btn{
+height:23px;
+vertical-align:middle;
+display:inline-block;
+ }
+ .showColumn .showul{
+list-style:none;
+display:none;
+position:absolute;
+left:6px; 
+border:1px solid #ccc;
+ }
+ .showul ul li{
+   width: 115px;
+   height: 23px;
+   border: 0;
+   background: #666464;
+ }
+ .showul ul li:hover{
+   background: #eef9f9;
+   cursor: pointer;
+ }
+ .showul ul li input{
+   margin-left: 5px;
+   vertical-align: middle;
+ }

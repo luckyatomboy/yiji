@@ -16,8 +16,25 @@ end if
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
 <script type="text/javascript" src="../js/jquery-ui.js"></script>
+<script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+<!--支持按钮功能-->
+<script type="text/javascript" src="../js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="../js/buttons.colVis.min.js"></script>
+<!--固定列-->
+<script type="text/javascript" src="../js/dataTables.fixedColumns.min.js"></script>
+<!--拖拽列-->
+<script type="text/javascript" src="../js/dataTables.colReorder.min.js"></script>
+<!--导出到excel-->
+<script type="text/javascript" src="../js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="../js/jszip.min.js"></script>
+<script type="text/javascript" src="../js/buttons.html5.min.js"></script>
+
 <link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
+<link href="../style/jquery.dataTables.css" rel="stylesheet" type="text/css">
+<link href="../style/buttons.dataTables.min.css" rel="stylesheet" type="text/css">
+<link href="../style/fixedColumns.dataTables.min.css" rel="stylesheet" type="text/css">
+
 <style>
 body {
 	background-color:#FFFFFF;
@@ -40,11 +57,42 @@ end if
 //日期控件
     $("#datefrom").datepicker();
     $("#dateto").datepicker();
+//DataTable控件
+    //$("#queryresult").DataTable();
+    var table=$("#queryresult").DataTable( {
+          dom: "Blfrtip",
+          stateSave: true,
+          colReorder: true,      
+          buttons: [
+              {
+                  extend: "colvis",
+                  collectionLayout: "fixed four-column",
+                  columns: ".setvisible",
+                  text: "显示/隐藏列"
+                  //columns: ":not(.noVis)"
+              },
+              {
+                extend: "excel",
+                text: "导出到Excel"
+              }
+          ],
+          columnDefs: [
+              { targets: [-1, -2], orderable: false },
+              { targets: "ininovis", visible: false }
+              //{ targets: "_all", visible: false}
+          ]
+   
+
+} );
+
+//var table = $("#queryresult").DataTable();
+
+//table.column( "修改" ).order( false ).draw();    
   });
+
 </script>
 
 <script>
-
 function print_customer_shipment() { 
   var win;
   var shipment="";
@@ -164,35 +212,6 @@ nowto=request("dateto")
   elseif nowfrom<>"" and nowto<>"" then
 	sql=sql&" and boarddate>=#"&nowfrom&"# and boarddate<=#"&nowto&"#"
   end if
-
-	
-  if request("order1")<>"" then
-    sql=sql&" order by shipmentnum "&request("order1")
-  elseif request("order2")<>"" then
-    sql=sql&" order by status "&request("order2")
-  elseif request("order3")<>"" then
-    sql=sql&" order by customer "&request("order3") 
-  elseif request("order4")<>"" then
-    sql=sql&" order by vendor "&request("order4") 
-  elseif request("order5")<>"" then
-    sql=sql&" order by contract "&request("order5") 
-  elseif request("order6")<>"" then
-    sql=sql&" order by material "&request("order6")
-  elseif request("order7")<>"" then
-    sql=sql&" order by country "&request("order7")
-  elseif request("order8")<>"" then
-    sql=sql&" order by boarddate "&request("order8")
-  elseif request("order9")<>"" then
-    sql=sql&" order by plant "&request("order9") 
-  elseif request("order10")<>"" then
-    sql=sql&" order by deliverydate "&request("order10") 
-  elseif request("order11")<>"" then
-    sql=sql&" order by case "&request("order11")
-  elseif request("order12")<>"" then
-    sql=sql&" order by dongjiancom "&request("order12")
-  elseif request("order13")<>"" then
-    sql=sql&" order by zidongcom "&request("order13")
-  end if
   
 %>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
@@ -210,88 +229,41 @@ nowto=request("dateto")
 <td><img src="../images/r_2.gif" alt="" /></td>
 </tr>
 
+
 <tr>
 <td></td>
 <td>
 <!--startprint-->
-<table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
+<!--<table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1" id="example">-->
+<table width="100%" class="dataTable stripe" id="queryresult" cellspacing="1">
 <form name="form1" action="produit_del.asp">
   <input type="hidden" name="queryform" value="<%=request("queryform")%>">
   <input type="hidden" name="form" value="<%=request("form")%>">
   <input type="hidden" name="field" value="<%=request("field")%>">
   <input type="hidden" name="field2" value="<%=request("field2")%>">
   <input type="hidden" name="field3" value="<%=request("field3")%>">
-<!--
-  <input type="hidden" name="field4" value="<%=request("field4")%>">
-  <input type="hidden" name="field5" value="<%=request("field5")%>">
-  <input type="hidden" name="field6" value="<%=request("field6")%>">
-  <input type="hidden" name="field7" value="<%=request("field7")%>">
-  <input type="hidden" name="field8" value="<%=request("field8")%>">
-  <input type="hidden" name="field9" value="<%=request("field9")%>">
--->
-  <input type="hidden" name="company" value="<%=nowcompany%>">
-  <input type="hidden" name="licensetype" value="<%=nowlicensetype%>">
-  <input type="hidden" name="license" value="<%=nowlicense%>">
-  <input type="hidden" name="keyword" value="<%=nowkeyword%>">
-  <input type="hidden" name="order1" value="<%=request("order1")%>">
-  <input type="hidden" name="order2" value="<%=request("order2")%>">
-  <input type="hidden" name="order3" value="<%=request("order3")%>">
-  <input type="hidden" name="order4" value="<%=request("order4")%>">
-  <input type="hidden" name="order5" value="<%=request("order5")%>">
-  <input type="hidden" name="order6" value="<%=request("order6")%>">
-  <input type="hidden" name="order7" value="<%=request("order7")%>">
-  <input type="hidden" name="order8" value="<%=request("order8")%>">
-  <input type="hidden" name="order9" value="<%=request("order9")%>">
-  <input type="hidden" name="order10" value="<%=request("order10")%>">
-  <input type="hidden" name="order11" value="<%=request("order11")%>">
-  <input type="hidden" name="order12" value="<%=request("order12")%>">
-  <input type="hidden" name="order13" value="<%=request("order13")%>">
-  <tr align="center">
-	<td class="category" width="100" height="30">
-		<a href="?order1=<%if request("order1")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">船期表号码<%if request("order1")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="80" height="30">
-		<a href="?order2=<%if request("order2")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">状态<%if request("order2")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="100" height="30">
-	  <a href="?order3=<%if request("order3")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">客户名称<%if request("order3")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="100" height="30">
-		<a href="?order4=<%if request("order4")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">供应商名称<%if request("order4")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="120" height="30">
-		<a href="?order5=<%if request("order5")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">合同号<%if request("order5")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="80" height="30">
-		<a href="?order6=<%if request("order12")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">项目号<%if request("order6")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>	
-	<td class="category" width="80" height="30">
-		<a href="?order6=<%if request("order6")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">品名<%if request("order6")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="80" height="30">
-		<a href="?order7=<%if request("order7")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">国家<%if request("order7")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="80" height="30">
-		<a href="?order9=<%if request("order9")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">厂号<%if request("order9")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-	</td>
-	<td class="category" width="100" height="30">
-		<a href="?order12=<%if request("order12")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">动检公司<%if request("order12")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-  </td>
-	<td class="category" width="100" height="30">
-		<a href="?order13=<%if request("order13")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">自动公司<%if request("order13")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-  </td>
-	<td class="category" width="80" height="30">
-		<a href="?order8=<%if request("order8")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">到港期<%if request("order8")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-  </td>
-	<td class="category" width="80" height="30">
-		<a href="?order10=<%if request("order10")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">交单日期<%if request("order10")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-  </td>
-	<td class="category" width="80" height="30">
-		<a href="?order11=<%if request("order11")="asc" then%>desc<%else%>asc<%end if%>&form=<%=request("form")%>" class="title">箱号<%if request("order11")="asc" then%><img src="../images/up2.gif" border="0" hspace="2" align="absmiddle"><%else%><img src="../images/down2.gif" border="0" hspace="2" align="absmiddle"><%end if%></a>	
-  </td>
+
+  <thead class="sorting">
+	<td class="category" width="100" height="30">船期表号码</td>
+	<td class="category setvisible" width="80" height="30">状态</td>
+	<td class="category setvisible" width="100" height="30">客户名称</td>
+	<td class="category setvisible ininovis" width="100" height="30">供应商名称</td>
+	<td class="category setvisible ininovis" width="120" height="30">合同号</td>
+	<td class="category" width="80" height="30">项目号</td>	
+	<td class="category" width="80" height="30">品名</td>
+	<td class="category" width="80" height="30">国家</td>
+	<td class="category" width="80" height="30">厂号</td>
+	<td class="category" width="100" height="30">动检公司</td>
+	<td class="category" width="100" height="30">自动公司</td>
+	<td class="category" width="80" height="30">到港期</td>
+	<td class="category" width="80" height="30">交单日期</td>
+	<td class="category" width="80" height="30">箱号</td>
+  <td class="category" width="100" height="30">船公司名</td>
   <td class="category">修改</td>
   <td class="category">选择</td>
-  </tr>
+  </thead>
+  <!--</tr>-->
+  <tbody>
   <%
   set rs_shipment =server.createobject("ADODB.RecordSet")	
   rs_shipment.open sql,conn,1,1
@@ -316,10 +288,10 @@ nowto=request("dateto")
         <%if rs_shipment("status")="进库" then%>bgcolor="darkgrey"<%elseif rs_shipment("status")="通关中" then%>bgcolor="lawngreen"<%elseif rs_shipment("status")="已送货" then%>bgcolor="red"<%end if%>>     
 
   <td align="center" height="30"><%=rs_shipment("shipmentnum")%></td>    
-  <td align="center"><%=rs_shipment("status")%></td>	  
-  <td align="center"><%=rs_shipment("customer")%></td>
-  <td align="center"><%=rs_shipment("vendor")%></td>
-  <td align="center"><%=rs_shipment("contract")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("status")%></td>	  
+  <td align="center" class="setvisible"><%=rs_shipment("customer")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("vendor")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("contract")%></td>
   <td align="center"><%=rs_shipment("itemnum")%></td>  
   <td align="center"><%=rs_shipment("material")%></td>
   <td align="center"><%=rs_shipment("country")%></td>
@@ -329,6 +301,7 @@ nowto=request("dateto")
   <td align="center"><%=rs_shipment("boarddate")%></td>
   <td align="center"><%=rs_shipment("deliverydate")%></td>
   <td align="center"><%=rs_shipment("case")%></td>
+  <td align="center"><%=rs_shipment("carrier")%></td>
   <td align="center">
     	<a href="change_shipment_new.asp?form=<%=request("form")%>&shipment=<%=rs_shipment("shipmentnum")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">修改</a>
   </td>
@@ -336,7 +309,6 @@ nowto=request("dateto")
   	<input type="checkbox" name="sel" value="<%=rs_shipment("shipmentnum")&rs_shipment("itemnum")%>" style="border:0">
   </td>
 <!--	<td align="center"><input type="checkbox" name='chkArr'  id='chkArr' />";  -->
-  </tr>
   </tr>
   <%
   	'end if
@@ -350,6 +322,7 @@ nowto=request("dateto")
   <%
   end if
   %>
+  </tbody>
   <%
   if rs_shipment.recordcount>0 then 
   %> 
