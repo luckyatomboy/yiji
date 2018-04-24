@@ -18,8 +18,13 @@ end if
 <!--<meta http-equiv="Content-Type" content="application/x-www-form-urlencoded; charset=gb2312">-->
 <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
 <script type="text/javascript" src="../js/jquery-ui.js"></script>
+<script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../js/dataTables.editor.min.js"></script>
+
 <link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
+<link href="../style/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<link href="../style/editor.dataTables.min.css" rel="stylesheet" type="text/css">
 <style>
 body {
 	background-color:#FFFFFF;
@@ -40,12 +45,29 @@ end if
 
 
 <script>
+//var editor; // use a global for the submit and return data rendering in the examples
+
 	$(function(){
 //日期控件。要支持动态创建的控件
 		$("body").delegate(".datepicker","focusin",function(){
 			$(this).datepicker();
 		});
+
+//点击输入框弹出输入窗口
+	    var editor = new $.fn.dataTable.Editor( {
+	        //ajax: "../php/standalone.php"String,
+	        fields: [ {
+	                label: "卫生证号:",
+	                name:  "weishengzheng"
+	            }
+	        ]
+	    } );
+
+	    $("[data-editor-field]").on( "click", function (e) {
+	        editor.bubble( this );
+	    } );		
 	});
+
 </script>
 
 <%
@@ -265,6 +287,21 @@ return false;
 <!-- 检查自动证 -->
 }
 
+function add_memo(this){
+//点击输入框弹出输入窗口
+    var editor = new $.fn.dataTable.Editor( {
+        //ajax: "../php/standalone.php"String,
+        fields: [ {
+                label: "卫生证号:",
+                name:  "weishengzheng"
+            }
+        ]
+    } );
+
+    //$("[data-editor-field]").on( "click", function (e) {
+        editor.bubble( this );
+    //} );	
+}	    
 
 function chsel(vendor){
 //设置国家	
@@ -671,10 +708,10 @@ function chsel(vendor){
 		  		&nbsp;&nbsp;&nbsp;提单号
 		  		<input name="ladnumber" style="width:120px" maxlength="20">
 		  		&nbsp;&nbsp;&nbsp;卫生证号
-		  		<input name="weishengzheng" style="width:120px" maxlength="20">	
+		  		<input class="bubble" name="weishengzheng" style="width:120px" maxlength="20" onClick="add_memo(this)">	
 					&nbsp;&nbsp;&nbsp;铅封号
-					<input name="locknumber" style="width:120px" maxlength="20">		
-		  		&nbsp;&nbsp;&nbsp;电子信息
+				<input name="locknumber" style="width:120px" maxlength="20">		
+		  			&nbsp;&nbsp;&nbsp;电子信息
 					<select name="einformation">			
 						  <option value="有">有</option>		
 						  <option value="无">无</option>										

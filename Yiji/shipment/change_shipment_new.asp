@@ -16,9 +16,39 @@ end if
 <title><%=dianming%> - 修改船期表</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<!--<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
 <script type="text/javascript" src="../js/jquery-ui.js"></script>
+<!--<script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>-->
+
+<!--
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/jq-3.2.1/moment-2.18.1/dt-1.10.16/b-1.4.2/sl-1.2.3/datatables.min.js"></script>
+<script type="text/javascript" src="../js/dataTables.editor.min.js"></script>
+-->
+
 <link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
+
+<!--X-Editable test -->
+<script src="../js/test_demo/assets/mockjax/jquery.mockjax.js"></script>
+<!-- momentjs --> 
+<script src="../js/test_demo/assets/momentjs/moment.min.js"></script> 
+<!-- bootstrap 3 -->
+<link href="../js/test_demo/assets/bootstrap300/css/bootstrap.css" rel="stylesheet">
+<script src="../js/test_demo/assets/bootstrap300/js/bootstrap.js"></script>
+<!-- x-editable (bootstrap 3) -->
+<link href="../js/test_demo/assets/x-editable/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
+<script src="../js/test_demo/assets/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>      
+<!-- shipment input -->
+<link href="../js/test_demo/shipname.css" rel="stylesheet">
+<script src="../js/test_demo/shipname.js"></script>     
+<script src="../js/test_demo/assets/demo-mock.js"></script> 
+<script src="../js/test_demo/assets/demo.js"></script>  
+
+
+<!--
+<link href="../style/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<link href="../style/editor.dataTables.min.css" rel="stylesheet" type="text/css">
+-->
 <style>
 body {
 	background-color:#FFFFFF;
@@ -54,11 +84,12 @@ end if
 %>
 
 <script>
-  $(function(){
+  $(document).ready(function(){
 //日期控件。要支持动态创建的控件
     $("body").delegate(".datepicker","focusin",function(){
       $(this).datepicker();
     });
+
   });
 </script>
 
@@ -478,11 +509,13 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 <td></td>
 <td>
 	  <form name="form1">	
-<table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
+<table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1" id="maintable">
 <!--	  <form name="form1">	-->
+      <tbody>
       <tr>
         <td width="20%" align="right" height="30">船期表号码：</td>
-        <td width="80%" class="category"><input name="shipment" id="shipment" value=<%=rs("shipmentnum")%> readonly></td>
+		<td width="80%" class="category"><input name="shipment" id="shipment" value=<%=rs("shipmentnum")%> readonly></td>
+        
       </tr>
       <tr>
         <td width="20%" align="right" height="30">一般信息：</td>
@@ -705,7 +738,9 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						  <option value="COSCO">COSCO</option>			-->							
 					</select>				
 					&nbsp;&nbsp;&nbsp;&nbsp;船名航次
-					<input name="shipname" style="width:150px" maxlength="20">							
+					<!--<input name="shipname" id="shipname" style="width:150px" maxlength="20" >		-->
+					<input id="shipname" name="shipname" data-type="shipname" data-title="Please, fill shipname" value=<%=rs("shipname")%>>			
+					<input type="hidden" id="shipcomment" value=<%=rs("shipcomment")%>>		
 				</td>
       </tr>               
       <tr>	  
@@ -936,7 +971,8 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 		  <input type="submit" value=" 确认修改 " onClick="return check1();" class="button">&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
 		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=shipment&combinedkey=<%=request("shipment")%>'); window.location.href='shipment.asp';}" class="button">
-      </tr>    
+      </tr>  
+      </tbody>  
 </table>  
 </form>
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
