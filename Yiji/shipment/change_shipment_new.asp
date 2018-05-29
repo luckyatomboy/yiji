@@ -16,39 +16,10 @@ end if
 <title><%=dianming%> - 修改船期表</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
-<!--<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
 <script type="text/javascript" src="../js/jquery-ui.js"></script>
-<!--<script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>-->
-
-<!--
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/jq-3.2.1/moment-2.18.1/dt-1.10.16/b-1.4.2/sl-1.2.3/datatables.min.js"></script>
-<script type="text/javascript" src="../js/dataTables.editor.min.js"></script>
--->
-
 <link href="../style/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 
-<!--X-Editable test -->
-<script src="../js/test_demo/assets/mockjax/jquery.mockjax.js"></script>
-<!-- momentjs --> 
-<script src="../js/test_demo/assets/momentjs/moment.min.js"></script> 
-<!-- bootstrap 3 -->
-<link href="../js/test_demo/assets/bootstrap300/css/bootstrap.css" rel="stylesheet">
-<script src="../js/test_demo/assets/bootstrap300/js/bootstrap.js"></script>
-<!-- x-editable (bootstrap 3) -->
-<link href="../js/test_demo/assets/x-editable/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
-<script src="../js/test_demo/assets/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>      
-<!-- shipment input -->
-<link href="../js/test_demo/shipname.css" rel="stylesheet">
-<script src="../js/test_demo/shipname.js"></script>     
-<script src="../js/test_demo/assets/demo-mock.js"></script> 
-<script src="../js/test_demo/assets/demo.js"></script>  
-
-
-<!--
-<link href="../style/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
-<link href="../style/editor.dataTables.min.css" rel="stylesheet" type="text/css">
--->
 <style>
 body {
 	background-color:#FFFFFF;
@@ -98,40 +69,64 @@ if request("hid1")="ok" then
 sql="select * from shipment where shipmentnum="&request("shipment")
 set rs=server.createobject("ADODB.RecordSet")
 rs.open sql,conn,1,3
-
+'第二行'
 rs("trantype")=request("trantype")
 rs("status")=request("status")
 rs("invoicestatus")=request("invoicestatus")
-rs("vendor")=request("vendor")
-rs("contract")=request("contract")
-rs("country")=request("country")
+'第三行'
+rs("buyer")=request("buyer")
 rs("sales")=request("sales")
+rs("handler")=request("custom")
+'第四行
+rs("vendor")=request("vendor")
+rs("country")=request("country")
+rs("plant")=request("plant")
 rs("incoterm")=request("incoterm")
-rs("dongjiancom")=request("dongjiancom")
-if request("dongjian")="单击选择动检证" then
-  rs("dongjian")=""
+'第五行'
+rs("contract")=request("contract")
+rs("materialtype")=request("materialtype")
+rs("agent")=request("agent")
+rs("piwen")=request("piwen")
+if request("zidongapplydate")<>"" then
+	rs("twodocumentready")=request("twodocumentready")
 else
-  rs("dongjian")=request("dongjian")
+	rs("twodocumentready")=null
 end if
-rs("zidongcom")=request("zidongcom")
-if request("zidong")="单击选择自动证" then
-  rs("zidong")=""
+'第六行'
+rs("terminal")=request("terminal")
+rs("destination")=request("destination")
+rs("carrier")=request("carrier")
+rs("shipname")=request("shipname")
+'第七行'
+rs("dongjian")=request("dongjian")
+rs("zidong")=request("zidong")
+if request("zidongapplydate")<>"" then
+	rs("zidongapplydate")=request("zidongapplydate")
 else
-  rs("zidong")=request("zidong")
+	rs("zidongapplydate")=null
 end if
 rs("planship")=request("planship")
-rs("plant")=request("plant")
+
 if request("shipdate")<>"" then
   rs("shipdate")=request("shipdate")
+else
+	rs("shipdate")=null
 end if
 if request("boarddate")<>"" then
   rs("boarddate")=request("boarddate")
+else
+	rs("boarddate")=null
 end if
 
-rs("case")=request("case")
+nowitemno=request("itemno").count
+
+rs("case")=nowitemno
+'rs("case")=request("case")
 rs("weishengzheng")=request("weishengzheng")
 if request("deliverydate")<>"" then
   rs("deliverydate")=request("deliverydate")
+else
+	rs("deliverydate")=null
 end if
 rs("ladnumber")=request("ladnumber")
 rs("shipname")=request("shipname")
@@ -140,36 +135,45 @@ rs("warranty")=request("warranty")
 rs("claiminformation")=request("claiminformation")
 rs("applycustom")=request("applycustom")
 if request("paydate")<>"" then
-  rs("paydate")=request("paydate")
+  rs("prepaydate")=request("paydate")
+else
+	rs("prepaydate")=null
 end if
 rs("prepayment")=request("prepayment")
 rs("trancurrency")=request("currency")
 rs("memo")=request("memo")
 if request("cargodate")<>"" then
   rs("cargodate")=request("cargodate")
+else
+	rs("cargodate")=null
 end if
-rs("cargodir")=request("cargodir")
+rs("cargodirection")=request("cargodir")
 rs("canceldoc")=request("canceldoc")
 rs("changedate")=now
 rs("changer")=session("redboy_username")
 rs.update
 rs.close
 
+nowshipmentnum=request("shipment")
+
 '先删除已有的item'
-sql="delete from shipmentitem where shipmentnum="&request("shipment")
-conn.execute(sql)
+'sql="delete from shipmentitem where shipmentnum="&request("shipment")
+'conn.execute(sql)
 
 '再插入item'
 for i = 1 to request("itemno").count
+'for i = 1 to 1
 nowitemno=i
 nowmatitem=request("material"&i)
 nowcusitem=request("customer"&i)
 nowspecitem=request("spec"&i)
+nowpackageitem=request("package"&i)
 if request("contractweight"&i)<>"" then
   nowcontweightitem=request("contractweight"&i)
 else
   nowcontweightitem=0
 end if
+nowcontweightuomitem=request("contractweightuom"&i)
 if request("actualweight"&i)<>"" then
   nowactualweightitem=request("actualweight"&i)
 else
@@ -180,6 +184,7 @@ if request("purchaseprice"&i)<>"" then
 else
   nowpurpriceitem=0
 end if
+nowpriceunit=request("priceunit"&i)
 if request("produceDate"&i)<>"" then
   nowproducedateitem=request("produceDate"&i)
 else
@@ -202,12 +207,18 @@ else
   nowfinalamtitem=0
 end if
 
-sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,contractweight,contractweightuom,actualnetweight,actualnetweightuom,purchaseprice,purchasepriceunit,productiondate,casenumber,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&request("shipment")&",'"&nowitemno&"','"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowcontweightitem&"','公斤','"&nowactualweightitem&"','公斤','"&nowpurpriceitem&"','公斤',#"&nowproducedateitem&"#,'"&nowcasenumitem&"',"&nowinvamtitem&",'"&nowcurritem&"',"&nowfinalamtitem&",'"&nowcurritem&"')"
-
-'sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,contractweight,contractweightuom,actualnetweight,actualnetweightuom) values("&request("shipment")&","&nowitemno&",'"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"',"&nowcontweightitem&",'公斤',"&nowactualweightitem&",'公斤')"
+sql="insert into shipmentitem(shipmentnum,itemnum,material) values("&request("shipment")&","&nowitemno&",'"&nowmatitem&"')"
 conn.execute(sql)
 
+'sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,package,contractweight,contractweightuom,actualnetweight,actualnetweightuom,purchaseprice,purchasepriceunit,productiondate,casenumber,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&request("shipment")&","&nowitemno&",'"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowpackageitem&"','"&nowcontweightitem&"','"&nowcontweightuomitem&"','"&nowactualweightitem&"','"&nowcontweightuomitem&"','"&nowpurpriceitem&"','"&nowpriceunititem&"',#"&nowproducedateitem&"#,'"&nowcasenumitem&"',"&nowinvamtitem&",'"&nowcurritem&"',"&nowfinalamtitem&",'"&nowcurritem&"')"
+
+'sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,contractweight,contractweightuom,actualnetweight,actualnetweightuom) values("&request("shipment")&","&nowitemno&",'"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"',"&nowcontweightitem&",'公斤',"&nowactualweightitem&",'公斤')"
+'conn.execute(sql)
+
 next
+
+'sql="insert into shipmentitem(shipmentnum,itemnum,material) values(201805030,1,'猪小排')"
+'conn.execute(sql)
 
 '删除逻辑锁'
 sql="delete from locktable where tablename='shipment' and combinedkey='"&request("shipment")&"'"
@@ -384,11 +395,11 @@ function chsel(vendor){
   	 itemNo=parseInt(itemObj[itemObj.length-1].value) + 1; //取最大行itemno加1
   } 
    var newTdObj1=myNewRow.insertCell(0);
-   newTdObj1.innerHTML="<input type='checkbox' name='chkArr'  id='chkArr' />";
-   newTdObj1.align="center";
+   newTdObj1.innerHTML="<input type='checkbox' name='chkArr'  id='chkArr' align='middle'/>";
+   //newTdObj1.align="center";
    var newTdObj2=myNewRow.insertCell(1);
    newTdObj2.innerHTML="<input type='text' name='itemno' id='itemno' style='align:center;width:30px' value='"+itemNo+"' readonly='true'/>"; 
-   newTdObj2.align="center";
+   //newTdObj2.align="center";
    var newTdObj3=myNewRow.insertCell(2);
 	 newTdObj3.innerHTML="<select name='material"+itemNo+"' id='material"+itemNo+"' style='width:100px'>"
 	    +" <% for i = 0 to materialCount-1 %>"
@@ -406,40 +417,41 @@ function chsel(vendor){
    newTdObj5.innerHTML="<input type='text' name='spec"+itemNo+"' id='spec"+itemNo+"' style='width:100px' align='center'/>";   
    newTdObj5.align="center";
    var newTdObj6=myNewRow.insertCell(5);
-   newTdObj6.innerHTML="<input type='text' name='contractWeight"+itemNo+"' id='contractWeight"+itemNo+"' style='width:80px' align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";  
-   newTdObj6.align="center"; 		 
+   newTdObj6.innerHTML="<input type='text' name='package"+itemNo+"' id='package"+itemNo+"' style='width:100px' align='center'/>";         
+   newTdObj6.align="center";
    var newTdObj7=myNewRow.insertCell(6);
-   newTdObj7.innerHTML="公斤";   
-   newTdObj7.align="center";
+   newTdObj7.innerHTML="<input type='text' name='contractWeight"+itemNo+"' id='contractWeight"+itemNo+"' style='width:80px' align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";  
+   newTdObj7.align="center"; 		 
    var newTdObj8=myNewRow.insertCell(7);
-   newTdObj8.innerHTML="<input type='text' name='actualWeight"+itemNo+"' id='actualWeight"+itemNo+"' style='width:80px'  align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
-   newTdObj8.align="center";		 
+   newTdObj8.innerHTML="<select name='contractWeightUom"+itemNo+"' id='contractWeightUom"+itemNo+"' style='width:50px'>"
+      +" <option value='公斤'>公斤</option>"
+      +" <option value='磅'>磅</option>"
+      +" </select>";       
+   newTdObj8.align="center"; 
    var newTdObj9=myNewRow.insertCell(8);
-   newTdObj9.innerHTML="<input type='text' name='purchasePrice"+itemNo+"' id='purchasePrice"+itemNo+"' style='width:80px' align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
-   newTdObj9.align="center";	 
+   newTdObj9.innerHTML="<input type='text' name='actualWeight"+itemNo+"' id='actualWeight"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   		 
    var newTdObj10=myNewRow.insertCell(9);
-   newTdObj10.innerHTML="公斤";     
-   newTdObj10.align="center";
+   newTdObj10.innerHTML="<input type='text' name='purchasePrice"+itemNo+"' id='purchasePrice"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   		 
    var newTdObj11=myNewRow.insertCell(10);
-   newTdObj11.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' style='width:80px' class='datepicker'>"
+   newTdObj11.innerHTML="<select name='priceunit"+itemNo+"' id='priceunit"+itemNo+"' style='width:50px'>"
+      +" <option value='公斤'>公斤</option>"
+      +" <option value='磅'>磅</option>"
+      +" </select>";      
+   var newTdObj12=myNewRow.insertCell(11);
+   newTdObj12.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' style='width:80px' class='datepicker'>";
 //   	+ " <img src='../images/date.gif' align='absmiddle' style='cursor:pointer;'" 
-//   	+ " onClick=\""+"JavaScript:window.open('../day.asp?form=formitem&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";   
-   newTdObj11.align="center";  
-   var newTdObj12=myNewRow.insertCell(11);   	//箱数
-	 newTdObj12.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' style='width:80px' align='center' onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
-   newTdObj12.align="center";	
-   var newTdObj13=myNewRow.insertCell(12);   	//发票总金额
-	 newTdObj13.innerHTML="<input name='invAmount"+itemNo+"' id='invAmt"+itemNo+"' style='width:80px' align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
-   newTdObj13.align="center";	 
-   var newTdObj14=myNewRow.insertCell(13);
-   newTdObj14.innerHTML="<select name='invCurr"+itemNo+"' id='invCurr"+itemNo+"' style='width:50px' align='center'>"
+//   	+ " onClick=\""+"JavaScript:window.open('../day.asp?form=formitem&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";     
+   var newTdObj13=myNewRow.insertCell(12);   	//箱数
+	 newTdObj13.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
+   var newTdObj14=myNewRow.insertCell(13);   	//发票总金额
+	 newTdObj14.innerHTML="<input name='invAmount"+itemNo+"' id='invAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   		 
+   var newTdObj15=myNewRow.insertCell(14);
+   newTdObj15.innerHTML="<select name='invCurr"+itemNo+"' id='invCurr"+itemNo+"' style='width:50px'>"
 	 		+" <option value='美元'>美元</option>"
 	 		+" <option value='澳币'>澳币</option>"
 	 		+" </select>";   
-   newTdObj14.align="center";
-   var newTdObj15=myNewRow.insertCell(14);   	//尾款金额
-	 newTdObj15.innerHTML="<input name='finalAmount"+itemNo+"' id='finalAmt"+itemNo+"' style='width:80px' value=0 align='center' onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
-   newTdObj15.align="center";		 
+   var newTdObj16=myNewRow.insertCell(15);   	//尾款金额
+	 newTdObj16.innerHTML="<input name='finalAmount"+itemNo+"' id='finalAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   			 
 
   }
 
@@ -671,8 +683,8 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							rs_piwen.close
 						%>								
 					</select>			
-					&nbsp;&nbsp;&nbsp;两证
-		  		<input name="twodocumentsready" id="twodocumentsready" value="<%=rs("twodocumentready")%>" class="datepicker"  style="width:80px">										 		
+					&nbsp;&nbsp;&nbsp;两证齐备日期
+		  		<input name="twodocumentready" id="twodocumentready" value="<%=rs("twodocumentready")%>" class="datepicker"  style="width:80px">										 		
 				</td>
       </tr>    
       <tr>	  
@@ -739,22 +751,16 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 					</select>				
 					&nbsp;&nbsp;&nbsp;&nbsp;船名航次
 					<!--<input name="shipname" id="shipname" style="width:150px" maxlength="20" >		-->
-					<input id="shipname" name="shipname" data-type="shipname" data-title="Please, fill shipname" value=<%=rs("shipname")%>>			
+					<input id="shipname" name="shipname" value=<%=rs("shipname")%>>			
 					<input type="hidden" id="shipcomment" value=<%=rs("shipcomment")%>>		
 				</td>
       </tr>               
       <tr>	  
 	    	<td align="right" height="30">动检证：</td>
         <td class="category">
-		  		<input name="dongjian" readonly onClick="JavaScript:window.open('../huiyuan/query_license.asp?queryform=form1&licensetype=动检证&field=dongjian&field2=dongjiancom','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');" style="cursor:hand;width:120px" value=<%=rs("dongjian")%>>
-		  		<input name="dongjiancom" readonly value=<%=rs("dongjiancom")%>>
-				</td>
-      </tr>
-      <tr>	  
-	    	<td align="right" height="30">自动证：</td>
-        <td class="category">
-		  		<input name="zidong" readonly onClick="JavaScript:window.open('../huiyuan/query_license.asp?queryform=form1&licensetype=自动证&field=zidong&field2=zidongcom','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=470,top=100,left=20');" style="cursor:hand;width:120px" value=<%=rs("zidong")%>>
-		  		<input name="zidongcom" readonly value=<%=rs("zidongcom")%>>
+		  		<input name="dongjian" value=<%=rs("dongjian")%>>
+				&nbsp;&nbsp;&nbsp;&nbsp;自动证
+		  		<input name="zidong" value=<%=rs("zidong")%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证交批日期
 		  		<input name="zidongapplydate" id="zidongapplydate" class="datepicker"  style="width:80px" value=<%=rs("zidongapplydate")%>>	  				  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证上报日期
@@ -776,18 +782,18 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>	  
 	    	<td align="right" height="30">预计装船月份：</td>
         <td class="category">
-		  		<input name="planship" style="width:100px">
+		  		<input name="planship" style="width:100px" value=<%=rs("planship")%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;实际装船期
 		  		<input name="shipdate" id="shipdate" class="datepicker" style="width:80px" value=<%=rs("shipdate")%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;预计到港期
 		  		<input name="boarddate" id="boarddate" class="datepicker" style="width:80px" value=<%=rs("boarddate")%>>  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;客户交货期
-		  		<input name="plandeliverydate" style="width:100px" value=<%=rs("plandeliverydate")%>>
+		  		<input name="customerdeliverydate" style="width:100px" value=<%=rs("customerdeliverydate")%>>
 				</td>
       </tr>
       <tr>	  
 	    	<td align="right" height="30">箱号：</td>
-        <td class="category">
+        	<td class="category">
 		  		<input name="case" style="width:120px" maxlength="15" value=<%=rs("case")%>>
 		  		&nbsp;&nbsp;&nbsp;提单号
 		  		<input name="ladnumber" style="width:120px" maxlength="20" value=<%=rs("ladnumber")%>>
@@ -804,8 +810,13 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 					<select name="MuslimCertification">			
 						  <option value="有" <%if rs("MuslimCertification")="True" then%>selected="selected"<%end if%>>有</option>		
 						  <option value="无" <%if rs("MuslimCertification")="False" then%>selected="selected"<%end if%>>无</option>										
-					</select>									 		  		
-				</td>
+					</select>		
+	            &nbsp;&nbsp;&nbsp;标签
+	          		<select name="ELabel">     
+	              		<option value="有" <%if rs("elabel")="True" then%>selected="selected"<%end if%>>有</option>    
+	              		<option value="无" <%if rs("elabel")="False" then%>selected="selected"<%end if%>>无</option>                    
+	          		</select>    												 		  		
+			</td>
       </tr>
       <tr>	  
 	    	<td align="right" height="30">预付款日期：</td>
@@ -861,8 +872,8 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 		  		<input name="finalpaymentdate" id="finalpaymentdate" class="datepicker" style="width:80px" value=<%=rs("finalpaymentdate")%>>
 		  		&nbsp;&nbsp;&nbsp;免箱期
 		  		<input name="freestayperiod" style="width:100px" value=<%=rs("freestayperiod")%>>
-		  		&nbsp;&nbsp;&nbsp;卫生证版本 
-				<input name="weishengzhengversion" style="width:100px" value=<%=rs("weishengzhengversion")%>>
+		  		&nbsp;&nbsp;&nbsp;兽医官
+				<input name="shouyi" style="width:100px" value=<%=rs("shouyi")%>>
 				&nbsp;&nbsp;&nbsp;放行日期
 		  		<input name="passdate" id="passdate" class="datepicker" style="width:80px" value=<%=rs("passdate")%>>
 				</td>
@@ -884,7 +895,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
         <td class="category">
 		  		<input name="cargodate" id="cargodate" class="datepicker" style="width:80px" value=<%=rs("cargodate")%>>
 		  		&nbsp;&nbsp;&nbsp;送货方向
-		  		<input name="cargodir" style="width:150px" value=<%=rs("cargodir")%>>
+		  		<input name="cargodirection" style="width:150px" value=<%=rs("cargodirection")%>>
 		  		&nbsp;&nbsp;&nbsp;交单日期
 		  		<input name="deliverydate" id="deliverydate" class="datepicker" style="width:80px" value=<%=rs("deliverydate")%>>	  		
 				</td>
@@ -988,12 +999,13 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 	        <td width="30" align="center">项目号</td>
 	        <td width="100" align="center">品名</td>
 	        <td width="100" align="center" >客户</td> 	
-	        <td width=100" align="center" >规格</td> 		
+	        <td width=100" align="center" >规格</td> 	
+	        <td width=100" align="center" >包装</td>    	
 	        <td width=80" align="center" >合同重量</td> 			
-	        <td width="40" align="center" >重量单位</td> 		
+	        <td width="30" align="center" >重量单位</td> 		
 	        <td width="80" align="center" >实际净重</td> 				    
 	        <td width="80" align="center" >采购价格</td> 			
-	        <td width="40" align="center" >价格单位</td> 				        	            		        	        		        
+	        <td width="30" align="center" >价格单位</td> 				        	            		        	        		        
 	        <td width="50" align="center" >生产日期</td> 		
 	        <td width="50" align="center" >箱数</td> 		
 	        <td width="100" align="center" >发票总金额</td> 		
@@ -1010,7 +1022,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
      	  %>	
 		  <tr>
 		  	<td width="20"><input type='checkbox' name='chkArr'  id='chkArr' /></td>			
-	        <td width="30" align="center" ><input type='text' name='itemno' id='itemno' value='<%=rs_items("itemnum")%>' style='width:30px' readonly/></td>
+	        <td width="30" align="center" ><input type='text' name='itemno' id='itemno' value='<%=rs_items("itemnum")%>' style='width:30px' readonly='true'/></td>
 	        <td width="100" align="center" >
 	        	<select name="material<%=rs_items("itemnum")%>" id="material<%=rs_items("itemnum")%>" style='width:100px'>
 	    			<% for i = 0 to materialCount-1 %>
@@ -1026,11 +1038,22 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 	 			</select>	        	
 	        </td> 	
 	        <td width=100" align="center" ><input type='text' name="spec<%=rs_items("itemnum")%>" id="spec<%=rs_items("itemnum")%>" value='<%=rs_items("spec")%>' style='width:100px'/></td> 		
+	        <td width=100" align="center" ><input type='text' name="package<%=rs_items("itemnum")%>" id="package<%=rs_items("itemnum")%>" value='<%=rs_items("package")%>' style='width:100px'/></td> 		
 	        <td width=80" align="center" ><input type='text' name="contractweight<%=rs_items("itemnum")%>" id="contractweight<%=rs_items("itemnum")%>" value='<%=rs_items("contractweight")%>' style='width:80px'/></td> 
-	        <td width="40" align="center" >公斤</td> 		
+	        <td width="30" align="center" >
+	            	<select name="contractweightuom<%=rs_items("itemnum")%>" id="contractweightuom<%=rs_items("itemnum")%>" style='width:50px'>
+	        			<option value='公斤' <%if rs_items("contractweightuom")="公斤" then%>selected="selected"<%end if%>>公斤</option>
+	        			<option value='磅' <%if rs_items("contractweightuom")="磅" then%>selected="selected"<%end if%>>磅</option>
+	        		</select>
+	        </td> 		
 	        <td width="80" align="center" ><input type='text' name="actualweight<%=rs_items("itemnum")%>" id="actualweight<%=rs_items("itemnum")%>" value='<%=rs_items("actualnetweight")%>' style='width:80px'/></td>
 	        <td width="80" align="center" ><input type='text' name="purchaseprice<%=rs_items("itemnum")%>" id="purchaseprice<%=rs_items("itemnum")%>" value='<%=rs_items("purchaseprice")%>' style='width:80px'/></td> 	
-	        <td width="40" align="center" >公斤</td> 				        	            		        	        		        
+	        <td width="30" align="center" >
+	            	<select name="priceunit<%=rs_items("itemnum")%>" id="priceunit<%=rs_items("itemnum")%>" style='width:50px'>
+	        			<option value='公斤' <%if rs_items("purchasepriceunit")="公斤" then%>selected="selected"<%end if%>>公斤</option>
+	        			<option value='磅' <%if rs_items("purchasepriceunit")="磅" then%>selected="selected"<%end if%>>磅</option>
+	        		</select>
+	        </td> 					        	            		        	        		        
 	        <td width="50" align="center" ><input name="producedate<%=rs_items("itemnum")%>" id="producedate<%=rs_items("itemnum")%>" value="<%=rs_items("productiondate")%>" style='width:80px' class="datepicker"/></td> 		
 	        <td width="50" align="center" ><input type='text' name="casenum<%=rs_items("itemnum")%>" id="casenum<%=rs_items("itemnum")%>" value='<%=rs_items("casenumber")%>' style='width:80px'/></td> 		
 	        <td width="100" align="center" ><input type='text' name="invamount<%=rs_items("itemnum")%>" id="invamount<%=rs_items("itemnum")%>" value='<%=rs_items("invoiceamount")%>' style='width:80px'/></td> 	

@@ -195,7 +195,7 @@ nowto=request("dateto")
 </table>
 <%
 '  sql="select * from shipment where shipmentnum<=99999999"
-  sql="select b.*, a.* from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where a.shipmentnum<=99999999"  
+  sql="select b.*, a.* from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where a.shipmentnum<=999999999"  
   if nowsales<>"" then
   	sql=sql&" and sales='"&nowsales&"'"
   end if
@@ -249,16 +249,16 @@ nowto=request("dateto")
 	<td class="category setvisible" width="100" height="30">客户名称</td>
 	<td class="category setvisible ininovis" width="100" height="30">供应商名称</td>
 	<td class="category setvisible ininovis" width="120" height="30">合同号</td>
-	<td class="category" width="80" height="30">项目号</td>	
-	<td class="category" width="80" height="30">品名</td>
-	<td class="category" width="80" height="30">国家</td>
-	<td class="category" width="80" height="30">厂号</td>
-	<td class="category" width="100" height="30">动检公司</td>
-	<td class="category" width="100" height="30">自动公司</td>
-	<td class="category" width="80" height="30">到港期</td>
-	<td class="category" width="80" height="30">交单日期</td>
-	<td class="category" width="80" height="30">箱号</td>
-  <td class="category" width="100" height="30">船公司名</td>
+	<td class="category setvisible" width="80" height="30">项目号</td>	
+	<td class="category setvisible" width="80" height="30">品名</td>
+	<td class="category setvisible" width="80" height="30">国家</td>
+	<td class="category setvisible" width="80" height="30">厂号</td>
+	<td class="category setvisible" width="100" height="30">动检公司</td>
+	<td class="category setvisible" width="100" height="30">自动公司</td>
+	<td class="category setvisible" width="80" height="30">到港期</td>
+	<td class="category setvisible" width="80" height="30">交单日期</td>
+	<td class="category setvisible" width="80" height="30">箱号</td>
+  <td class="category setvisible" width="100" height="30">船公司名</td>
   <td class="category">修改</td>
   <td class="category">选择</td>
   </thead>
@@ -292,16 +292,16 @@ nowto=request("dateto")
   <td align="center" class="setvisible"><%=rs_shipment("customer")%></td>
   <td align="center" class="setvisible ininovis"><%=rs_shipment("vendor")%></td>
   <td align="center" class="setvisible ininovis"><%=rs_shipment("contract")%></td>
-  <td align="center"><%=rs_shipment("itemnum")%></td>  
-  <td align="center"><%=rs_shipment("material")%></td>
-  <td align="center"><%=rs_shipment("country")%></td>
-  <td align="center"><%=rs_shipment("plant")%></td>
-  <td align="center"><%=rs_shipment("dongjiancom")%></td>
-  <td align="center"><%=rs_shipment("zidongcom")%></td>
-  <td align="center"><%=rs_shipment("boarddate")%></td>
-  <td align="center"><%=rs_shipment("deliverydate")%></td>
-  <td align="center"><%=rs_shipment("case")%></td>
-  <td align="center"><%=rs_shipment("carrier")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("itemnum")%></td>  
+  <td align="center" class="setvisible"><%=rs_shipment("material")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("country")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("plant")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("dongjiancom")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("zidongcom")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("boarddate")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("deliverydate")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("case")%></td>
+  <td align="center" class="setvisible"><%=rs_shipment("carrier")%></td>
   <td align="center">
     	<a href="change_shipment_new.asp?form=<%=request("form")%>&shipment=<%=rs_shipment("shipmentnum")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">修改</a>
   </td>

@@ -261,6 +261,7 @@ function add_owncompany()
 <td></td>
 <td>
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
+<!--
   <tr>
     <td width="25%" height="30" align="right">
     </td>
@@ -269,6 +270,7 @@ function add_owncompany()
 		  <input type="button" value=" 自动证/动检证查询" onClick="return query_license()">		
 		</td>
   </tr>
+-->
   <tr>
     <td width="25%" height="30" align="right">
     </td>
