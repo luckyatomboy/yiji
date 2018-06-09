@@ -95,7 +95,9 @@ nowmaterialtype=request("materialtype")
 nowagent=request("agent")
 nowpiwen=request("piwen")
 if request("twodocumentready") <> "" then
-  nowtwodocready=request("twodocumentready")
+  nowtwodocready="#"&request("twodocumentready")&"#"
+else
+  nowtwodocready="null"
 end if
 '第五行
 nowport=request("port")
@@ -105,18 +107,58 @@ nowshipname=request("shipname")
 '第六行
 nowdongjian=request("dongjian")
 nowzidong=request("zidong")
-nowzidongreportdate=request("zidongreportdate")
-nowzidongapplydate=request("zidongapplydate")
+if request("zidongreportdate") <> "" then
+  nowzidongreportdate="#"&request("zidongreportdate")&"#"
+else
+  nowzidongreportdate="null"
+end if
+if request("zidongapplydate") <> "" then
+  nowzidongapplydate="#"&request("zidongapplydate")&"#"
+else
+  nowzidongapplydate="null"
+end if
+'nowzidongreportdate=request("zidongreportdate")
+'nowzidongapplydate=request("zidongapplydate")
 '第七行
-nowplaninsurance=request("planinsurance")
-nowsupinsurance=request("supinsurance")
-nowinsurancepayment=request("insurancepayment")
+if request("planinsurance") <> "" then
+  nowplaninsurance="#"&request("planinsurance")&"#"
+else
+  nowplaninsurance="null"
+end if
+if request("supinsurance") <> "" then
+  nowsupinsurance="#"&request("supinsurance")&"#"
+else
+  nowsupinsurance="null"
+end if
+if request("insurancepayment") <> "" then
+  nowinsurancepayment="#"&request("insurancepayment")&"#"
+else
+  nowinsurancepayment="null"
+end if
+'nowplaninsurance=request("planinsurance")
+'nowsupinsurance=request("supinsurance")
+'nowinsurancepayment=request("insurancepayment")
 nowinsurancenumber=request("insurancenumber")
 '第八行
 nowplanship=request("planship")
-nowshipdate=request("shipdate")
-nowboarddate=request("boarddate")
-nowcustomerdeliverydate=request("customerdeliverydate")
+if request("shipdate") <> "" then
+  nowshipdate="#"&request("shipdate")&"#"
+else
+  nowshipdate="null"
+end if
+if request("boarddate") <> "" then
+  nowboarddate="#"&request("boarddate")&"#"
+else
+  nowboarddate="null"
+end if
+if request("customerdeliverydate") <> "" then
+  nowcustomerdeliverydate="#"&request("customerdeliverydate")&"#"
+else
+  nowcustomerdeliverydate="null"
+end if
+'nowshipdate=request("shipdate")
+'nowboarddate=request("boarddate")
+'nowcustomerdeliverydate=request("customerdeliverydate")
 '第九行
 'nowitemno=request("itemno").count
 'nowcase=nowitemno
@@ -140,25 +182,75 @@ else
   nowelabel="False"
 end if
 '第十行
-nowprepaydate=request("prepaydate")
+if request("prepaydate") <> "" then
+  nowprepaydate="#"&request("prepaydate")&"#"
+else
+  nowprepaydate="null"
+end if
+'nowprepaydate=request("prepaydate")
 nowpayment=request("payment")
 nowcurrency=request("currency")
-nowdownpaymentdate=request("downpaymentdate")
+if request("downpaymentdate") <> "" then
+  nowdownpaymentdate="#"&request("downpaymentdate")&"#"
+else
+  nowdownpaymentdate="null"
+end if
+'nowdownpaymentdate=request("downpaymentdate")
 nowtradingterm=request("tradingterm")
 '第十一行
-nowfinalpaymentdate=request("finalpaymentdate")
+if request("finalpaymentdate") <> "" then
+  nowfinalpaymentdate="#"&request("finalpaymentdate")&"#"
+else
+  nowfinalpaymentdate="null"
+end if
+'nowfinalpaymentdate=request("finalpaymentdate")
 nowfreestayperiod=request("freestayperiod")
 nowshouyi=request("shouyi")
-nowpassdate=request("passdate")
+if request("passdate") <> "" then
+  nowpassdate="#"&request("passdate")&"#"
+else
+  nowpassdate="null"
+end if
+'nowpassdate=request("passdate")
 '第十二行
-nowdocumentarrival=request("documentarrival")
-nowplanretirebill=request("planretirebill")
-nowinternalretirebill=request("internalretirebill")
-nowexternalretirebill=request("externalretirebill")
+if request("documentarrival") <> "" then
+  nowdocumentarrival="#"&request("documentarrival")&"#"
+else
+  nowdocumentarrival="null"
+end if
+if request("planretirebill") <> "" then
+  nowplanretirebill="#"&request("planretirebill")&"#"
+else
+  nowplanretirebill="null"
+end if
+if request("internalretirebill") <> "" then
+  nowinternalretirebill="#"&request("internalretirebill")&"#"
+else
+  nowinternalretirebill="null"
+end if
+if request("externalretirebill") <> "" then
+  nowexternalretirebill="#"&request("externalretirebill")&"#"
+else
+  nowexternalretirebill="null"
+end if
+'nowdocumentarrival=request("documentarrival")
+'nowplanretirebill=request("planretirebill")
+'nowinternalretirebill=request("internalretirebill")
+'nowexternalretirebill=request("externalretirebill")
 '第十三行
-nowcargodate=request("cargodate")
+if request("cargodate") <> "" then
+  nowcargodate="#"&request("cargodate")&"#"
+else
+  nowcargodate="null"
+end if
+'nowcargodate=request("cargodate")
 nowcargodirection=request("cargodirection")
-nowdeliverydate=request("deliverydate")
+if request("deliverydate") <> "" then
+  nowdeliverydate="#"&request("deliverydate")&"#"
+else
+  nowdeliverydate="null"
+end if
+'nowdeliverydate=request("deliverydate")
 '第十四行
 nowdocumentissue=request("documentissue")
 nowdocumentcheck=request("documentcheck")
@@ -189,150 +281,7 @@ else
   nowshipment=rs_count("shipmentnum") + 1
 end if  
 
-'sql="insert into shipment(shipmentnum,trantype,status,invoicestatus,buyer,handler,sales,vendor,plant,country,incoterm,contract,materialtype,agent,piwen,twodocumentready,destination,terminal,carrier,shipname, dongjian,zidong,zidongapplydate,zidongreportdate,planinsurance,supinsurance, insurancepayment, insurancenumber, planship, shipdate, boarddate, customerdeliverydate, case, ladnumber, weishengzheng, locknumber, einformation, MuslimCertification, elabel, prepaydate, prepayment, trancurrency, downpaymentreceiptdate, tradingterm, finalpaymentdate, freestayperiod, shouyi, passdate, documentarrival, planretirebill, internalretirebill, externalretirebill, cargodate, cargodirection, deliverydate, documentissue, documentcheck, documentdelivery, clearcustom, warrantyinformation, warrantystatus, warranty, returnwarranty, stockmiss, claiminformation, claimstatus, claimprocessor, createdate,creator) values("&nowshipment&",'"&nowtrantype&"','"&nowstatus&"','"&nowinvoicestatus&"','"&nowbuyer&"','"&nowhandler&"','"&nowsales&"','"&nowvendor&"','"&nowplant&"','"&nowcountry&"','"&nowincoterm&"','"&nowcontract&"','"&nowmaterialtype&"','"&nowagent&"','"&nowpiwen&"',#"&nowtwodocready&"#,'"&nowportn&"','"&nowterminal&"','"&nowcarrier&"','"&nowshipname&"','"&nowdongjian&"','"&nowzidong&"',#"&nowzidongapplydate&"#,#"&nowzidongreportdate&"#,#"&nowplaninsurance&"#,#"&nowsupinsurance&"#,#"&nowinsurancepayment&"#,'"&nowinsurancenumber&"','"&nowplanship&"',#"&nowshipdate&"#,#"&nowboarddate&"#,#"&nowcustomerdeliverydate&"#,'"&nowcase&"','"&nowladnumber&"','"&nowweishengzheng&"','"&nowlocknumber&"',"&noweinformation&","&nowMuslimCertification&","&nowelabel&",#"&nowprepaydate&"#,"&nowpayment&",'"&nowcurrency&"',#"&nowdownpaymentdate&"#,'"&nowtradingterm&"',#"&nowfinalpaymentdate&"#,'"&nowfreestayperiod&"','"&nowshouyi&"',#"&nowpassdate&"#,#"&nowdocumentarrival&"#,#"&nowplanretirebill&"#,#"&nowinternalretirebill&"#,#"&nowexternalretirebill&"#,#"&nowcargodate&"#,'"&nowcargodirection&"',#"&nowdeliverydate&"#,'"&nowdocumentissue&"','"&nowdocumentcheck&"','"&nowdocumentdelivery&"','"&nowclearcustom&"','"&nowwarrantyinformation&"','"&nowwarrantystatus&"',"&nowwarranty&","&nowreturnwarranty&",'"&nowstockmiss&"','"&nowclaiminformation&"','"&nowclaimstatus&"','"&nowclaimprocessor&"',#"&now()&"#,'"&session("redboy_username")&"')"
-
-sql="insert into shipment(shipmentnum,trantype,status,invoicestatus,buyer,handler,sales,vendor,plant,country,incoterm,contract,materialtype,agent,piwen,"
-
-if request("twodocumentready") <> "" then
-  sql=sql&"twodocumentready,"
-end if
-
-sql=sql&"destination,terminal,carrier,shipname, dongjian,zidong,"
-
-if request("zidongapplydate") <> "" then
-  sql=sql&"zidongapplydate,"
-end if
-if request("zidongreportdate") <> "" then
-  sql=sql&"zidongreportdate,"
-end if 
-if request("planinsurance") <> "" then
-  sql=sql&"planinsurance,"
-end if 
-if request("supinsurance") <> "" then
-  sql=sql&"supinsurance,"
-end if 
-if request("insurancepayment") <> "" then
-  sql=sql&"insurancepayment,"
-end if 
-
-sql=sql&"insurancenumber, planship, "
-
-if request("shipdate") <> "" then
-  sql=sql&"shipdate,"
-end if 
-if request("boarddate") <> "" then
-  sql=sql&"boarddate,"
-end if 
-if request("customerdeliverydate") <> "" then
-  sql=sql&"customerdeliverydate,"
-end if 
-
-sql=sql&"case, ladnumber, weishengzheng, locknumber, einformation, MuslimCertification, elabel, "
-
-if request("prepaydate") <> "" then
-  sql=sql&"prepaydate,"
-end if 
-
-sql=sql&"prepayment, trancurrency, "
-
-if request("downpaymentdate") <> "" then
-  sql=sql&"downpaymentreceiptdate,"
-end if 
-
-sql=sql&"tradingterm, "
-
-if request("finalpaymentdate") <> "" then
-  sql=sql&"finalpaymentdate,"
-end if 
-
-sql=sql&"freestayperiod, shouyi, "
-
-if request("passdate") <> "" then
-  sql=sql&"passdate,"
-end if 
-if request("documentarrival") <> "" then
-  sql=sql&"documentarrival,"
-end if 
-if request("planretirebill") <> "" then
-  sql=sql&"planretirebill,"
-end if 
-if request("internalretirebill") <> "" then
-  sql=sql&"internalretirebill,"
-end if 
-if request("externalretirebill") <> "" then
-  sql=sql&"externalretirebill,"
-end if 
-if request("cargodate") <> "" then
-  sql=sql&"cargodate,"
-end if 
-if request("deliverydate") <> "" then
-  sql=sql&"deliverydate,"
-end if 
-sql=sql&"cargodirection, documentissue, documentcheck, documentdelivery, clearcustom, warrantyinformation, warrantystatus, warranty, returnwarranty, stockmiss, claiminformation, claimstatus, claimprocessor, createdate,creator) values("&nowshipment&",'"&nowtrantype&"','"&nowstatus&"','"&nowinvoicestatus&"','"&nowbuyer&"','"&nowhandler&"','"&nowsales&"','"&nowvendor&"','"&nowplant&"','"&nowcountry&"','"&nowincoterm&"','"&nowcontract&"','"&nowmaterialtype&"','"&nowagent&"','"&nowpiwen&"',"
-if request("twodocumentready") <> "" then
-  sql=sql&"#"&nowtwodocready&"#,"
-end if
-sql=sql&"'"&nowportn&"','"&nowterminal&"','"&nowcarrier&"','"&nowshipname&"','"&nowdongjian&"','"&nowzidong&"',"
-if request("zidongapplydate") <> "" then
-  sql=sql&"#"&nowzidongapplydate&"#,"
-end if
-if request("zidongreportdate") <> "" then
-  sql=sql&"#"&nowzidongreportdate&"#,"
-end if 
-if request("planinsurance") <> "" then
-  sql=sql&"#"&nowplaninsurance&"#,"
-end if 
-if request("supinsurance") <> "" then
-  sql=sql&"#"&nowsupinsurance&"#,"
-end if 
-if request("insurancepayment") <> "" then
-  sql=sql&"#"&nowinsurancepayment&"#,"
-end if 
-sql=sql&"'"&nowinsurancenumber&"','"&nowplanship&"',"
-if request("shipdate") <> "" then
-  sql=sql&"#"&nowshipdate&"#,"
-end if 
-if request("boarddate") <> "" then
-  sql=sql&"#"&nowboarddate&"#,"
-end if 
-if request("customerdeliverydate") <> "" then
-  sql=sql&"#"&nowcustomerdeliverydate&"#,"
-end if 
-sql=sql&"'"&nowcase&"','"&nowladnumber&"','"&nowweishengzheng&"','"&nowlocknumber&"',"&noweinformation&","&nowMuslimCertification&","&nowelabel&","
-if request("prepaydate") <> "" then
-  sql=sql&"#"&nowprepaydate&"#,"
-end if 
-sql=sql&nowpayment&",'"&nowcurrency&"',"
-if request("downpaymentdate") <> "" then
-  sql=sql&"#"&nowdownpaymentdate&"#,"
-end if 
-sql=sql&"'"&nowtradingterm&"',"
-if request("finalpaymentdate") <> "" then
-  sql=sql&"#"&nowfinalpaymentdate&"#,"
-end if 
-sql=sql&"'"&nowfreestayperiod&"','"&nowshouyi&"',"
-if request("passdate") <> "" then
-  sql=sql&"#"&nowpassdate&"#,"
-end if 
-if request("documentarrival") <> "" then
-  sql=sql&"#"&nowdocumentarrival&"#,"
-end if 
-if request("planretirebill") <> "" then
-  sql=sql&"#"&nowplanretirebill&"#,"
-end if 
-if request("internalretirebill") <> "" then
-  sql=sql&"#"&nowinternalretirebill&"#,"
-end if 
-if request("externalretirebill") <> "" then
-  sql=sql&"#"&nowexternalretirebill&"#,"
-end if 
-if request("cargodate") <> "" then
-  sql=sql&"#"&nowcargodate&"#,"
-end if 
-if request("deliverydate") <> "" then
-  sql=sql&"#"&nowdeliverydate&"#,"
-end if 
-sql=sql&"'"&nowcargodirection&"','"&nowdocumentissue&"','"&nowdocumentcheck&"','"&nowdocumentdelivery&"','"&nowclearcustom&"','"&nowwarrantyinformation&"','"&nowwarrantystatus&"',"&nowwarranty&","&nowreturnwarranty&",'"&nowstockmiss&"','"&nowclaiminformation&"','"&nowclaimstatus&"','"&nowclaimprocessor&"',#"&now()&"#,'"&session("redboy_username")&"')"
+sql="insert into shipment(shipmentnum,trantype,status,invoicestatus,buyer,handler,sales,vendor,plant,country,incoterm,contract,materialtype,agent,piwen,twodocumentready,destination,terminal,carrier,shipname, dongjian,zidong,zidongapplydate,zidongreportdate,planinsurance,supinsurance, insurancepayment, insurancenumber, planship, shipdate, boarddate, customerdeliverydate, case, ladnumber, weishengzheng, locknumber, einformation, MuslimCertification, elabel, prepaydate, prepayment, trancurrency, downpaymentreceiptdate, tradingterm, finalpaymentdate, freestayperiod, shouyi, passdate, documentarrival, planretirebill, internalretirebill, externalretirebill, cargodate, cargodirection, deliverydate, documentissue, documentcheck, documentdelivery, clearcustom, warrantyinformation, warrantystatus, warranty, returnwarranty, stockmiss, claiminformation, claimstatus, claimprocessor, createdate,creator) values("&nowshipment&",'"&nowtrantype&"','"&nowstatus&"','"&nowinvoicestatus&"','"&nowbuyer&"','"&nowhandler&"','"&nowsales&"','"&nowvendor&"','"&nowplant&"','"&nowcountry&"','"&nowincoterm&"','"&nowcontract&"','"&nowmaterialtype&"','"&nowagent&"','"&nowpiwen&"',"&nowtwodocready&",'"&nowportn&"','"&nowterminal&"','"&nowcarrier&"','"&nowshipname&"','"&nowdongjian&"','"&nowzidong&"',"&nowzidongapplydate&","&nowzidongreportdate&","&nowplaninsurance&","&nowsupinsurance&","&nowinsurancepayment&",'"&nowinsurancenumber&"','"&nowplanship&"',"&nowshipdate&","&nowboarddate&","&nowcustomerdeliverydate&",'"&nowcase&"','"&nowladnumber&"','"&nowweishengzheng&"','"&nowlocknumber&"',"&noweinformation&","&nowMuslimCertification&","&nowelabel&","&nowprepaydate&","&nowpayment&",'"&nowcurrency&"',"&nowdownpaymentdate&",'"&nowtradingterm&"',"&nowfinalpaymentdate&",'"&nowfreestayperiod&"','"&nowshouyi&"',"&nowpassdate&","&nowdocumentarrival&","&nowplanretirebill&","&nowinternalretirebill&","&nowexternalretirebill&","&nowcargodate&",'"&nowcargodirection&"',"&nowdeliverydate&",'"&nowdocumentissue&"','"&nowdocumentcheck&"','"&nowdocumentdelivery&"','"&nowclearcustom&"','"&nowwarrantyinformation&"','"&nowwarrantystatus&"',"&nowwarranty&","&nowreturnwarranty&",'"&nowstockmiss&"','"&nowclaiminformation&"','"&nowclaimstatus&"','"&nowclaimprocessor&"',#"&now()&"#,'"&session("redboy_username")&"')"
 
 conn.execute(sql)
 
@@ -345,24 +294,22 @@ nowpackageitem=request("package"&i)
 nowcontweightitem=request("contractweight"&i)
 nowactualweightitem=request("actualweight"&i)
 nowpurpriceitem=request("purchaseprice"&i)
-nowproducedateitem=request("produceDate"&i)
+'nowproducedateitem=request("produceDate"&i)
 nowcasenumitem=request("casenum"&i)
 nowinvamtitem=request("invamount"&i)
 nowcurritem=request("invcurr"&i)
 nowfinalamtitem=request("finalamount"&i)
 nowcontractweightuomitem=request("contractweightuom"&i)
 nowpriceunititem=request("priceunit"&i)
+if request("producedate") <> "" then
+  nowproducedateitem="#"&request("producedate"&i)&"#"
+else
+  nowproducedateitem="null"
+end if
 
 'sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,contractweight,contractweightuom,purchaseprice,purchasepriceunit,productiondate,casenumber,actualnetweight,actualnetweightuom,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&nowshipment&",'"&nowitemno&"','"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowcontweightitem&"','鹿芦陆茂','"&nowpurpriceitem&"','鹿芦陆茂','"&nowproducedateitem&"',"&nowcasenumitem&",'"&nowactualweightitem&"','鹿芦陆茂','"&nowinvamtitem&"','"&nowcurritem&"','"&nowfinalamtitem&"','"&nowcurritem&"')"
-sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,package,contractweight,contractweightuom,actualnetweight,actualnetweightuom,purchaseprice,purchasepriceunit,"
-if nowproducedateitem <> "" then
-  sql=sql&"productiondate,"
-end if 
-sql=sql&"casenumber,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&nowshipment&","&nowitemno&",'"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowpackageitem&"',"&nowcontweightitem&",'"&nowcontractweightuomitem&"',"&nowactualweightitem&",'"&nowcontractweightuomitem&"',"&nowpurpriceitem&",'"&nowpriceunititem&"',"
-if nowproducedateitem <> "" then
-  sql=sql&"#"&nowproducedateitem&"#,"
-end if 
-sql=sql&nowcasenumitem&","&nowinvamtitem&",'"&nowcurritem&"',"&nowfinalamtitem&",'"&nowcurritem&"')"
+sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,package,contractweight,contractweightuom,actualnetweight,actualnetweightuom,purchaseprice,purchasepriceunit,productiondate,casenumber,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&nowshipment&","&nowitemno&",'"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowpackageitem&"',"&nowcontweightitem&",'"&nowcontractweightuomitem&"',"&nowactualweightitem&",'"&nowcontractweightuomitem&"',"&nowpurpriceitem&",'"&nowpriceunititem&"',"&nowproducedateitem&","&nowcasenumitem&","&nowinvamtitem&",'"&nowcurritem&"',"&nowfinalamtitem&",'"&nowcurritem&"')"
+
 conn.execute(sql)
 
 next
@@ -371,6 +318,7 @@ next
 <script language="javascript">
 //alert(&nowshipment&)
 alert("船期表录入成功！")
+$(window).off('beforeunload');
 window.location.href="shipment.asp"
 </script>
 
@@ -538,54 +486,69 @@ function chsel(vendor){
   } 
    var newTdObj1=myNewRow.insertCell(0);
    newTdObj1.innerHTML="<input type='checkbox' name='chkArr'  id='chkArr' align='middle'/>";
+   newTdObj1.align="center";
    var newTdObj2=myNewRow.insertCell(1);
    newTdObj2.innerHTML="<input type='text' name='itemno' id='itemno' style='width:30px' value='"+itemNo+"' readonly='true'/>"; 
+   newTdObj2.align="center";
    var newTdObj3=myNewRow.insertCell(2);
-   newTdObj3.innerHTML="<select name='material"+itemNo+"' id='material"+itemNo+"' style='width:100px'>"
+   newTdObj3.innerHTML="<select name='material"+itemNo+"' id='material"+itemNo+"' style='width:120px'>"
       +" <% for i = 0 to materialCount-1 %>"
       +" <option value='<%=material(i)%>'><%=material(i)%></option>"
       +" <% next %> </select>";
+   newTdObj3.align="center";
    var newTdObj4=myNewRow.insertCell(3);
-//   newTdObj4.innerHTML="<input type='text' name='customer"+itemNo+"' id='customer"+itemNo+"' />";
-   newTdObj4.innerHTML="<select name='customer"+itemNo+"' id='customer"+itemNo+"' style='width:100px'>"
+   newTdObj4.innerHTML="<select name='customer"+itemNo+"' id='customer"+itemNo+"' style='width:120px'>"
       +" <% for i = 0 to customerCount-1 %>"
       +" <option value='<%=customer(i)%>'><%=customer(i)%></option>"
       +" <% next %> </select>";   
+   newTdObj4.align="center";
    var newTdObj5=myNewRow.insertCell(4);
-   newTdObj5.innerHTML="<input type='text' name='spec"+itemNo+"' id='spec"+itemNo+"' style='width:100px'/>";   
+   newTdObj5.innerHTML="<input type='text' name='spec"+itemNo+"' id='spec"+itemNo+"' style='width:120px'/>";   
+   newTdObj5.align="center";
    var newTdObj6=myNewRow.insertCell(5);
    newTdObj6.innerHTML="<input type='text' name='package"+itemNo+"' id='package"+itemNo+"' style='width:100px'/>";      
+   newTdObj6.align="center";
    var newTdObj7=myNewRow.insertCell(6);
-   newTdObj7.innerHTML="<input type='text' name='contractWeight"+itemNo+"' id='contractWeight"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";        
+   newTdObj7.innerHTML="<input type='text' name='contractWeight"+itemNo+"' id='contractWeight"+itemNo+"' style='width:100px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";     
+   newTdObj7.align="center";   
    var newTdObj8=myNewRow.insertCell(7);
    newTdObj8.innerHTML="<select name='contractWeightUom"+itemNo+"' id='contractWeightUom"+itemNo+"' style='width:50px'>"
       +" <option value='公斤'>公斤</option>"
       +" <option value='磅'>磅</option>"
       +" </select>";       
+   newTdObj8.align="center";
    var newTdObj9=myNewRow.insertCell(8);
-   newTdObj9.innerHTML="<input type='text' name='actualWeight"+itemNo+"' id='actualWeight"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";        
+   newTdObj9.innerHTML="<input type='text' name='actualWeight"+itemNo+"' id='actualWeight"+itemNo+"' style='width:100px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";      
+   newTdObj9.align="center";  
    var newTdObj10=myNewRow.insertCell(9);
-   newTdObj10.innerHTML="<input type='text' name='purchasePrice"+itemNo+"' id='purchasePrice"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";       
+   newTdObj10.innerHTML="<input type='text' name='purchasePrice"+itemNo+"' id='purchasePrice"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";     
+   newTdObj10.align="center";  
    var newTdObj11=myNewRow.insertCell(10);
    newTdObj11.innerHTML="<select name='priceunit"+itemNo+"' id='priceunit"+itemNo+"' style='width:50px'>"
       +" <option value='公斤'>公斤</option>"
       +" <option value='磅'>磅</option>"
-      +" </select>";      
+      +" </select>";   
+   newTdObj11.align="center";   
    var newTdObj12=myNewRow.insertCell(11);
    newTdObj12.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' style='width:80px' class='datepicker'>";
-//    + " <img src='../images/date.gif' align='absmiddle' style='cursor:pointer;'" 
-//    + " onClick=\""+"JavaScript:window.open('../day.asp?form=formitem&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";     
+   //newTdObj12.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' class='datepicker'>";
+   newTdObj12.align="center";
    var newTdObj13=myNewRow.insertCell(12);    //箱数
    newTdObj13.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";    
+   //newTdObj13.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";     
+   newTdObj13.align="center";
    var newTdObj14=myNewRow.insertCell(13);    //发票总金额
-   newTdObj14.innerHTML="<input name='invAmount"+itemNo+"' id='invAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";        
+   newTdObj14.innerHTML="<input name='invAmount"+itemNo+"' id='invAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";      
+   newTdObj14.align="center";  
    var newTdObj15=myNewRow.insertCell(14);
    newTdObj15.innerHTML="<select name='invCurr"+itemNo+"' id='invCurr"+itemNo+"' style='width:50px'>"
       +" <option value='美元'>美元</option>"
       +" <option value='澳元'>澳元</option>"
       +" </select>";   
+   newTdObj15.align="center";
    var newTdObj16=myNewRow.insertCell(15);    //尾款金额
-   newTdObj16.innerHTML="<input name='finalAmount"+itemNo+"' id='finalAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";        
+   newTdObj16.innerHTML="<input name='finalAmount"+itemNo+"' id='finalAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
+   newTdObj16.align="center";     
 
   }
 
@@ -720,7 +683,7 @@ function chsel(vendor){
 		  		&nbsp;&nbsp;&nbsp;付款条件
 <!--		  		<input name="incoterm" style="width:150px">							 -->
 					<select name="incoterm">			
-						  <option selected="selected">---脟毛脩隆脭帽---</option>										
+						  <option selected="selected">---请选择---</option>										
 					</select>				  				
 				</td>
       </tr>
@@ -814,11 +777,7 @@ function chsel(vendor){
 							rs_terminal.movenext
 							loop
 							rs_terminal.close
-						%>	
-<!--						  <option value="脤矛陆貌脥芒麓煤">脤矛陆貌脥芒麓煤</option>		
-						  <option value="脥芒脦氓">脥芒脦氓</option>		
-						  <option value="脩贸脪禄">脩贸脪禄</option>		
-						  <option value="脩贸脠媒">脩贸脠媒</option>				-->						
+						%>			
 					</select>			
 					&nbsp;&nbsp;&nbsp;&nbsp;船公司
 					<%
@@ -834,11 +793,7 @@ function chsel(vendor){
 							rs_carrier.movenext
 							loop
 							rs_carrier.close
-						%>						
-<!--						  <option value="ANL">ANL</option>		
-						  <option value="MSC">MSC</option>		
-						  <option value="CMA CGM">CMA CGM</option>		
-						  <option value="COSCO">COSCO</option>			-->							
+						%>											
 					</select>				
 					&nbsp;&nbsp;&nbsp;&nbsp;船名航次
 					<input name="shipname" style="width:150px" maxlength="20">							
@@ -1024,7 +979,7 @@ function chsel(vendor){
         </td>
       </tr>	       
       <tr>
-		  <input type="submit" value=" 确认录入 " onClick="return check1();" class="button">&nbsp;&nbsp;&nbsp;
+		  <input type="submit" value=" 确认录入 " onClick="$(window).off('beforeunload'); return check1();" class="button">&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
 		  <input type="reset" value=" 重新填写 " class="button">
       </tr>    

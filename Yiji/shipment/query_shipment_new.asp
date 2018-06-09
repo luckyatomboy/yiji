@@ -244,6 +244,7 @@ nowto=request("dateto")
   <input type="hidden" name="field3" value="<%=request("field3")%>">
 
   <thead class="sorting">
+<!--Header-->
 	<td class="category" width="100" height="30">船期表号码</td>
 	<td class="category setvisible" width="80" height="30">状态</td>
 	<td class="category setvisible" width="100" height="30">客户名称</td>
@@ -253,12 +254,90 @@ nowto=request("dateto")
 	<td class="category setvisible" width="80" height="30">品名</td>
 	<td class="category setvisible" width="80" height="30">国家</td>
 	<td class="category setvisible" width="80" height="30">厂号</td>
-	<td class="category setvisible" width="100" height="30">动检公司</td>
-	<td class="category setvisible" width="100" height="30">自动公司</td>
+
 	<td class="category setvisible" width="80" height="30">到港期</td>
 	<td class="category setvisible" width="80" height="30">交单日期</td>
 	<td class="category setvisible" width="80" height="30">箱号</td>
   <td class="category setvisible" width="100" height="30">船公司名</td>
+  <td class="category setvisible ininovis" width="100" height="30">结算单状态</td>
+  <td class="category setvisible ininovis" width="80" height="30">业务类型</td>
+  <td class="category setvisible ininovis" width="100" height="30">代理公司</td>
+  <td class="category setvisible ininovis" width="50" height="30">采购</td>
+  <td class="category setvisible ininovis" width="50" height="30">销售</td>
+  <td class="category setvisible ininovis" width="50" height="30">跟单</td>
+  <td class="category setvisible ininovis" width="50" height="30">品类</td>
+  <td class="category setvisible ininovis" width="60" height="30">付款条件</td>    
+
+  <td class="category setvisible ininovis" width="100" height="30">港口</td>
+  <td class="category setvisible ininovis" width="100" height="30">靠泊码头</td>
+  <td class="category setvisible ininovis" width="100" height="30">船名航次</td>
+
+  <td class="category setvisible ininovis" width="100" height="30">进口批文</td>
+  <td class="category setvisible ininovis" width="100" height="30">两证齐备日</td>
+  <td class="category setvisible ininovis" width="100" height="30">动检证</td>
+  <td class="category setvisible ininovis" width="100" height="30">自动证</td>
+  <td class="category setvisible ininovis" width="100" height="30">自动证上报日</td>
+  <td class="category setvisible ininovis" width="100" height="30">自动证交批日</td>
+  
+  <td class="category setvisible ininovis" width="100" height="30">预保日</td>
+  <td class="category setvisible ininovis" width="100" height="30">补保日</td>
+  <td class="category setvisible ininovis" width="100" height="30">保费支付日</td>     
+  <td class="category setvisible ininovis" width="100" height="30">保单</td>    
+
+  <td class="category setvisible ininovis" width="100" height="30">预计装船月份</td>
+  <td class="category setvisible ininovis" width="100" height="30">实际装船期</td>
+  
+  <td class="category setvisible ininovis" width="100" height="30">客户交货期</td>    
+
+
+  <td class="category setvisible ininovis" width="100" height="30">提单号</td>
+  <td class="category setvisible ininovis" width="100" height="30">卫生证号</td>     
+  <td class="category setvisible ininovis" width="100" height="30">铅封号</td>     
+  <td class="category setvisible ininovis" width="60" height="30">电子信息</td>
+  <td class="category setvisible ininovis" width="60" height="30">清真证明</td>     
+  <td class="category setvisible ininovis" width="50" height="30">标签</td>     
+
+  <td class="category setvisible ininovis" width="100" height="30">预付款日期</td>
+  <td class="category setvisible ininovis" width="100" height="30">预付款金额</td>
+  <td class="category setvisible ininovis" width="100" height="30">币种</td>     
+  <td class="category setvisible ininovis" width="100" height="30">订金收到日期</td>     
+  <td class="category setvisible ininovis" width="60" height="30">成交条款</td>  
+
+  <td class="category setvisible ininovis" width="100" height="30">尾款支付日期</td>
+  <td class="category setvisible ininovis" width="100" height="30">免箱期</td>
+  <td class="category setvisible ininovis" width="100" height="30">兽医官</td>     
+  <td class="category setvisible ininovis" width="100" height="30">放行日期</td>     
+
+  <td class="category setvisible ininovis" width="100" height="30">到单日期</td>
+  <td class="category setvisible ininovis" width="100" height="30">预计赎单日期</td>
+  <td class="category setvisible ininovis" width="100" height="30">我司赎单日期</td>     
+  <td class="category setvisible ininovis" width="100" height="30">代理赎单日期</td>      
+
+  <td class="category setvisible ininovis" width="100" height="30">送货日期</td>
+  <td class="category setvisible ininovis" width="100" height="30">送货方向</td>
+  
+
+  <td class="category setvisible ininovis" width="100" height="30">保证金状态</td>
+  <td class="category setvisible ininovis" width="100" height="30">保证金金额</td>
+  <td class="category setvisible ininovis" width="100" height="30">退保证金金额</td>     
+  <td class="category setvisible ininovis" width="60" height="30">索赔状态</td>     
+  <td class="category setvisible ininovis" width="60" height="30">索赔负责人</td>    
+
+<!--Item-->
+  <td class="category setvisible ininovis" width="100" height="30">规格</td>
+  <td class="category setvisible ininovis" width="100" height="30">包装</td>
+  <td class="category setvisible ininovis" width="100" height="30">合同重量</td>     
+  <td class="category setvisible ininovis" width="60" height="30">重量单位</td>     
+  <td class="category setvisible ininovis" width="100" height="30">实际净重</td>    
+  <td class="category setvisible ininovis" width="100" height="30">采购价格</td>
+  <td class="category setvisible ininovis" width="60" height="30">价格单位</td>
+  <td class="category setvisible ininovis" width="100" height="30">生产日期</td>     
+  <td class="category setvisible ininovis" width="100" height="30">箱数</td>     
+  <td class="category setvisible ininovis" width="100" height="30">发票总金额</td>   
+  <td class="category setvisible ininovis" width="60" height="30">币种</td>     
+  <td class="category setvisible ininovis" width="100" height="30">尾款金额</td> 
+
+
   <td class="category">修改</td>
   <td class="category">选择</td>
   </thead>
@@ -287,6 +366,7 @@ nowto=request("dateto")
                     window.close();" 
         <%if rs_shipment("status")="进库" then%>bgcolor="darkgrey"<%elseif rs_shipment("status")="通关中" then%>bgcolor="lawngreen"<%elseif rs_shipment("status")="已送货" then%>bgcolor="red"<%end if%>>     
 
+<!--Header-->
   <td align="center" height="30"><%=rs_shipment("shipmentnum")%></td>    
   <td align="center" class="setvisible"><%=rs_shipment("status")%></td>	  
   <td align="center" class="setvisible"><%=rs_shipment("customer")%></td>
@@ -296,12 +376,89 @@ nowto=request("dateto")
   <td align="center" class="setvisible"><%=rs_shipment("material")%></td>
   <td align="center" class="setvisible"><%=rs_shipment("country")%></td>
   <td align="center" class="setvisible"><%=rs_shipment("plant")%></td>
-  <td align="center" class="setvisible"><%=rs_shipment("dongjiancom")%></td>
-  <td align="center" class="setvisible"><%=rs_shipment("zidongcom")%></td>
+
   <td align="center" class="setvisible"><%=rs_shipment("boarddate")%></td>
   <td align="center" class="setvisible"><%=rs_shipment("deliverydate")%></td>
   <td align="center" class="setvisible"><%=rs_shipment("case")%></td>
   <td align="center" class="setvisible"><%=rs_shipment("carrier")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("invoicestatus")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("trantype")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("agent")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("buyer")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("sales")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("handler")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("materialtype")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("incoterm")%></td>  
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("destination")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("terminal")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("shipname")%></td>  
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("piwen")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("twodocumentready")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("dongjian")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("zidong")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("zidongapplydate")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("zidongreportdate")%></td>
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("planinsurance")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("supinsurance")%></td>    
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("insurancepayment")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("insurancenumber")%></td>    
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("planship")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("shipdate")%></td>    
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("customerdeliverydate")%></td>   
+
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("ladnumber")%></td>    
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("weishengzheng")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("locknumber")%></td>   
+  <td align="center" class="setvisible ininovis"><%if rs_shipment("einformation")="True" then%>有<%else%>无<%end if%></td>
+  <td align="center" class="setvisible ininovis"><%if rs_shipment("MuslimCertification")="True" then%>有<%else%>无<%end if%></td>    
+  <td align="center" class="setvisible ininovis"><%if rs_shipment("elabel")="True" then%>有<%else%>无<%end if%></td>
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("prepaydate")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("prepayment")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("trancurrency")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("downpaymentreceiptdate")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("tradingterm")%></td>  
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("finalpaymentdate")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("freestayperiod")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("shouyi")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("passdate")%></td>  
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("documentarrival")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("planretirebill")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("internalretirebill")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("externalretirebill")%></td>    
+
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("cargodate")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("cargodirection")%></td>
+  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("warrantystatus")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("warranty")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("returnwarranty")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("claimstatus")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("claimprocessor")%></td>  
+
+<!--Item-->
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("spec")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("package")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("contractweight")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("contractweightuom")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("actualnetweight")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("purchaseprice")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("purchasepriceunit")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("productiondate")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("casenumber")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("invoiceamount")%></td>    
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("invoicecurrency")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("finalpayment")%></td>     
+
+
   <td align="center">
     	<a href="change_shipment_new.asp?form=<%=request("form")%>&shipment=<%=rs_shipment("shipmentnum")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">修改</a>
   </td>

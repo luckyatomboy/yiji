@@ -62,6 +62,11 @@ end if
     });
 
   });
+
+//离开页面时提示
+	  $(window).bind('beforeunload',function(){
+	    return '数据尚未保存，确定离开?';
+	  }); 
 </script>
 
 <%
@@ -87,7 +92,7 @@ rs("contract")=request("contract")
 rs("materialtype")=request("materialtype")
 rs("agent")=request("agent")
 rs("piwen")=request("piwen")
-if request("zidongapplydate")<>"" then
+if request("twodocumentready")<>"" then
 	rs("twodocumentready")=request("twodocumentready")
 else
 	rs("twodocumentready")=null
@@ -105,8 +110,30 @@ if request("zidongapplydate")<>"" then
 else
 	rs("zidongapplydate")=null
 end if
+if request("zidongreportdate")<>"" then
+  rs("zidongreportdate")=request("zidongreportdate")
+else
+  rs("zidongreportdate")=null
+end if
+'第八行'
+if request("planinsurance")<>"" then
+  rs("planinsurance")=request("planinsurance")
+else
+  rs("planinsurance")=null
+end if
+if request("supinsurance")<>"" then
+  rs("supinsurance")=request("supinsurance")
+else
+  rs("supinsurance")=null
+end if
+if request("insurancepayment")<>"" then
+  rs("insurancepayment")=request("insurancepayment")
+else
+  rs("insurancepayment")=null
+end if
+rs("insurancenumber")=request("insurancenumber")
+'第九行'
 rs("planship")=request("planship")
-
 if request("shipdate")<>"" then
   rs("shipdate")=request("shipdate")
 else
@@ -117,38 +144,107 @@ if request("boarddate")<>"" then
 else
 	rs("boarddate")=null
 end if
-
-nowitemno=request("itemno").count
-
-rs("case")=nowitemno
-'rs("case")=request("case")
-rs("weishengzheng")=request("weishengzheng")
-if request("deliverydate")<>"" then
-  rs("deliverydate")=request("deliverydate")
+if request("customerdeliverydate")<>"" then
+  rs("customerdeliverydate")=request("customerdeliverydate")
 else
-	rs("deliverydate")=null
+  rs("customerdeliverydate")=null
 end if
+'第十行'
+rs("case")=request("case")
 rs("ladnumber")=request("ladnumber")
-rs("shipname")=request("shipname")
-
-rs("warranty")=request("warranty")
-rs("claiminformation")=request("claiminformation")
-rs("applycustom")=request("applycustom")
-if request("paydate")<>"" then
-  rs("prepaydate")=request("paydate")
+rs("weishengzheng")=request("weishengzheng")
+rs("locknumber")=request("locknumber")
+if request("einformation")="有" then
+  rs("einformation")="True"
 else
-	rs("prepaydate")=null
+  rs("einformation")="False"
+end if
+if request("MuslimCertification")="有" then
+  rs("MuslimCertification")="True"
+else
+  rs("MuslimCertification")="False"
+end if
+if request("elabel")="有" then
+  rs("elabel")="True"
+else
+  rs("elabel")="False"
+end if
+'第十一行'
+if request("prepaydate")<>"" then
+  rs("prepaydate")=request("prepaydate")
+else
+  rs("prepaydate")=null
 end if
 rs("prepayment")=request("prepayment")
 rs("trancurrency")=request("currency")
-rs("memo")=request("memo")
+if request("downpaymentdate")<>"" then
+  rs("downpaymentreceiptdate")=request("downpaymentdate")
+else
+  rs("downpaymentreceiptdate")=null
+end if
+rs("tradingterm")=request("tradingterm")
+'第十二行'
+if request("finalpaymentdate")<>"" then
+  rs("finalpaymentdate")=request("finalpaymentdate")
+else
+  rs("finalpaymentdate")=null
+end if
+rs("freestayperiod")=request("freestayperiod")
+rs("shouyi")=request("shouyi")
+if request("passdate")<>"" then
+  rs("passdate")=request("passdate")
+else
+  rs("passdate")=null
+end if
+'第十三行'
+if request("documentarrival")<>"" then
+  rs("documentarrival")=request("documentarrival")
+else
+  rs("documentarrival")=null
+end if
+if request("planretirebill")<>"" then
+  rs("planretirebill")=request("planretirebill")
+else
+  rs("planretirebill")=null
+end if
+if request("internalretirebill")<>"" then
+  rs("internalretirebill")=request("internalretirebill")
+else
+  rs("internalretirebill")=null
+end if
+if request("externalretirebill")<>"" then
+  rs("externalretirebill")=request("externalretirebill")
+else
+  rs("externalretirebill")=null
+end if
+'第十四行'
 if request("cargodate")<>"" then
   rs("cargodate")=request("cargodate")
 else
-	rs("cargodate")=null
+  rs("cargodate")=null
 end if
-rs("cargodirection")=request("cargodir")
-rs("canceldoc")=request("canceldoc")
+rs("cargodirection")=request("cargodirection")
+if request("deliverydate")<>"" then
+  rs("deliverydate")=request("deliverydate")
+else
+  rs("deliverydate")=null
+end if
+'第十五行'
+rs("documentissue")=request("documentissue")
+rs("documentcheck")=request("documentcheck")
+rs("documentdelivery")=request("documentdelivery")
+rs("clearcustom")=request("clearcustom")
+'第十六行'
+rs("warrantyinformation")=request("warrantyinformation")
+rs("warrantystatus")=request("warrantystatus")
+rs("warranty")=request("warranty")
+rs("returnwarranty")=request("returnwarranty")
+'第十七行'
+rs("stockmiss")=request("stockmiss")
+rs("claiminformation")=request("claiminformation")
+rs("claimstatus")=request("claimstatus")
+rs("claimprocessor")=request("claimprocessor")
+
 rs("changedate")=now
 rs("changer")=session("redboy_username")
 rs.update
@@ -157,8 +253,8 @@ rs.close
 nowshipmentnum=request("shipment")
 
 '先删除已有的item'
-'sql="delete from shipmentitem where shipmentnum="&request("shipment")
-'conn.execute(sql)
+sql="delete from shipmentitem where shipmentnum="&request("shipment")
+conn.execute(sql)
 
 '再插入item'
 for i = 1 to request("itemno").count
@@ -186,9 +282,9 @@ else
 end if
 nowpriceunit=request("priceunit"&i)
 if request("produceDate"&i)<>"" then
-  nowproducedateitem=request("produceDate"&i)
+  nowproducedateitem="#"&request("produceDate"&i)&"#"
 else
-  nowproducedateitem=DateSerial(1900, 1, 1)
+  nowproducedateitem="null"
 end if
 if request("casenum"&i)<>"" then
   nowcasenumitem=request("casenum"&i)
@@ -207,7 +303,7 @@ else
   nowfinalamtitem=0
 end if
 
-sql="insert into shipmentitem(shipmentnum,itemnum,material) values("&request("shipment")&","&nowitemno&",'"&nowmatitem&"')"
+sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,package,contractweight,contractweightuom,actualnetweight,actualnetweightuom,purchaseprice,purchasepriceunit,productiondate,casenumber,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&request("shipment")&","&nowitemno&",'"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowpackageitem&"',"&nowcontweightitem&",'"&nowcontweightuomitem&"',"&nowactualweightitem&",'"&nowcontweightuomitem&"',"&nowpurpriceitem&",'"&nowpriceunititem&"',"&nowproducedateitem&","&nowcasenumitem&","&nowinvamtitem&",'"&nowcurritem&"',"&nowfinalamtitem&",'"&nowcurritem&"')"
 conn.execute(sql)
 
 'sql="insert into shipmentitem(shipmentnum,itemnum,material,customer,spec,package,contractweight,contractweightuom,actualnetweight,actualnetweightuom,purchaseprice,purchasepriceunit,productiondate,casenumber,invoiceamount,invoicecurrency,finalpayment,finalpaymentcurrency) values("&request("shipment")&","&nowitemno&",'"&nowmatitem&"','"&nowcusitem&"','"&nowspecitem&"','"&nowpackageitem&"','"&nowcontweightitem&"','"&nowcontweightuomitem&"','"&nowactualweightitem&"','"&nowcontweightuomitem&"','"&nowpurpriceitem&"','"&nowpriceunititem&"',#"&nowproducedateitem&"#,'"&nowcasenumitem&"',"&nowinvamtitem&",'"&nowcurritem&"',"&nowfinalamtitem&",'"&nowcurritem&"')"
@@ -217,9 +313,6 @@ conn.execute(sql)
 
 next
 
-'sql="insert into shipmentitem(shipmentnum,itemnum,material) values(201805030,1,'猪小排')"
-'conn.execute(sql)
-
 '删除逻辑锁'
 sql="delete from locktable where tablename='shipment' and combinedkey='"&request("shipment")&"'"
 conn.execute(sql)
@@ -228,6 +321,7 @@ conn.execute(sql)
 <script language="javascript">
 //alert(&nowshipment&)
 alert("船期表录入成功！")
+$(window).off('beforeunload');
 window.location.href="shipment.asp"
 </script>
 
@@ -398,8 +492,8 @@ function chsel(vendor){
    newTdObj1.innerHTML="<input type='checkbox' name='chkArr'  id='chkArr' align='middle'/>";
    //newTdObj1.align="center";
    var newTdObj2=myNewRow.insertCell(1);
-   newTdObj2.innerHTML="<input type='text' name='itemno' id='itemno' style='align:center;width:30px' value='"+itemNo+"' readonly='true'/>"; 
-   //newTdObj2.align="center";
+   newTdObj2.innerHTML="<input type='text' name='itemno' id='itemno' style='align:center;width:30px' value='"+itemNo+"' />"; 
+   newTdObj2.align="center";
    var newTdObj3=myNewRow.insertCell(2);
 	 newTdObj3.innerHTML="<select name='material"+itemNo+"' id='material"+itemNo+"' style='width:100px'>"
 	    +" <% for i = 0 to materialCount-1 %>"
@@ -420,7 +514,7 @@ function chsel(vendor){
    newTdObj6.innerHTML="<input type='text' name='package"+itemNo+"' id='package"+itemNo+"' style='width:100px' align='center'/>";         
    newTdObj6.align="center";
    var newTdObj7=myNewRow.insertCell(6);
-   newTdObj7.innerHTML="<input type='text' name='contractWeight"+itemNo+"' id='contractWeight"+itemNo+"' style='width:80px' align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";  
+   newTdObj7.innerHTML="<input type='text' name='contractWeight"+itemNo+"' id='contractWeight"+itemNo+"' style='width:80px' align='center' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   
    newTdObj7.align="center"; 		 
    var newTdObj8=myNewRow.insertCell(7);
    newTdObj8.innerHTML="<select name='contractWeightUom"+itemNo+"' id='contractWeightUom"+itemNo+"' style='width:50px'>"
@@ -430,28 +524,34 @@ function chsel(vendor){
    newTdObj8.align="center"; 
    var newTdObj9=myNewRow.insertCell(8);
    newTdObj9.innerHTML="<input type='text' name='actualWeight"+itemNo+"' id='actualWeight"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   		 
+   newTdObj9.align="center"; 
    var newTdObj10=myNewRow.insertCell(9);
-   newTdObj10.innerHTML="<input type='text' name='purchasePrice"+itemNo+"' id='purchasePrice"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   		 
+   newTdObj10.innerHTML="<input type='text' name='purchasePrice"+itemNo+"' id='purchasePrice"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
+   newTdObj10.align="center"; 	 
    var newTdObj11=myNewRow.insertCell(10);
    newTdObj11.innerHTML="<select name='priceunit"+itemNo+"' id='priceunit"+itemNo+"' style='width:50px'>"
       +" <option value='公斤'>公斤</option>"
       +" <option value='磅'>磅</option>"
       +" </select>";      
+   newTdObj11.align="center"; 
    var newTdObj12=myNewRow.insertCell(11);
    newTdObj12.innerHTML="<input name='produceDate"+itemNo+"' id='produceDate"+itemNo+"' style='width:80px' class='datepicker'>";
-//   	+ " <img src='../images/date.gif' align='absmiddle' style='cursor:pointer;'" 
-//   	+ " onClick=\""+"JavaScript:window.open('../day.asp?form=formitem&field=produceDate"+itemNo+"&oldDate=produceDate"+itemNo+".value','','directorys=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,width=250,height=170,top=150,left=590');\"/>";     
+   newTdObj12.align="center"; 
    var newTdObj13=myNewRow.insertCell(12);   	//箱数
 	 newTdObj13.innerHTML="<input name='casenum"+itemNo+"' id='casenum"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
+   newTdObj13.align="center"; 
    var newTdObj14=myNewRow.insertCell(13);   	//发票总金额
-	 newTdObj14.innerHTML="<input name='invAmount"+itemNo+"' id='invAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   		 
+	 newTdObj14.innerHTML="<input name='invAmount"+itemNo+"' id='invAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   	
+   newTdObj14.align="center"; 	 
    var newTdObj15=myNewRow.insertCell(14);
    newTdObj15.innerHTML="<select name='invCurr"+itemNo+"' id='invCurr"+itemNo+"' style='width:50px'>"
 	 		+" <option value='美元'>美元</option>"
 	 		+" <option value='澳币'>澳币</option>"
 	 		+" </select>";   
+   newTdObj15.align="center"; 
    var newTdObj16=myNewRow.insertCell(15);   	//尾款金额
-	 newTdObj16.innerHTML="<input name='finalAmount"+itemNo+"' id='finalAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   			 
+	 newTdObj16.innerHTML="<input name='finalAmount"+itemNo+"' id='finalAmt"+itemNo+"' style='width:80px' value=0 onKeyPress=\""+"javascript:CheckNum();\""+" onKeyUp=\""+"this.value=this.value.replace(/[^\\d.]/g,'')\""+">";   		
+   newTdObj16.align="center"; 	 
 
   }
 
@@ -611,7 +711,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						<%
 							rs_vendor.movenext
 							loop
-							rs_vendor.close
+							'rs_vendor.close
 						%>
 					</select>
 					&nbsp;<font color="#ff0000">*</font>
@@ -620,13 +720,48 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						<option selected="selected"><%=rs("country")%></option>		  			
 					</select>						
 					&nbsp;&nbsp;&nbsp;&nbsp;厂号						
+          <%
+          sql="select * from vendor where vendorname = '"&rs("vendor")&"'"
+          set rs_plant=conn.execute(sql)
+          %>          
 					<select name="plant"> <!-- onchange="this.selectedIndex=this.defaultIndex;">-->
-						  <option selected="selected"><%=rs("plant")%></option>		
+              <%if rs_plant.eof=false then%>
+                <% if rs_plant("plant1")<>"" then %>
+                  <option value='<%=rs_plant("plant1")%>' <%if rs_plant("plant1")=rs("plant") then%>selected="selected"<%end if%>><%=rs_plant("plant1")%></option>
+                <%end if%>   
+                <% if rs_plant("plant2")<>"" then %>
+                  <option value='<%=rs_plant("plant2")%>' <%if rs_plant("plant2")=rs("plant") then%>selected="selected"<%end if%>><%=rs_plant("plant2")%></option>
+                <%end if%>   
+                <% if rs_plant("plant3")<>"" then %>
+                  <option value='<%=rs_plant("plant3")%>' <%if rs_plant("plant3")=rs("plant") then%>selected="selected"<%end if%>><%=rs_plant("plant3")%></option>
+                <%end if%>   
+                <% if rs_plant("plant4")<>"" then %>
+                  <option value='<%=rs_plant("plant4")%>' <%if rs_plant("plant4")=rs("plant") then%>selected="selected"<%end if%>><%=rs_plant("plant4")%></option>
+                <%end if%>   
+                <% if rs_plant("plant5")<>"" then %>
+                  <option value='<%=rs_plant("plant5")%>' <%if rs_plant("plant5")=rs("plant") then%>selected="selected"<%end if%>><%=rs_plant("plant5")%></option>
+                <%end if%>   
+                <% if rs_plant("plant6")<>"" then %>
+                  <option value='<%=rs_plant("plant6")%>' <%if rs_plant("plant6")=rs("plant") then%>selected="selected"<%end if%>><%=rs_plant("plant6")%></option>
+                <%end if%>   
+                <% if rs_plant("plant7")<>"" then %>
+                  <option value='<%=rs_plant("plant7")%>' <%if rs_plant("plant7")=rs("plant") then%>selected="selected"<%end if%>><%=rs_plant("plant7")%></option>
+                <%end if%>   
+                <% if rs_plant("plant8")<>"" then %>
+                  <option value='<%=rs_plant("plant8")%>' <%if rs_plant("plant8")=rs("plant") then%>selected="selected"<%end if%>><%=rs_plant("plant8")%></option>
+                <%end if%>                  
+						  <%end if%>
 					</select>					
-		  		&nbsp;&nbsp;&nbsp;付款方式
-<!--		  		<input name="incoterm" style="width:150px">							 -->
-					<select name="incoterm">			
-						  <option selected="selected"><%=rs("incoterm")%></option>										
+		  		&nbsp;&nbsp;&nbsp;付款方式 
+					<select name="incoterm">		
+          	 <%if rs_plant.eof=false then%>
+                <% if rs_plant("term1")<>"" then %>
+                  <option value='<%=rs_plant("term1")%>' <%if rs_plant("term1")=rs("incoterm") then%>selected="selected"<%end if%>><%=rs_plant("term1")%></option>
+                <%end if%>   
+                <% if rs_plant("term2")<>"" then %>
+                  <option value='<%=rs_plant("term2")%>' <%if rs_plant("term2")=rs("incoterm") then%>selected="selected"<%end if%>><%=rs_plant("term2")%></option>
+                <%end if%>                  
+						 <%end if%> 						
 					</select>				  				
 				</td>
       </tr>
@@ -644,7 +779,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						<%
 							do while rs_mattype.eof=false
 						%>
-							<option value=<%=rs_mattype("materialtype")%> <%if rs_mattype("materialtype")=rs("materialtype") then%>selected="selected"<%end if%>><%=rs_mattype("materialtype")%></option>
+							<option value='<%=rs_mattype("materialtype")%>' <%if rs_mattype("materialtype")=rs("materialtype") then%>selected="selected"<%end if%>><%=rs_mattype("materialtype")%></option>
 						<%
 							rs_mattype.movenext
 							loop
@@ -684,7 +819,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						%>								
 					</select>			
 					&nbsp;&nbsp;&nbsp;两证齐备日期
-		  		<input name="twodocumentready" id="twodocumentready" value="<%=rs("twodocumentready")%>" class="datepicker"  style="width:80px">										 		
+		  		<input name="twodocumentready" id="twodocumentready" <%if rs("twodocumentready")<>"" then%>value=<%=FormatDateTime(rs("twodocumentready"),2)%><%end if%> class="datepicker"  style="width:80px">										 		
 				</td>
       </tr>    
       <tr>	  
@@ -698,16 +833,12 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						<%
 							do while rs_port.eof=false
 						%>
-							<option value=<%=rs_port("port")%> <%if rs_port("port")=rs("destination") then%>selected="selected"<%end if%>><%=rs_port("port")%></option>
+							<option value='<%=rs_port("port")%>' <%if rs_port("port")=rs("destination") then%>selected="selected"<%end if%>><%=rs_port("port")%></option>
 						<%
 							rs_port.movenext
 							loop
 							rs_port.close
-						%>						
-<!--						  <option value="上海">上海</option>		
-						  <option value="大连">大连</option>		
-						  <option value="天津">天津</option>		
-						  <option value="待定">待定</option>				-->						
+						%>										
 					</select>		
 					&nbsp;&nbsp;&nbsp;&nbsp;靠泊码头
 					<%
@@ -718,16 +849,12 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						<%
 							do while rs_terminal.eof=false
 						%>
-							<option value=<%=rs_terminal("terminal")%> <%if rs_terminal("terminal")=rs("terminal") then%>selected="selected"<%end if%>><%=rs_terminal("terminal")%></option>
+							<option value='<%=rs_terminal("terminal")%>' <%if rs_terminal("terminal")=rs("terminal") then%>selected="selected"<%end if%>><%=rs_terminal("terminal")%></option>
 						<%
 							rs_terminal.movenext
 							loop
 							rs_terminal.close
-						%>	
-<!--						  <option value="天津外代">天津外代</option>		
-						  <option value="外五">外五</option>		
-						  <option value="洋一">洋一</option>		
-						  <option value="洋三">洋三</option>				-->						
+						%>			
 					</select>			
 					&nbsp;&nbsp;&nbsp;&nbsp;船公司
 					<%
@@ -738,16 +865,12 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						<%
 							do while rs_carrier.eof=false
 						%>
-							<option value=<%=rs_carrier("carrier")%> <%if rs_carrier("carrier")=rs("carrier") then%>selected="selected"<%end if%>><%=rs_carrier("carrier")%></option>
+							<option value='<%=rs_carrier("carrier")%>' <%if rs_carrier("carrier")=rs("carrier") then%>selected="selected"<%end if%>><%=rs_carrier("carrier")%></option>
 						<%
 							rs_carrier.movenext 
 							loop
 							rs_carrier.close
-						%>						
-<!--						  <option value="ANL">ANL</option>		
-						  <option value="MSC">MSC</option>		
-						  <option value="CMA CGM">CMA CGM</option>		
-						  <option value="COSCO">COSCO</option>			-->							
+						%>											
 					</select>				
 					&nbsp;&nbsp;&nbsp;&nbsp;船名航次
 					<!--<input name="shipname" id="shipname" style="width:150px" maxlength="20" >		-->
@@ -762,19 +885,19 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 				&nbsp;&nbsp;&nbsp;&nbsp;自动证
 		  		<input name="zidong" value=<%=rs("zidong")%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证交批日期
-		  		<input name="zidongapplydate" id="zidongapplydate" class="datepicker"  style="width:80px" value=<%=rs("zidongapplydate")%>>	  				  		
+		  		<input name="zidongapplydate" id="zidongapplydate" class="datepicker"  style="width:80px" <%if rs("zidongapplydate")<>"" then%>value=<%=FormatDateTime(rs("zidongapplydate"),2)%><%end if%>>	  				  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;自动证上报日期
-		  		<input name="zidongreportdate" id="zidongreportdate" class="datepicker"  style="width:80px" value=<%=rs("zidongreportdate")%>>	  				  		
+		  		<input name="zidongreportdate" id="zidongreportdate" class="datepicker"  style="width:80px" <%if rs("zidongreportdate")<>"" then%>value=<%=FormatDateTime(rs("zidongreportdate"),2)%><%end if%>>	  				  		
 				</td>
       </tr>
       <tr>	  
 	    	<td align="right" height="30">预保日：</td>
         <td class="category">
-		  		<input name="planinsurance" id="planinsurance" class="datepicker" style="width:80px" value=<%=rs("planinsurance")%>>
+		  		<input name="planinsurance" id="planinsurance" class="datepicker" style="width:80px" <%if rs("planinsurance")<>"" then%>value=<%=FormatDateTime(rs("planinsurance"),2)%><%end if%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;补保日
-		  		<input name="supinsurance" id="supinsurance" class="datepicker"  style="width:80px" value=<%=rs("supinsurance")%>>
+		  		<input name="supinsurance" id="supinsurance" class="datepicker"  style="width:80px" <%if rs("supinsurance")<>"" then%>value=<%=FormatDateTime(rs("supinsurance"),2)%><%end if%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保费支付日
-		  		<input name="insurancepayment" id="insurancepayment" class="datepicker" style="width:80px" value=<%=rs("insurancepayment")%>>	  		
+		  		<input name="insurancepayment" id="insurancepayment" class="datepicker" style="width:80px" <%if rs("insurancepayment")<>"" then%>value=<%=FormatDateTime(rs("insurancepayment"),2)%><%end if%>>	
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保单
 		  		<input name="insurancenumber" style="width:120px" value=<%=rs("insurancenumber")%>>
 				</td>
@@ -784,11 +907,11 @@ sql="select * from shipment where shipmentnum="&request("shipment")
         <td class="category">
 		  		<input name="planship" style="width:100px" value=<%=rs("planship")%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;实际装船期
-		  		<input name="shipdate" id="shipdate" class="datepicker" style="width:80px" value=<%=rs("shipdate")%>>
+		  		<input name="shipdate" id="shipdate" class="datepicker" style="width:80px" <%if rs("shipdate")<>"" then%>value=<%=FormatDateTime(rs("shipdate"),2)%><%end if%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;预计到港期
-		  		<input name="boarddate" id="boarddate" class="datepicker" style="width:80px" value=<%=rs("boarddate")%>>  		
+		  		<input name="boarddate" id="boarddate" class="datepicker" style="width:80px" <%if rs("boarddate")<>"" then%>value=<%=FormatDateTime(rs("boarddate"),2)%><%end if%>>  		
 		  		&nbsp;&nbsp;&nbsp;&nbsp;客户交货期
-		  		<input name="customerdeliverydate" style="width:100px" value=<%=rs("customerdeliverydate")%>>
+		  		<input name="customerdeliverydate" class="datepicker" style="width:100px" <%if rs("customerdeliverydate")<>"" then%>value=<%=FormatDateTime(rs("customerdeliverydate"),2)%><%end if%>>
 				</td>
       </tr>
       <tr>	  
@@ -821,7 +944,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>	  
 	    	<td align="right" height="30">预付款日期：</td>
         <td class="category">
-		  		<input name="paydate" id="paydate" class="datepicker" style="width:80px" value=<%=rs("prepaydate")%>>
+		  		<input name="prepaydate" id="prepaydate" class="datepicker" style="width:80px" <%if rs("prepaydate")<>"" then%>value=<%=FormatDateTime(rs("prepaydate"),2)%><%end if%>>
 		  		&nbsp;&nbsp;&nbsp;预付款金额
 		  		<input name="prepayment" style="width:100px" maxlength="15" value=<%=rs("prepayment")%> onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
 		  		&nbsp;&nbsp;&nbsp;币种
@@ -840,7 +963,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						%>
 					</select>
 				&nbsp;&nbsp;&nbsp;订金收到日期
-				<input name="downpaymentdate" id="downpaymentdate" class="datepicker" style="width:80px" value=<%=rs("downpaymentreceiptdate")%>>	
+				<input name="downpaymentdate" id="downpaymentdate" class="datepicker" style="width:80px" <%if rs("downpaymentreceiptdate")<>"" then%>value=<%=FormatDateTime(rs("downpaymentreceiptdate"),2)%><%end if%>>	
 				&nbsp;&nbsp;&nbsp;成交条款
 					<%
 					sql="select * from tradingterm"
@@ -856,66 +979,58 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							loop
 						%>
 					</select>		
-<!--							
-					<select name="tradingterm">
-							<option value="CIF">CIF</option>
-							<option value="CFR">CFR</option>
-							<option value="CIP">CIP</option>
-							<option value="CNF">CNF</option>
-							<option value="CPT">CPT</option>
-					</select> -->
 				</td>
       </tr> 
       <tr>	  
 	    	<td align="right" height="30">尾款支付日期：</td>
         <td class="category">
-		  		<input name="finalpaymentdate" id="finalpaymentdate" class="datepicker" style="width:80px" value=<%=rs("finalpaymentdate")%>>
+		  		<input name="finalpaymentdate" id="finalpaymentdate" class="datepicker" style="width:80px" <%if rs("finalpaymentdate")<>"" then%>value=<%=FormatDateTime(rs("finalpaymentdate"),2)%><%end if%> >
 		  		&nbsp;&nbsp;&nbsp;免箱期
 		  		<input name="freestayperiod" style="width:100px" value=<%=rs("freestayperiod")%>>
 		  		&nbsp;&nbsp;&nbsp;兽医官
 				<input name="shouyi" style="width:100px" value=<%=rs("shouyi")%>>
 				&nbsp;&nbsp;&nbsp;放行日期
-		  		<input name="passdate" id="passdate" class="datepicker" style="width:80px" value=<%=rs("passdate")%>>
+		  		<input name="passdate" id="passdate" class="datepicker" style="width:80px" <%if rs("passdate")<>"" then%>value=<%=FormatDateTime(rs("passdate"),2)%><%end if%>>
 				</td>
       </tr>       
       <tr>	  
 	    	<td align="right" height="30">到单日期：</td>
         <td class="category">
-		  		<input name="documentarrival" id="documentarrival" class="datepicker" style="width:80px" value=<%=rs("documentarrival")%>>
+		  		<input name="documentarrival" id="documentarrival" class="datepicker" style="width:80px" <%if rs("documentarrival")<>"" then%>value=<%=FormatDateTime(rs("documentarrival"),2)%><%end if%> >
 		  		&nbsp;&nbsp;&nbsp;预计赎单日期
-		  		<input name="planretirebill" id="planretirebill" class="datepicker" style="width:80px" value=<%=rs("planretirebill")%>>	  		
+		  		<input name="planretirebill" id="planretirebill" class="datepicker" style="width:80px" <%if rs("planretirebill")<>"" then%>value=<%=FormatDateTime(rs("planretirebill"),2)%><%end if%> >	  		
 		  		&nbsp;&nbsp;&nbsp;我司赎单日期
-		  		<input name="internalretirebill" id="internalretirebill" class="datepicker" style="width:80px" value=<%=rs("internalretirebill")%>>		  		
+		  		<input name="internalretirebill" id="internalretirebill" class="datepicker" style="width:80px" <%if rs("internalretirebill")<>"" then%>value=<%=FormatDateTime(rs("internalretirebill"),2)%><%end if%> >		  		
 		  		&nbsp;&nbsp;&nbsp;代理赎单日期
-		  		<input name="externalretirebill" id="externalretirebill" class="datepicker" style="width:80px" value=<%=rs("externalretirebill")%>>		  		
+		  		<input name="externalretirebill" id="externalretirebill" class="datepicker" style="width:80px" <%if rs("externalretirebill")<>"" then%>value=<%=FormatDateTime(rs("externalretirebill"),2)%><%end if%> >		  		
 				</td>
       </tr>       
       <tr>	  
 	    	<td align="right" height="30">送货日期：</td>
         <td class="category">
-		  		<input name="cargodate" id="cargodate" class="datepicker" style="width:80px" value=<%=rs("cargodate")%>>
+		  		<input name="cargodate" id="cargodate" class="datepicker" style="width:80px" <%if rs("cargodate")<>"" then%>value=<%=FormatDateTime(rs("cargodate"),2)%><%end if%> >
 		  		&nbsp;&nbsp;&nbsp;送货方向
 		  		<input name="cargodirection" style="width:150px" value=<%=rs("cargodirection")%>>
 		  		&nbsp;&nbsp;&nbsp;交单日期
-		  		<input name="deliverydate" id="deliverydate" class="datepicker" style="width:80px" value=<%=rs("deliverydate")%>>	  		
+		  		<input name="deliverydate" id="deliverydate" class="datepicker" style="width:80px" <%if rs("deliverydate")<>"" then%>value=<%=FormatDateTime(rs("deliverydate"),2)%><%end if%>>	  		
 				</td>
       </tr> 
       <tr>
         <td align="right" height="30" valign="top">单证问题：</td>
         <td class="category" valign="top">
-        	<textarea name="documentissue" cols="30" rows="3" value=<%=rs("documentissue")%>></textarea>&nbsp;&nbsp;&nbsp;
+        	<textarea name="documentissue" cols="30" rows="3"><%=rs("documentissue")%></textarea>&nbsp;&nbsp;&nbsp;
         	<label for="documentcheck" style="vertical-align:top"> 审单情况 </label>
-        	<textarea name="documentcheck" id="documentcheck" cols="30" rows="3" value=<%=rs("documentcheck")%>></textarea>&nbsp;&nbsp;&nbsp;
+        	<textarea name="documentcheck" id="documentcheck" cols="30" rows="3"><%=rs("documentcheck")%></textarea>&nbsp;&nbsp;&nbsp;
         	<label for="documentdelivery" style="vertical-align:top"> 寄单情况 </label>
-        	<textarea name="documentdelivery" id="documentdelivery" cols="30" rows="3" value=<%=rs("documentdelivery")%>></textarea>&nbsp;&nbsp;&nbsp;
+        	<textarea name="documentdelivery" id="documentdelivery" cols="30" rows="3"><%=rs("documentdelivery")%></textarea>&nbsp;&nbsp;&nbsp;
         	<label for="clearcustom" style="vertical-align:top">清关进程</label>
-        	<textarea name="clearcustom" id="clearcustom" cols="30" rows="3" value=<%=rs("clearcustom")%>></textarea>            	   	
+        	<textarea name="clearcustom" id="clearcustom" cols="30" rows="3"><%=rs("clearcustom")%></textarea>            	   	
         </td>
       </tr>	 
       <tr>
         <td align="right" height="30" valign="top">保证金情况：</td>
         <td class="category" valign="top">
-        	<textarea name="warrantyinformation" cols="30" rows="3" value=<%=rs("warrantyinformation")%>></textarea>&nbsp;&nbsp;&nbsp;
+        	<textarea name="warrantyinformation" cols="30" rows="3"><%=rs("warrantyinformation")%></textarea>&nbsp;&nbsp;&nbsp;
         	<label for="warrantystatus" style="vertical-align:top">保证金进度</label>
 					<%
 					sql="select * from warrantystatus"
@@ -931,12 +1046,6 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							loop
 						%>
 					</select>	 
-<!--					       	
-					<select name="warrantystatus" style="vertical-align:top">
-	 						<option value="审核中">审核中</option>	
-	 						<option value="已退保">已退保</option>	
-	 						<option value="已到账">已到账</option>	
-					</select>			-->
 					<label for="warranty" style="vertical-align:top">&nbsp;&nbsp;&nbsp;保证金金额</label>	
 					<input name="warranty" style="vertical-align:top;width:100px" maxlength="15" value=<%=rs("warranty")%> onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
 					<label for="returnwarranty" style="vertical-align:top">&nbsp;&nbsp;&nbsp;退保证金金额</label>	
@@ -946,9 +1055,9 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>
         <td align="right" height="30" valign="top">少货情况：</td>
         <td class="category" valign="top">
-        	<textarea name="stockmiss" cols="30" rows="3" value=<%=rs("stockmiss")%>></textarea>&nbsp;&nbsp;&nbsp;
+        	<textarea name="stockmiss" cols="30" rows="3"><%=rs("stockmiss")%></textarea>&nbsp;&nbsp;&nbsp;
         	<label for="claiminformation" style="vertical-align:top">索赔情况</label>
-        	<textarea name="claiminformation" id="claiminformation" cols="30" rows="3" value=<%=rs("claiminformation")%>></textarea>&nbsp;&nbsp;&nbsp;
+        	<textarea name="claiminformation" id="claiminformation" cols="30" rows="3"><%=rs("claiminformation")%></textarea>&nbsp;&nbsp;&nbsp;
 					<label for="claimstatus" style="vertical-align:top">索赔状态</label>
 					<%
 					sql="select * from claimstatus"
@@ -964,33 +1073,27 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 							loop
 						%>
 					</select>					
-<!--
-					<select name="claimstatus" style="vertical-align:top">
-							<option value="索赔中">索赔中</option>
-							<option value="需索赔">需索赔</option>
-							<option value="不需索赔">不需索赔</option>
-					</select>     -->
 					<label for="claimprocessor" style="vertical-align:top">索赔负责人</label>
 					<select name="claimprocessor" style="vertical-align:top">
 	    			<% for i = 0 to customCount-1 %>
-	 						<option value=<%=custom(i)%> <%if rs("claimprocessor")=custom(i) then%>selected="selected"<%end if%>><%=custom(i)%></option>
+	 						<option value="<%=custom(i)%>" <%if rs("claimprocessor")=custom(i) then%>selected="selected"<%end if%>><%=custom(i)%></option>
 	 					<% next %>  			
 					</select>&nbsp;&nbsp;&nbsp;								
         </td>
       </tr>	       
       <tr>
-		  <input type="submit" value=" 确认修改 " onClick="return check1();" class="button">&nbsp;&nbsp;&nbsp;
+		  <input type="submit" value=" 确认修改 " onClick="$(window).off('beforeunload'); return check1(); " class="button">&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=shipment&combinedkey=<%=request("shipment")%>'); window.location.href='shipment.asp';}" class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=shipment&combinedkey=<%=request("shipment")%>'); $(window).off('beforeunload'); window.location.href='shipment.asp';}" class="button">
       </tr>  
       </tbody>  
 </table>  
-</form>
+
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
 	  <form name="formitem">
       <tr>
 		<input type="button" onclick="addNewRow()" value="增加一行" class="button"/>&nbsp;&nbsp;&nbsp;
-		<input type="button" onclick="removeRow()" value="删除一行" class="button"/>
+		<input type="button" onclick="removeRow()" value="删除一行" class="button"/
       </tr>	      
       <tr>
 		<table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1" id="item">
@@ -1022,7 +1125,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
      	  %>	
 		  <tr>
 		  	<td width="20"><input type='checkbox' name='chkArr'  id='chkArr' /></td>			
-	        <td width="30" align="center" ><input type='text' name='itemno' id='itemno' value='<%=rs_items("itemnum")%>' style='width:30px' readonly='true'/></td>
+	        <td width="30" align="center" ><input type='text' name="itemno" id="itemno" value='<%=rs_items("itemnum")%>' style='width:30px'/></td>
 	        <td width="100" align="center" >
 	        	<select name="material<%=rs_items("itemnum")%>" id="material<%=rs_items("itemnum")%>" style='width:100px'>
 	    			<% for i = 0 to materialCount-1 %>
@@ -1039,24 +1142,24 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 	        </td> 	
 	        <td width=100" align="center" ><input type='text' name="spec<%=rs_items("itemnum")%>" id="spec<%=rs_items("itemnum")%>" value='<%=rs_items("spec")%>' style='width:100px'/></td> 		
 	        <td width=100" align="center" ><input type='text' name="package<%=rs_items("itemnum")%>" id="package<%=rs_items("itemnum")%>" value='<%=rs_items("package")%>' style='width:100px'/></td> 		
-	        <td width=80" align="center" ><input type='text' name="contractweight<%=rs_items("itemnum")%>" id="contractweight<%=rs_items("itemnum")%>" value='<%=rs_items("contractweight")%>' style='width:80px'/></td> 
+	        <td width=80" align="center" ><input type='text' name="contractweight<%=rs_items("itemnum")%>" id="contractweight<%=rs_items("itemnum")%>" value='<%=rs_items("contractweight")%>' style='width:80px' onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/></td> 
 	        <td width="30" align="center" >
 	            	<select name="contractweightuom<%=rs_items("itemnum")%>" id="contractweightuom<%=rs_items("itemnum")%>" style='width:50px'>
 	        			<option value='公斤' <%if rs_items("contractweightuom")="公斤" then%>selected="selected"<%end if%>>公斤</option>
 	        			<option value='磅' <%if rs_items("contractweightuom")="磅" then%>selected="selected"<%end if%>>磅</option>
 	        		</select>
 	        </td> 		
-	        <td width="80" align="center" ><input type='text' name="actualweight<%=rs_items("itemnum")%>" id="actualweight<%=rs_items("itemnum")%>" value='<%=rs_items("actualnetweight")%>' style='width:80px'/></td>
-	        <td width="80" align="center" ><input type='text' name="purchaseprice<%=rs_items("itemnum")%>" id="purchaseprice<%=rs_items("itemnum")%>" value='<%=rs_items("purchaseprice")%>' style='width:80px'/></td> 	
+	        <td width="80" align="center" ><input type='text' name="actualweight<%=rs_items("itemnum")%>" id="actualweight<%=rs_items("itemnum")%>" value='<%=rs_items("actualnetweight")%>' style='width:80px' onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/></td>
+	        <td width="80" align="center" ><input type='text' name="purchaseprice<%=rs_items("itemnum")%>" id="purchaseprice<%=rs_items("itemnum")%>" value='<%=rs_items("purchaseprice")%>' style='width:80px' onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/></td> 	
 	        <td width="30" align="center" >
 	            	<select name="priceunit<%=rs_items("itemnum")%>" id="priceunit<%=rs_items("itemnum")%>" style='width:50px'>
 	        			<option value='公斤' <%if rs_items("purchasepriceunit")="公斤" then%>selected="selected"<%end if%>>公斤</option>
 	        			<option value='磅' <%if rs_items("purchasepriceunit")="磅" then%>selected="selected"<%end if%>>磅</option>
 	        		</select>
 	        </td> 					        	            		        	        		        
-	        <td width="50" align="center" ><input name="producedate<%=rs_items("itemnum")%>" id="producedate<%=rs_items("itemnum")%>" value="<%=rs_items("productiondate")%>" style='width:80px' class="datepicker"/></td> 		
-	        <td width="50" align="center" ><input type='text' name="casenum<%=rs_items("itemnum")%>" id="casenum<%=rs_items("itemnum")%>" value='<%=rs_items("casenumber")%>' style='width:80px'/></td> 		
-	        <td width="100" align="center" ><input type='text' name="invamount<%=rs_items("itemnum")%>" id="invamount<%=rs_items("itemnum")%>" value='<%=rs_items("invoiceamount")%>' style='width:80px'/></td> 	
+	        <td width="50" align="center" ><input name="producedate<%=rs_items("itemnum")%>" id="producedate<%=rs_items("itemnum")%>" <%if rs_items("productiondate")<>"" then%>value=<%=FormatDateTime(rs_items("productiondate"),2)%><%end if%> style='width:80px' class="datepicker"/></td> 		
+	        <td width="50" align="center" ><input type='text' name="casenum<%=rs_items("itemnum")%>" id="casenum<%=rs_items("itemnum")%>" value='<%=rs_items("casenumber")%>' style='width:80px' onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/></td> 		
+	        <td width="100" align="center" ><input type='text' name="invamount<%=rs_items("itemnum")%>" id="invamount<%=rs_items("itemnum")%>" value='<%=rs_items("invoiceamount")%>' style='width:80px' onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/></td> 	
 	        <td width="50" align="center" >
 					<%
 					sql="select * from trancurrency"
@@ -1073,7 +1176,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						%>
 					</select>	        	
 	        </td> 		
-	        <td width="100" align="center" ><input type='text' name="finalamount<%=rs_items("itemnum")%>" id="finalamount<%=rs_items("itemnum")%>" value='<%=rs_items("finalpayment")%>' style='width:80px'/></td>
+	        <td width="100" align="center" ><input type='text' name="finalamount<%=rs_items("itemnum")%>" id="finalamount<%=rs_items("itemnum")%>" value='<%=rs_items("finalpayment")%>' style='width:80px' onKeyPress="javascript:CheckNum();" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/></td>
      	  </tr>	
 		  <%
 		    	rs_items.movenext
