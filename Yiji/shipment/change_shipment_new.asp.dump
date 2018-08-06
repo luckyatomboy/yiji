@@ -93,9 +93,9 @@ rs("materialtype")=request("materialtype")
 rs("agent")=request("agent")
 rs("piwen")=request("piwen")
 if request("twodocumentready")<>"" then
-	rs("twodocumentready")=request("twodocumentready")
+	rs("twodocumentreadydate")=request("twodocumentready")
 else
-	rs("twodocumentready")=null
+	rs("twodocumentreadydate")=null
 end if
 '第六行'
 rs("terminal")=request("terminal")
@@ -117,19 +117,19 @@ else
 end if
 '第八行'
 if request("planinsurance")<>"" then
-  rs("planinsurance")=request("planinsurance")
+  rs("planinsurancedate")=request("planinsurance")
 else
-  rs("planinsurance")=null
+  rs("planinsurancedate")=null
 end if
 if request("supinsurance")<>"" then
-  rs("supinsurance")=request("supinsurance")
+  rs("supinsurancedate")=request("supinsurance")
 else
-  rs("supinsurance")=null
+  rs("supinsurancedate")=null
 end if
 if request("insurancepayment")<>"" then
-  rs("insurancepayment")=request("insurancepayment")
+  rs("insurancepaymentdate")=request("insurancepayment")
 else
-  rs("insurancepayment")=null
+  rs("insurancepaymentdate")=null
 end if
 rs("insurancenumber")=request("insurancenumber")
 '第九行'
@@ -198,24 +198,24 @@ else
 end if
 '第十三行'
 if request("documentarrival")<>"" then
-  rs("documentarrival")=request("documentarrival")
+  rs("documentarrivaldate")=request("documentarrival")
 else
-  rs("documentarrival")=null
+  rs("documentarrivaldate")=null
 end if
 if request("planretirebill")<>"" then
-  rs("planretirebill")=request("planretirebill")
+  rs("planretirebilldate")=request("planretirebill")
 else
-  rs("planretirebill")=null
+  rs("planretirebilldate")=null
 end if
 if request("internalretirebill")<>"" then
-  rs("internalretirebill")=request("internalretirebill")
+  rs("internalretirebilldate")=request("internalretirebill")
 else
-  rs("internalretirebill")=null
+  rs("internalretirebilldate")=null
 end if
 if request("externalretirebill")<>"" then
-  rs("externalretirebill")=request("externalretirebill")
+  rs("externalretirebilldate")=request("externalretirebill")
 else
-  rs("externalretirebill")=null
+  rs("externalretirebilldate")=null
 end if
 '第十四行'
 if request("cargodate")<>"" then
@@ -237,8 +237,16 @@ rs("clearcustom")=request("clearcustom")
 '第十六行'
 rs("warrantyinformation")=request("warrantyinformation")
 rs("warrantystatus")=request("warrantystatus")
-rs("warranty")=request("warranty")
-rs("returnwarranty")=request("returnwarranty")
+if request("warranty")<>"" then
+  rs("warranty")=request("warranty")
+else
+  rs("warranty")=0
+end if
+if request("returnwarranty")<>"" then
+  rs("returnwarranty")=request("returnwarranty")
+else
+  rs("returnwarranty")=0
+end if
 '第十七行'
 rs("stockmiss")=request("stockmiss")
 rs("claiminformation")=request("claiminformation")
@@ -322,7 +330,10 @@ conn.execute(sql)
 //alert(&nowshipment&)
 alert("船期表录入成功！")
 $(window).off('beforeunload');
-window.location.href="shipment.asp"
+//window.location.href="shipment.asp"
+window.opener=null
+window.open('','_self')
+window.close()
 </script>
 
 <%
@@ -819,7 +830,7 @@ sql="select * from shipment where shipmentnum="&request("shipment")
 						%>								
 					</select>			
 					&nbsp;&nbsp;&nbsp;两证齐备日期
-		  		<input name="twodocumentready" id="twodocumentready" <%if rs("twodocumentready")<>"" then%>value=<%=FormatDateTime(rs("twodocumentready"),2)%><%end if%> class="datepicker"  style="width:80px">										 		
+		  		<input name="twodocumentready" id="twodocumentready" <%if rs("twodocumentreadydate")<>"" then%>value=<%=FormatDateTime(rs("twodocumentreadydate"),2)%><%end if%> class="datepicker"  style="width:80px">										 		
 				</td>
       </tr>    
       <tr>	  
@@ -893,11 +904,11 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>	  
 	    	<td align="right" height="30">预保日：</td>
         <td class="category">
-		  		<input name="planinsurance" id="planinsurance" class="datepicker" style="width:80px" <%if rs("planinsurance")<>"" then%>value=<%=FormatDateTime(rs("planinsurance"),2)%><%end if%>>
+		  		<input name="planinsurance" id="planinsurance" class="datepicker" style="width:80px" <%if rs("planinsurancedate")<>"" then%>value=<%=FormatDateTime(rs("planinsurancedate"),2)%><%end if%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;补保日
-		  		<input name="supinsurance" id="supinsurance" class="datepicker"  style="width:80px" <%if rs("supinsurance")<>"" then%>value=<%=FormatDateTime(rs("supinsurance"),2)%><%end if%>>
+		  		<input name="supinsurance" id="supinsurance" class="datepicker"  style="width:80px" <%if rs("supinsurancedate")<>"" then%>value=<%=FormatDateTime(rs("supinsurancedate"),2)%><%end if%>>
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保费支付日
-		  		<input name="insurancepayment" id="insurancepayment" class="datepicker" style="width:80px" <%if rs("insurancepayment")<>"" then%>value=<%=FormatDateTime(rs("insurancepayment"),2)%><%end if%>>	
+		  		<input name="insurancepayment" id="insurancepayment" class="datepicker" style="width:80px" <%if rs("insurancepaymentdate")<>"" then%>value=<%=FormatDateTime(rs("insurancepaymentdate"),2)%><%end if%>>	
 		  		&nbsp;&nbsp;&nbsp;&nbsp;保单
 		  		<input name="insurancenumber" style="width:120px" value=<%=rs("insurancenumber")%>>
 				</td>
@@ -996,13 +1007,13 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>	  
 	    	<td align="right" height="30">到单日期：</td>
         <td class="category">
-		  		<input name="documentarrival" id="documentarrival" class="datepicker" style="width:80px" <%if rs("documentarrival")<>"" then%>value=<%=FormatDateTime(rs("documentarrival"),2)%><%end if%> >
+		  		<input name="documentarrival" id="documentarrival" class="datepicker" style="width:80px" <%if rs("documentarrivaldate")<>"" then%>value=<%=FormatDateTime(rs("documentarrivaldate"),2)%><%end if%> >
 		  		&nbsp;&nbsp;&nbsp;预计赎单日期
-		  		<input name="planretirebill" id="planretirebill" class="datepicker" style="width:80px" <%if rs("planretirebill")<>"" then%>value=<%=FormatDateTime(rs("planretirebill"),2)%><%end if%> >	  		
+		  		<input name="planretirebill" id="planretirebill" class="datepicker" style="width:80px" <%if rs("planretirebilldate")<>"" then%>value=<%=FormatDateTime(rs("planretirebilldate"),2)%><%end if%> >	  		
 		  		&nbsp;&nbsp;&nbsp;我司赎单日期
-		  		<input name="internalretirebill" id="internalretirebill" class="datepicker" style="width:80px" <%if rs("internalretirebill")<>"" then%>value=<%=FormatDateTime(rs("internalretirebill"),2)%><%end if%> >		  		
+		  		<input name="internalretirebill" id="internalretirebill" class="datepicker" style="width:80px" <%if rs("internalretirebilldate")<>"" then%>value=<%=FormatDateTime(rs("internalretirebilldate"),2)%><%end if%> >		  		
 		  		&nbsp;&nbsp;&nbsp;代理赎单日期
-		  		<input name="externalretirebill" id="externalretirebill" class="datepicker" style="width:80px" <%if rs("externalretirebill")<>"" then%>value=<%=FormatDateTime(rs("externalretirebill"),2)%><%end if%> >		  		
+		  		<input name="externalretirebill" id="externalretirebill" class="datepicker" style="width:80px" <%if rs("externalretirebilldate")<>"" then%>value=<%=FormatDateTime(rs("externalretirebilldate"),2)%><%end if%> >		  		
 				</td>
       </tr>       
       <tr>	  
@@ -1084,7 +1095,12 @@ sql="select * from shipment where shipmentnum="&request("shipment")
       <tr>
 		  <input type="submit" value=" 确认修改 " onClick="$(window).off('beforeunload'); return check1(); " class="button">&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=shipment&combinedkey=<%=request("shipment")%>'); $(window).off('beforeunload'); window.location.href='shipment.asp';}" class="button">
+		  <input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('../master/delete_lock_table.asp?tablename=shipment&combinedkey=<%=request("shipment")%>'); $(window).off('beforeunload'); window.opener=null; window.open('','_self'); window.close();}" class="button">&nbsp;&nbsp;&nbsp;&nbsp;     
+      <%if fla7="0" and session("redboy_id")<>"1" then
+      else
+      %>      
+      <input type="button" value=" 删除 " onClick="if (confirm('确定要删除该船期表吗？')) {window.open('delete_shipment.asp?shipmentnum=<%=request("shipment")%>'); $(window).off('beforeunload'); window.opener=null; window.open('','_self'); window.close();}" class="button">
+      <%end if%>        
       </tr>  
       </tbody>  
 </table>  

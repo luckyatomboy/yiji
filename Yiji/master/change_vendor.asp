@@ -178,7 +178,7 @@ set rs=conn.execute(sql)
 </form>
 <%
 else
-nowname=request("vendorname")
+nowvendorname=request("vendorname")
 nowaddress=request("address")
 nowtel=request("tel")
 nowfax=request("fax")
@@ -194,9 +194,36 @@ nowcountry=request("country")
 nowterm1=request("term1")
 nowterm2=request("term2")
 
+'检查工厂是否重复'
+for i = 1 to 4
+  if request("plant"&i) <> "" then
+    sql="select * from plant where plantid = '"&request("plant"&i)&"' and country = '"&nowcountry&"' and vendor <> '"&nowvendorname&"'"
+    set rs=conn.execute(sql)
+    if rs.eof=false then
+    %>
+    <script language="javascript">
+    alert("<%=nowcountry%>工厂<%=rs("plantid")%>已被供应商<%=rs("vendor")%>占用！");
+    window.history.go(-1)
+    </script> 
+    <%
+      response.end
+    end if
+    rs.close
+  end if
+next 
+
 set rs=server.createobject("ADODB.RecordSet")
 sql="select * from vendor where vendorname='"&request("vendorname")&"'"
 rs.open sql,conn,1,3
+
+'先删除旧工厂数据
+for i = 1 to 4
+  if rs("plant"&i) <> "" then  
+    sql="delete from plant where plantid = '"&rs("plant"&i)&"' and country='"&rs("country")&"'"
+    conn.execute(sql)
+  end if
+next
+
 rs("address")=nowaddress
 rs("tel")=nowtel
 rs("fax")=nowfax
@@ -213,6 +240,14 @@ rs("changedate")=now
 rs("changer")=session("redboy_username")
 rs.update
 rs.close
+
+'再插入新工厂数据
+for i = 1 to 4
+  if request("plant"&i) <> "" then  
+    sql="insert into plant(plantid,Country,vendor,CreateDate,Creator) values('"&request("plant"&i)&"','"&nowcountry&"','"&nowvendorname&"',#"&now()&"#,'"&session("redboy_username")&"')"
+    conn.execute(sql)
+  end if
+next
 
 sql="delete from locktable where tablename='vendor' and combinedkey='"&request("vendorname")&"'"
 conn.execute(sql)

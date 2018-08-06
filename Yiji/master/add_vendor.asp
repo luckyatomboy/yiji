@@ -36,13 +36,15 @@ end if
 <script language="javascript">
 function check()
 {
-if (document.form1.username.value==""||document.form1.userid.value=="")
+//检查必填项
+if (document.form1.vendorname.value==""||document.form1.plant1.value=="")
 {
 alert("有*号的必须填写！");
 return false;
 }
 }
 </script>
+
 <form name="form1">
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
 <tr>
@@ -63,7 +65,7 @@ return false;
 <table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1">
       <tr>
         <td width="25%" height="30" align="right">供应商名称：</td>
-        <td width="75%" class="category"><input type="text" name="username" style="width:200px"> 
+        <td width="75%" class="category"><input type="text" name="vendorname" style="width:200px"> 
         	&nbsp;<font color="#ff0000">*</font></td>
       </tr>    
       <tr>
@@ -145,7 +147,7 @@ return false;
 </form>
 <%
 else
-nowusername=request("username")
+nowvendorname=request("vendorname")
 nowcountry=request("country")
 nowtel=request("tel")
 nowaddress=request("address")
@@ -159,20 +161,48 @@ nowplant4=request("plant4")
 nowterm1=request("term1")
 nowterm2=request("term2")
 nowbeizhu=request("beizhu")
-sql="select * from Vendor where Vendorname='"&nowusername&"'"
+sql="select * from Vendor where Vendorname='"&nowvendorname&"'"
 set rs=conn.execute(sql)
 if rs.eof=false then
 %>
 <script language="javascript">
-alert("您输入的供应商编号已经存在，请重新输入！")
+alert("您输入的供应商已经存在，请重新输入！")
 window.history.go(-1)
 </script> 
 <%
   response.end
 end if
+rs.close
 
-sql="insert into Vendor(VendorName,Country,Address,Tel,Fax,Email,Plant1,Plant2,Plant3,Plant4,Memo,Term1,Term2,CreateDate,Creator) values('"&nowusername&"','"&nowcountry&"','"&nowaddress&"','"&nowtel&"','"&nowfax&"','"&nowemail&"','"&nowplant1&"','"&nowplant2&"','"&nowplant3&"','"&nowplant4&"','"&nowbeizhu&"','"&nowterm1&"','"&nowterm2&"',#"&now()&"#,'"&session("redboy_username")&"')"
+'检查工厂是否重复'
+for i = 1 to 4
+  if request("plant"&i) <> "" then
+    sql="select * from plant where plantid = '"&request("plant"&i)&"' and country = '"&nowcountry&"'"
+    set rs=conn.execute(sql)
+    if rs.eof=false then
+    %>
+    <script language="javascript">
+    alert("<%=nowcountry%>工厂<%=rs("plantid")%>已被供应商<%=rs("vendor")%>占用！");
+    window.history.go(-1)
+    </script> 
+    <%
+      response.end
+    end if
+    rs.close
+  end if
+next 
+
+'添加供应商数据'
+sql="insert into Vendor(VendorName,Country,Address,Tel,Fax,Email,Plant1,Plant2,Plant3,Plant4,Memo,Term1,Term2,CreateDate,Creator) values('"&nowvendorname&"','"&nowcountry&"','"&nowaddress&"','"&nowtel&"','"&nowfax&"','"&nowemail&"','"&nowplant1&"','"&nowplant2&"','"&nowplant3&"','"&nowplant4&"','"&nowbeizhu&"','"&nowterm1&"','"&nowterm2&"',#"&now()&"#,'"&session("redboy_username")&"')"
 conn.execute(sql)
+
+'添加工厂数据
+for i = 1 to 4
+  if request("plant"&i) <> "" then  
+    sql="insert into plant(plantid,Country,vendor,CreateDate,Creator) values('"&request("plant"&i)&"','"&nowcountry&"','"&nowvendorname&"',#"&now()&"#,'"&session("redboy_username")&"')"
+    conn.execute(sql)
+  end if
+next
 %>
 <script language="javascript">
 alert("供应商添加成功！")

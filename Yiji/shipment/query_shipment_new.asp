@@ -53,16 +53,26 @@ end if
 %>
 
 <script>
+//document.getElementById('queryresult').style.display='none';
+
+
+    //$("#queryresult").style.display="inline";
+
+//var table = $("#queryresult").DataTable();
+
+//table.column( "修改" ).order( false ).draw();    
   $(function(){
+
 //日期控件
     $("#datefrom").datepicker();
     $("#dateto").datepicker();
 //DataTable控件
     //$("#queryresult").DataTable();
+    //$("#queryresult").style.display="none";
     var table=$("#queryresult").DataTable( {
           dom: "Blfrtip",
           stateSave: true,
-          colReorder: true,      
+          colReorder: false,      
           buttons: [
               {
                   extend: "colvis",
@@ -84,15 +94,9 @@ end if
    
 
 } );
-
-//var table = $("#queryresult").DataTable();
-
-//table.column( "修改" ).order( false ).draw();    
   });
 
-</script>
 
-<script>
 function print_customer_shipment() { 
   var win;
   var shipment="";
@@ -117,103 +121,171 @@ function print_customer_shipment() {
 	//win=window.open("../produit/print_customer_shipment.asp?shipmentnum=10000011","Detail Information"); 
 	win.focus();
 }
+
+//窗口表格增加一行
+function addNewCriteria(){
+   var tabObj=document.getElementById("search");//获取添加数据的表格
+   var rowsNum = tabObj.rows.length;  //获取当前行数
+   var myNewRow = tabObj.insertRow(rowsNum);//插入新行.
+   var fieldNo=rowsNum+1;
+   document.getElementById("fieldnum").value=fieldNo;
+
+   var newTdObj1=myNewRow.insertCell(0);
+   newTdObj1.innerHTML="<select name='fieldname"+fieldNo+"' id='fieldname"+fieldNo+"' style='width:120px' align='left'>"
+      +" <option value='a.buyer' selected>采购</option>"
+      +" <option value='a.sales' >销售</option>"
+      +" <option value='a.handler'>跟单</option>"
+      +" <option value='a.country'>国别</option>"
+      +" <option value='a.plant'>厂号</option>"
+      +" <option value='a.destination'>目的港</option>"
+      +" <option value='a.terminal'>靠泊码头</option>"
+      +" <option value='a.carrier'>船公司</option>"
+      +" <option value='a.shipname'>船名航次</option>"
+      +" <option value='a.shipdate'>装船期</option>"
+      +" <option value='a.boarddate'>到港期</option>"      
+      +" <option value='b.material'>品名</option>"
+      +" <option value='b.customer'>客户</option>"
+      +" </select>";
+   var newTdObj2=myNewRow.insertCell(1);
+   newTdObj2.innerHTML="<select name='operation"+fieldNo+"' id='operation"+fieldNo+"' style='width:100px' align='left'>"
+      +" <option value='=' selected>包含</option>"
+      +" <option value='<>' >不包含</option>"
+      +" <option value='>='>大于等于</option>"
+      +" <option value='<='>小于等于</option>"
+      +" </select>";      
+   var newTdObj3=myNewRow.insertCell(2);
+   newTdObj3.innerHTML="<input type='text' name='fieldvalue"+fieldNo+"' id='fieldvalue"+fieldNo+"' style='width:120px' align='left'/>";
+}
+
 </script>
 
 <%
+if request("query")="ok" then 
 '取得搜索关键字  
-nowkeyword=request("keyword") 
-nowsales=request("sales")
-nowcustomer=request("customer")
-nowfrom=request("datefrom")
-nowto=request("dateto")
-%>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
-<form name="form2">
-  <input type="hidden" name="form" value="<%=request("form")%>">
-  <input type="hidden" name="field" value="<%=request("field")%>">
-  <input type="hidden" name="field2" value="<%=request("field2")%>">
-  <input type="hidden" name="field3" value="<%=request("field3")%>">
-<!--
-  <input type="hidden" name="field4" value="<%=request("field4")%>">  
-  <input type="hidden" name="field5" value="<%=request("field5")%>">
-  <input type="hidden" name="field6" value="<%=request("field6")%>">
-  <input type="hidden" name="field7" value="<%=request("field7")%>">
-  <input type="hidden" name="field8" value="<%=request("field8")%>">    
-  <input type="hidden" name="field9" value="<%=request("field9")%>">    
--->
-  <input type="hidden" name="span1" value="<%=request("span1")%>">
-  <tr> 
-<!--  <td width="700" height="21" align="right"><font size=4><b>查询船期表</b></font></td> -->
-	<td align="right">
-	  搜索：
-		<%
-			'sql="select * from sales order by name"
-      sql="select * from login where issales=1"
-			set rs_sales=conn.execute(sql)
-		%>   
-			<select name="sales" onChange="form2.submit()">
-		     <option value="">所有销售员</option>
-	  <%
-			do while rs_sales.eof=false
-		%>
-		    <option value="<%=rs_sales("username")%>"<%if trim(cstr(rs_sales("username")))=nowsales then%> selected="selected"<%end if%>><%=rs_sales("username")%></option>
-		<%
-			  rs_sales.movenext
-			loop
-		%>
-		  </select>	  
+  sql="select a.*, b.itemnum, b.material, b.customer, b.spec, b.contractweight, b.contractweightuom, b.purchaseprice, b.purchasepriceunit, b.productiondate, b.casenumber, b.actualnetweight, b.invoiceamount, b.invoicecurrency, b.finalpayment, b.package from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where 1=1 "
+  for i = 1 to request("fieldnum")
+  'for i = 1 to 3 
+    sql_ind="X"
+    nowfieldno=i
+    nowfield=request("fieldname"&i)
+    nowoperation=request("operation"&i)
+    nowfieldvalue=request("fieldvalue"&i)
+    if nowfieldvalue<>"" then
+      if instr(nowfield,"date") > 0 then '如果是日期'
+        nowchar = "#"
+      else
+        nowchar = "'"
+      end if
+      if nowoperation="=" then
+        if nowchar="#" then
+          sql=sql&" and "&nowfield&" = #"&nowfieldvalue&"#"
+        else
+          sql=sql&" and "&nowfield&" like '%"&nowfieldvalue&"%'"
+        end if
+      elseif nowoperation = "<>" then
+        if nowchar="#" then
+          sql=sql&" and "&nowfield&" <> #"&nowfieldvalue&"#"
+        else
+          sql=sql&" and "&nowfield&" not like '%"&nowfieldvalue&"%'"
+        end if
+      elseif nowoperation = ">=" then
+        if nowchar="#" then
+          sql=sql&" and "&nowfield&" >= #"&nowfieldvalue&"#"
+        else
+          sql=sql&" and "&nowfield&" >= '"&nowfieldvalue&"'"
+        end if
+      elseif nowoperation = "<=" then
+        if nowchar="#" then
+          sql=sql&" and "&nowfield&" <= #"&nowfieldvalue&"#"
+        else
+          sql=sql&" and "&nowfield&" <= '"&nowfieldvalue&"'"
+        end if
+      else
+        sql=sql&" and "&nowfield&" like '%"&nowfieldvalue&"%'"
+      end if    
+    end if
+  next
 
-		<%
-			sql="select * from customer order by customername"
-			set rs_customer=conn.execute(sql)
-		%>
-			<select name="customer" onChange="form2.submit()">
-		     <option value="">所有客户</option>
-	  <%
-			do while rs_customer.eof=false
-		%>
-		    <option value="<%=rs_customer("customername")%>"<%if trim(cstr(rs_customer("customername")))=nowcustomer then%> selected="selected"<%end if%>><%=rs_customer("customername")%></option>
-		<%
-			  rs_customer.movenext
-			loop
-		%>
-		  </select>	  	  
-		<input type="text" name="keyword" placeholder="请输入船期表号码" size="20" value="<%=nowkeyword%>">
-<!--	  <input type="submit" value=" 查询 " class="button">&nbsp; -->
-	</td>
-  </tr>
-  <tr> 
-	<td align="right">
-	  到港日期：从
-    <input name="datefrom" style="width:80px" id="datefrom">
-	  &nbsp;&nbsp;&nbsp;&nbsp;到
-    <input name="dateto" style="width:80px" id="dateto">
-	  <input type="submit" value=" 查询 " class="button">&nbsp;
-	</td>
-  </tr>  
-</form>  
-</table>
-<%
-'  sql="select * from shipment where shipmentnum<=99999999"
-  sql="select b.*, a.* from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where a.shipmentnum<=999999999"  
-  if nowsales<>"" then
-  	sql=sql&" and sales='"&nowsales&"'"
-  end if
-  if nowcustomer<>"" then
-  	sql=sql&" and customer='"&nowcustomer&"'"
-  end if  
-  if nowkeyword<>"" then
-  	sql=sql&" and shipmentnum="&nowkeyword
-  end if  
-  if nowfrom<>"" and nowto="" then
-	sql=sql&" and boarddate=#"&nowfrom&"#"
-  elseif nowfrom="" and nowto<>"" then
-	sql=sql&" and boarddate=#"&nowto&"#"
-  elseif nowfrom<>"" and nowto<>"" then
-	sql=sql&" and boarddate>=#"&nowfrom&"# and boarddate<=#"&nowto&"#"
-  end if
-  
+  'sql="select a.*, b.* from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where a.buyer like '李%'"
+
+else
+
+  nowfieldnum=request("fieldnum")
+
+end if 
+
+sqltemp="select a.*, b.* from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where a.buyer='张骥'"
+
+
+'nowsales=request("fieldvalue1")
+'nowsales=request("fieldno").count
+'sql="select a.*, b.* from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where a."
+'sql="select a.*, b.* from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where a.sales='张骥'"  '&request("fieldvalue1")&"'"
+'sql="select a.*, b.* from shipment a left join shipmentitem b on a.shipmentnum = b.shipmentnum where a.sales='"&nowsales&"'"
 %>
+<form name="form1">
+<table width="30%" border="0" cellpadding="0" cellspacing="0" align="left">
+
+  <table>
+    <tr> 
+      <td align="right">
+        <input type="button" value=" 添加一个查询条件" onclick="addNewCriteria()" class="button" > &nbsp;
+      </td>  
+      <td align="right">
+        <input type="submit" value=" 查询 " class="button">&nbsp;
+        <input type="hidden" name="query" value="ok">
+        <input type="hidden" name="fieldnum" id="fieldnum" value="1">
+      </td>
+    </tr>
+  </table>
+  <table id="search">
+    <tr> 
+    <!--
+      <td align="middle" >
+       <input type="text" name="fieldnum" id="fieldnum" value="1">
+      </td>
+    -->
+    	<td align="left" >
+      
+    			<select name="fieldname1" id="fieldname1" style='width:120px' align='left'>
+    		     <option value="a.buyer">采购</option>
+             <option value="a.sales">销售</option>
+             <option value="a.handler">跟单</option>
+             <option value="a.country">国别</option>
+             <option value="a.plant">厂号</option>
+             <option value="a.destination">目的港</option>
+             <option value="a.terminal">靠泊码头</option>
+             <option value="a.carrier">船公司</option>
+             <option value="a.shipname">船名航次</option>
+             <option value="a.shipdate">装船期</option>
+             <option value="a.boarddate">到港期</option>             
+             <option value="b.material">品名</option>
+             <option value="b.customer">客户</option>
+    		  </select>	  
+      
+    	</td>
+      <td align="left" >
+      
+          <select name="operation1" id="operation1" style='width:100px' align='left'>
+             <option value="=">包含</option>
+             <option value="<>">不包含</option>
+             <option value=">=">大于等于</option>
+             <option value="<=">小于等于</option>
+          </select>   
+      
+      </td>      
+      <td align="left">
+          <input type="text" name="fieldvalue1" id="fieldvalue1" style='width:120px' align='left'>
+      </td>  
+    </tr>
+    
+  </table>
+
+
+</table>
+</form>
+
+
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#C4D8ED">
 <tr>
 <td><img src="../images/r_1.gif" alt="" /></td>
@@ -236,13 +308,13 @@ nowto=request("dateto")
 <!--startprint-->
 <!--<table align="center" cellpadding="4" cellspacing="1" class="toptable grid" border="1" id="example">-->
 <table width="100%" class="dataTable stripe" id="queryresult" cellspacing="1">
-<form name="form1" action="produit_del.asp">
+<!--
   <input type="hidden" name="queryform" value="<%=request("queryform")%>">
   <input type="hidden" name="form" value="<%=request("form")%>">
   <input type="hidden" name="field" value="<%=request("field")%>">
   <input type="hidden" name="field2" value="<%=request("field2")%>">
   <input type="hidden" name="field3" value="<%=request("field3")%>">
-
+-->
   <thead class="sorting">
 <!--Header-->
 	<td class="category" width="100" height="30">船期表号码</td>
@@ -344,26 +416,16 @@ nowto=request("dateto")
   <!--</tr>-->
   <tbody>
   <%
+  'if nowfieldno<>"" then
+  if sql_ind<>"" then
   set rs_shipment =server.createobject("ADODB.RecordSet")	
+  'rs_shipment.open sqltemp,conn,1,1
   rs_shipment.open sql,conn,1,1
   if not rs_shipment.eof then
   do while rs_shipment.eof=false
   %>
 
     <tr align="center" 
-        onDblClick="window.opener.document.<%=request("queryform")%>.refshipment.value='<%=rs_shipment("shipmentnum")%>';
-                    window.opener.document.<%=request("queryform")%>.refitem.value='<%=rs_shipment("itemnum")%>';
-                    window.opener.document.<%=request("queryform")%>.material.value='<%=rs_shipment("material")%>';
-                    window.opener.document.<%=request("queryform")%>.spec.value='<%=rs_shipment("spec")%>';
-                    window.opener.document.<%=request("queryform")%>.quantity.value='<%=rs_shipment("casenumber")%>';
-                    window.opener.document.<%=request("queryform")%>.weight.value='<%=rs_shipment("contractweight")%>';
-                    window.opener.document.<%=request("queryform")%>.guobie.value='<%=rs_shipment("country")%>';
-                    window.opener.document.<%=request("queryform")%>.plant.value='<%=rs_shipment("plant")%>';      
-                    window.opener.document.<%=request("queryform")%>.boarddate.value='<%=rs_shipment("boarddate")%>';
-                    window.opener.document.<%=request("queryform")%>.deliveryport.value='<%=rs_shipment("destination")%>';
-                    window.opener.document.<%=request("queryform")%>.package.value='<%=rs_shipment("package")%>';
-
-                    window.close();" 
         <%if rs_shipment("status")="进库" then%>bgcolor="darkgrey"<%elseif rs_shipment("status")="通关中" then%>bgcolor="lawngreen"<%elseif rs_shipment("status")="已送货" then%>bgcolor="red"<%end if%>>     
 
 <!--Header-->
@@ -395,15 +457,15 @@ nowto=request("dateto")
   <td align="center" class="setvisible ininovis"><%=rs_shipment("shipname")%></td>  
 
   <td align="center" class="setvisible ininovis"><%=rs_shipment("piwen")%></td>
-  <td align="center" class="setvisible ininovis"><%=rs_shipment("twodocumentready")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("twodocumentreadydate")%></td>  
   <td align="center" class="setvisible ininovis"><%=rs_shipment("dongjian")%></td>
   <td align="center" class="setvisible ininovis"><%=rs_shipment("zidong")%></td>
   <td align="center" class="setvisible ininovis"><%=rs_shipment("zidongapplydate")%></td>
   <td align="center" class="setvisible ininovis"><%=rs_shipment("zidongreportdate")%></td>
 
-  <td align="center" class="setvisible ininovis"><%=rs_shipment("planinsurance")%></td>
-  <td align="center" class="setvisible ininovis"><%=rs_shipment("supinsurance")%></td>    
-  <td align="center" class="setvisible ininovis"><%=rs_shipment("insurancepayment")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("planinsurancedate")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("supinsurancedate")%></td>    
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("insurancepaymentdate")%></td>
   <td align="center" class="setvisible ininovis"><%=rs_shipment("insurancenumber")%></td>    
 
   <td align="center" class="setvisible ininovis"><%=rs_shipment("planship")%></td>
@@ -430,10 +492,10 @@ nowto=request("dateto")
   <td align="center" class="setvisible ininovis"><%=rs_shipment("shouyi")%></td>
   <td align="center" class="setvisible ininovis"><%=rs_shipment("passdate")%></td>  
 
-  <td align="center" class="setvisible ininovis"><%=rs_shipment("documentarrival")%></td>  
-  <td align="center" class="setvisible ininovis"><%=rs_shipment("planretirebill")%></td>
-  <td align="center" class="setvisible ininovis"><%=rs_shipment("internalretirebill")%></td>
-  <td align="center" class="setvisible ininovis"><%=rs_shipment("externalretirebill")%></td>    
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("documentarrivaldate")%></td>  
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("planretirebilldate")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("internalretirebilldate")%></td>
+  <td align="center" class="setvisible ininovis"><%=rs_shipment("externalretirebilldate")%></td>    
 
   <td align="center" class="setvisible ininovis"><%=rs_shipment("cargodate")%></td>  
   <td align="center" class="setvisible ininovis"><%=rs_shipment("cargodirection")%></td>
@@ -459,8 +521,8 @@ nowto=request("dateto")
   <td align="center" class="setvisible ininovis"><%=rs_shipment("finalpayment")%></td>     
 
 
-  <td align="center">
-    	<a href="change_shipment_new.asp?form=<%=request("form")%>&shipment=<%=rs_shipment("shipmentnum")%>&keyword=<%=nowkeyword%>"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">修改</a>
+  <td align="center"> 
+    	<a href="change_shipment_new.asp?form=<%=request("form")%>&shipment=<%=rs_shipment("shipmentnum")%>&keyword=<%=nowkeyword%>" target="_blank"><img src="../images/res.gif" border="0" hspace="2" align="absmiddle">修改</a>
   </td>
   <td align="center">
   	<input type="checkbox" name="sel" value="<%=rs_shipment("shipmentnum")&rs_shipment("itemnum")%>" style="border:0">
@@ -471,21 +533,12 @@ nowto=request("dateto")
   	'end if
     rs_shipment.movenext
   loop
-  else
-  %>
-  <tr align="center" onMouseOver="this.className='highlight'" onMouseOut="this.className=''">
-    <td colspan="15" height="25" align="center" style="color:red"><b>没有找到记录</b></td>
-  </tr>
-  <%
+  end if
   end if
   %>
   </tbody>
-  <%
-  if rs_shipment.recordcount>0 then 
-  %> 
-</table></td></tr>
-<%end if%> 
-</form>   
+
+
 </table>
 <!--endprint-->
 </td>

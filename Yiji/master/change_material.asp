@@ -101,13 +101,14 @@ set rs=conn.execute(sql)
         <td class="category">
 		  <input type="submit" value=" 确认修改 " class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
-			<input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('delete_lock_table.asp?tablename=material&combinedkey=<%=request("material")%>'); window.location.href='master.asp';}" class="button"> </td>
+			<input type="button" value=" 放弃修改返回 " onClick="if (confirm('确定要放弃修改吗？')) {window.open('delete_lock_table.asp?tablename=material&combinedkey=<%=request("material")%>'); window.location.href='master.asp';}" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
       <%
       if fla7="0" and session("redboy_id")<>"1" then
       else
       %>      
-      <input type="button" value=" 删除 " onClick="if (confirm('确定要删除该品名吗？')) {window.open('delete_material.asp?material=<%=request("material")%>'); window.location.href='master.asp';}" class="button"></td>
+      <input type="button" value=" 删除 " onClick="if (confirm('确定要删除该品名吗？')) {window.open('delete_material.asp?material=<%=request("material")%>'); window.location.href='master.asp';}" class="button">
       <%end if%>        
+      </td>
       </tr>	    
 </table>
 </td>

@@ -14,6 +14,8 @@ showpic=rs_config("showpic")
 maxrecord=rs_config("maxrecord")
 maxproduit=rs_config("maxproduit")
 tiqian=rs_config("tiqian")
+	dim xmlhttp:xmlhttp="Msxml2.ServerXMLHTTP"
+	dim xmldomString:xmldomString="MSXML2.DOMDocument"
 
 sql="select * from login where username='"&session("redboy_username")&"'"
 set rs_login=conn.execute(sql)

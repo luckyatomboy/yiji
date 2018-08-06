@@ -11,12 +11,12 @@ end if
 <!-- #include file="../conn2.asp" -->
 <%
 
-sql="select from shipment where shipmentnum="&request("shipmentnum")
-rs=conn.execute(sql)
+'sql="select from shipment where shipmentnum="&request("shipmentnum")
+'conn.execute(sql)
 
 '查询是否有订货合同。如果有，则不许删除船期表'
-sql="select from salescontract where refshipment="&request("shipmentnum")
-rs_contract=conn.execute(sql)
+sql="select * from salescontract where refshipment="&request("shipmentnum")
+set rs_contract=conn.execute(sql)
 if rs_contract.eof=false then
 %>
 <script language="javascript">
@@ -27,8 +27,8 @@ if rs_contract.eof=false then
 end if
 
 '查询是否有入库单。如果有，则不许删除船期表'
-sql="select from stocknumber where refshipment="&request("shipmentnum")
-rs_stock=conn.execute(sql)
+sql="select * from stockdocument where refshipment="&request("shipmentnum")
+set rs_stock=conn.execute(sql)
 if rs_stock.eof=false then
 %>
 <script language="javascript">
@@ -48,6 +48,9 @@ conn.execute(sql)
 sql="delete from locktable where tablename='shipment' and combinedkey='"&request("shipmentnum")&"'"
 conn.execute(sql)
 
-response.redirect "shipment.asp"
+'response.redirect "shipment.asp"
 %>
 
+<script language="javascript">
+window.close();
+</script>

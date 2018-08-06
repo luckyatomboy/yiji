@@ -15,6 +15,8 @@ end if
 <head>
 <title><%=dianming%> - 添加客户</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
 <link href="../style/style.css" rel="stylesheet" type="text/css">
 <style>
 body {
@@ -32,6 +34,15 @@ if fla5="0"then
   response.end
 end if
 %>
+
+<script>
+//离开页面时提示
+  $(window).bind('beforeunload',function(){
+    return '数据尚未保存，确定离开?';
+  });
+
+</script>
+
 <%if request("hid1")="" then%> 
 <script language="javascript">
 function check()
@@ -94,7 +105,7 @@ return false;
       <tr>
 	    <td height="30">&nbsp;</td>
         <td class="category">
-		  <input type="submit" value=" 确认添加 " onClick="return check()" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
+		  <input type="submit" value=" 确认添加 " onClick="$(window).off('beforeunload'); return check()" class="button">&nbsp;&nbsp;&nbsp;&nbsp;
 		  <input type="hidden" name="hid1" value="ok">
 		  <input type="reset" value=" 重新填写 " class="button">		</td>
       </tr>	    
@@ -136,6 +147,7 @@ conn.execute(sql)
 %>
 <script language="javascript">
 alert("客户添加成功！")
+$(window).off('beforeunload');
 window.location.href="master.asp"
 </script> 
 <%
